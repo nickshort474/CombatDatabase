@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import store from '../redux/store';
-import constants from '../redux/constants';
+import store from '../../redux/store';
+import constants from '../../redux/constants';
 
 //import SideBarAdvert from '../Components/SideBarAdvert';
-import {firebase} from '@firebase/app';
-import '@firebase/auth';
 
 
 export default class Home extends Component{
@@ -25,42 +23,7 @@ export default class Home extends Component{
 
 	componentWillMount(){
 		window.scrollTo(0, 0);
-
-		/*firebase.auth().onAuthStateChanged((user) => {
-			console.log("home page auth state change")
-		})
-
-		firebase.auth().getRedirectResult().then( (result) => {
-		  	
-			console.log("home page getRedirectresult")
-		  	if (result.credential) {
-			    // This gives you a Google Access Token. You can use it to access the Google API.
-			    //var token = result.credential.accessToken;
-			    // ...
-			    //let user = result.user;
-			    // User is signed in.
-		    	this.setState({profile:<Link to="Profile" className="btn btn-primary"  data-target=".navbar-collapse">Profile</Link>, register:"", signText:"Sign out"});
-		    	store.dispatch({type:constants.SAVE_USER, userUID:user.uid});
-			   	
-			}else{
-				//this.setState({signText:"Sign out"})
-				//this._createUserDatabase(user);
-			}
-
-		}).catch(function(error) {
-		  	// Handle Errors here.
-		  	//var errorCode = error.code;
-		  	//var errorMessage = error.message;
-
-		  	
-
-		  	// The email of the user's account used.
-		  	//var email = error.email;
-		  	// The Firebase.auth.AuthCredential type that was used.
-		  	//var credential = error.credential;
-		  	
-		  	// ...
-		});  */
+		
 	}
 
 

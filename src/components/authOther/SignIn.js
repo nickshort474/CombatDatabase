@@ -1,46 +1,95 @@
 import React, {Component} from 'react';
-import { firebase } from '@firebase/app';
-import {Link} from 'react-router-dom';
-import store from '../../redux/store';
-import LocalStorage from '../../utils/LocalStorage';
+
+import {Link,withRouter} from 'react-router-dom';
+
 
 import GoogleButtonMain from '../../assets/images/google/btn_google_signin_dark_normal_web.png';
 import GoogleButtonFocus from '../../assets/images/google/btn_google_signin_dark_focus_web.png';
 import GoogleButtonPressed from '../../assets/images/google/btn_google_signin_dark_pressed_web.png';
 
 
+import { SignUpLink } from '../SignUp';
+import {SignInWithGoogle} from '../SignInWithGoogle'
+import { PasswordForgetLink } from '../PasswordForget';
+import { withFirebase } from '../Firebase';
 
-export default class Signin extends Component{
+import LocalStorage from '../../utils/LocalStorage';
+
+import store from '../../redux/store';
+
+const SignInPage = () => (
+  <div>
+   
+    <SignInForm />
+    <SignInWithGoogle />
+    <PasswordForgetLink />
+    <SignUpLink />
+
+  </div>
+);
+
+const INITIAL_STATE = {
+  email: '',
+  password: '',
+  error: null,
+};
+
+class SignInFormBase extends Component{
 	
-	constructor(){
-		super();
-
-		this.state = {
-	 		canClick:false,
-	 	}
-
-	 	
-	}
 	
+	constructor(props) {
+    	super(props);
+
+    	this.state = { ...INITIAL_STATE };
+  	}
+	
+
 	componentWillMount() {
 		window.scrollTo(0, 0);
 
-	 	this.provider = new firebase.auth.GoogleAuthProvider(); 
+	 	//this.provider = new firebase.auth.GoogleAuthProvider(); 
 	 	 
 	}
 
-	
+	_onSubmit(event){
+    	const { email, password } = this.state;
+    	console.log(email);
+	    this.props.firebase
+	      .doSignInWithEmailAndPassword(email, password)
+	      .then(() => {
+	        this.setState({ ...INITIAL_STATE });
+	        this.props.history.push("/Home");
+	      })
+	      .catch(error => {
+	        this.setState({ error });
+	      });
 
+	    event.preventDefault();
+	};
+
+  	onChange(event){
+    	this.setState({ 
+    		[event.target.id]: event.target.value 
+    	});
+ 	};
+/*
 	_signInGoogle(e){
 		
 		let googleButton = document.getElementById("googleButton");
 		googleButton.setAttribute("src", GoogleButtonPressed);
 
-		/*// back up redux to localStorage
+		// back up redux to localStorage
 		var storeState = store.getState();
-		LocalStorage.saveState(storeState);*/
-		
-		firebase.auth().signInWithRedirect(this.provider);
+		LocalStorage.saveState(storeState);
+
+		this.props.firebase.doSignInWithGoogle().then((authUser) => {
+	        console.log("signed in with google!")
+	        this.props.history.push("/Home");
+	      })
+	      .catch(error => {
+	        this.setState({ error });
+	      });;
+		//firebase.auth().signInWithRedirect(this.provider);
 		
 	}
 
@@ -53,10 +102,10 @@ export default class Signin extends Component{
 	_googleButtonOut(){
 		let googleButton = document.getElementById("googleButton");
 		googleButton.setAttribute("src", GoogleButtonMain);
-	}
+	}*/
 
 
-	_submitSignIn(e){
+	/*_submitSignIn(e){
 		e.preventDefault();
 
 		let email = e.target.loginEmail.value;
@@ -76,10 +125,15 @@ export default class Signin extends Component{
 
 
 		});
-	}
+	}*/
 
 
 	render(){
+
+		const { email, password, error } = this.state;
+
+    	const isInvalid = password === '' || email === '';
+
 
 		return(
 			<div>
@@ -93,14 +147,14 @@ export default class Signin extends Component{
 			                <div className="col-sm-9">
 			                	<div className="box registration-form">
 			                    	<h2>Login</h2>
-			                        <form onSubmit={this._submitSignIn.bind(this)}>
+			                        <form onSubmit={this._onSubmit.bind(this)}>
 			                        	<div className="form-group">
 			                                <label htmlFor="login_email">Email</label>
-			                                <input type="text" className="form-control" id="loginEmail" placeholder="Enter email" />
+			                                <input type="text" className="form-control" id="email" onChange={this.onChange.bind(this)} value={this.state.email} placeholder="Enter email" />
 			                            </div>
 			                            <div className="form-group">
 			                                <label htmlFor="login_pass">Password</label>
-			                                <input type="password" className="form-control" id="loginPassword" placeholder="Password" />
+			                                <input type="password" className="form-control" id="password"  onChange={this.onChange.bind(this)} value={this.state.password} placeholder="Password" />
 			                            </div>
 			                            <button type="submit" className="btn btn-primary login-btn">Login</button>
 			                            <Link to="/signUp"><button className="btn btn-primary login-btn">Register</button></Link>
@@ -108,7 +162,9 @@ export default class Signin extends Component{
 			                           	{/*<a id="reset-password-toggle" className="">Did you forget your password?</a>*/}
 			                        </form>
 			                    </div>
-			                    
+
+			                    {error && <p>{error.message}</p>}
+
 			                    <div className="box registration-form" id="reset-password">
 			                    	<h2>Forgotten password</h2>
 			                        <p>If youve forgotten your password use this form to reset your password. New password will be send to your email.</p>
@@ -117,15 +173,15 @@ export default class Signin extends Component{
 			                                <label htmlFor="forg_email">Email address</label>
 			                                <input type="email" className="form-control" id="forg_email" placeholder="Enter email" />
 			                            </div>
-			                            <button type="submit" className="btn btn-primary">Reset password</button>
+			                            <button type="submit" disabled={isInvalid} className="btn btn-primary">Reset password</button>
 			                        </form>
 			                    </div>
 			                </div>
-			                <div className="col-sm-3">
+			               {/* <div className="col-sm-3">
 			                	<img src={GoogleButtonMain} id="googleButton" onClick={this._signInGoogle.bind(this)} onMouseOver={this._hoverGoogleButton.bind(this)} onMouseOut={this._googleButtonOut.bind(this)} alt="Google sign in button"/>
 			                	
 			                </div>
-			                
+			                */}
 			                
 			            </div>
 			        </section>
@@ -136,3 +192,9 @@ export default class Signin extends Component{
 	}
 
 }
+
+const SignInForm = withRouter(withFirebase(SignInFormBase));
+
+export { SignInForm };
+
+export default SignInPage;

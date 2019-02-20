@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router-dom';
-import { firebase } from '@firebase/app';
+//import { firebase } from '@firebase/app';
+
+import { withFirebase } from '../Firebase';
 
 import BusinessComp from './BusinessComp';
 
@@ -12,8 +14,8 @@ import constants from '../../redux/constants';
 class BusinessPage extends Component{
 	
 
-	constructor(){
-		super();
+	constructor(props){
+		super(props);
 
 		store.dispatch({type:constants.SAVE_PAGE, page:"BusinessPage"});
 		store.dispatch({type:constants.SAVE_PREV_PAGE, prevPage:"BusinessPage"});
@@ -34,10 +36,8 @@ class BusinessPage extends Component{
 		
 		this.counter = 0;		
 		this.items = [];
-
-	    this.firestore = firebase.firestore();
 	    
-	    let ref = this.firestore.collection("Business").orderBy("creationDate","desc").limit(this.showLimit);
+	    let ref = this.props.firebase.mainRef().collection("Business").orderBy("creationDate","desc").limit(this.showLimit);
 
 	    ref.get().then((snapshot)=>{
 	    	this.lastVisible = snapshot.docs[snapshot.docs.length - 1];
@@ -72,7 +72,7 @@ class BusinessPage extends Component{
 	_handleMoreButton(){
 		this.counter = 0;
 
-		let ref = this.firestore.collection("Business").orderBy("creationDate", "desc").startAfter(this.lastVisible).limit(this.showLimit);
+		let ref = this.props.firebase.mainRef().collection("Business").orderBy("creationDate", "desc").startAfter(this.lastVisible).limit(this.showLimit);
 		
 		ref.get().then((snapshot)=>{
 			this.lastVisible = snapshot.docs[snapshot.docs.length - 1];
@@ -153,4 +153,4 @@ class BusinessPage extends Component{
 		)
 	}
 }
-export default withRouter(BusinessPage);
+export default withRouter(withFirebase(BusinessPage));

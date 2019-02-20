@@ -15,6 +15,10 @@ class Firebase {
   constructor() {
     app.initializeApp(config);
     this.auth = app.auth();
+
+    this.firestore = app.firestore();
+
+    this.googleProvider = new app.auth.GoogleAuthProvider(); 
   }
 
    // *** Auth API ***
@@ -29,9 +33,11 @@ class Firebase {
 
   doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
 
-  doPasswordUpdate = password =>
-    this.auth.currentUser.updatePassword(password);
+  doPasswordUpdate = password =>  this.auth.currentUser.updatePassword(password);
   
+  doSignInWithGoogle = () =>   this.auth.signInWithPopup(this.googleProvider);
+
+  mainRef = () => this.firestore;
 }
 
 

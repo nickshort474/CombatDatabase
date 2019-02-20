@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
-import { firebase } from '@firebase/app';
+import { withRouter, Link} from 'react-router-dom';
+
+import {withFirebase} from '../Firebase';
 import $ from 'jquery';
 
 import {_disable,_enable} from '../../utils/DisableGreyOut';
@@ -8,17 +9,27 @@ import {_disable,_enable} from '../../utils/DisableGreyOut';
 import store from '../../redux/store';
 import constants from '../../redux/constants';
 
-export default class Signup extends Component{
-	
-	constructor(){
-		super();
-		this.state = {
-			regEmail:"",
-			regUsername:"",
-			regPassword1:"",
-			regPassword2:""
+const SignUpPage = () => (
+	<div>
+		<SignUpForm />
+	</div>
+)
 
-		}
+const INITIAL_STATE = {
+	regEmail:"",
+	regUsername:"",
+	regPassword1:"",
+	regPassword2:"",
+	error:null,
+}
+
+
+
+class SignUpFormBase extends Component{
+	
+	constructor(props){
+		super(props);
+		this.state = { ...INITIAL_STATE };
 	}
 	componentWillMount(){
 		window.scrollTo(0, 0);
@@ -39,10 +50,7 @@ export default class Signup extends Component{
 	_submitSignUp(e){
 		e.preventDefault();
 		_disable()
-		/*this.email = e.target.regEmail.value;
-		this.password = e.target.regPassword.value;
-		let username = e.target.regUsername.value;*/
-
+		
 
 		let errorMsgs = this._validate(this.state.regEmail,this.state.regUsername,this.state.regPassword1,this.state.regPassword2);
 		if(errorMsgs.length > 0){
@@ -69,8 +77,8 @@ export default class Signup extends Component{
 
 	_checkForExistingUsername(){
 		
-		let firestore = firebase.firestore();
-		let ref = firestore.collection('userUIDs');
+		
+		let ref = this.props.firebase.mainRef().collection('userUIDs');
 		let query = ref.where("userName", "==",this.state.regUsername);
 		
 		let match = false;
@@ -96,15 +104,21 @@ export default class Signup extends Component{
 	}
 
 	_createUser(){
-		firebase.auth().createUserWithEmailAndPassword(this.state.regEmail, this.state.regPassword1).catch(function(error) {
-		  // Handle Errors here.
-		  var errorCode = error.code;
-		  var errorMessage = error.message;
-		  console.log(errorCode);
-		  console.log(errorMessage);
+		const { regEmail, regPassword1 } = this.state;
 
-		  // ...
-		});
+		this.props.firebase.doCreateUserWithEmailAndPassword(regEmail,regPassword1).then((authUser)=>{
+			this.setState({
+				...INITIAL_STATE
+			})
+			store.dispatch({type:constants.SAVE_USER, userName:authUser.uid})
+			console.log(authUser.uid)
+			this.props.history.push('/Home');
+		}).catch((error)=>{
+			this.setState({
+				error:error
+			})
+		})
+		
 	}
 
 	_validate(email, username, password1, password2){
@@ -184,6 +198,7 @@ export default class Signup extends Component{
 
 
 			                            <button type="submit" className="btn btn-primary">Submit</button>
+			                            {this.state.error && <p>{this.state.error.message}</p>}
 			                        </form>
 			                    </div>
 			                </div>
@@ -197,3 +212,15 @@ export default class Signup extends Component{
 	}
 
 }
+
+const SignUpLink = () => (
+	
+		<Link to={"/SignUp"}><button className="btn btn-primary">Sign Up</button></Link>
+	
+);
+
+const SignUpForm = withRouter(withFirebase(SignUpFormBase));
+
+export default SignUpPage;
+
+export { SignUpForm, SignUpLink};

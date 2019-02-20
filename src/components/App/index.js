@@ -3,11 +3,9 @@ import {BrowserRouter as Router,Route} from 'react-router-dom';
 
 import Navigation from '../Navigation/Navigation';
 
-import LandingPage from '../Landing';
-import SignUpPage from '../SignUp';
-import SignInPage from '../SignIn';
-import PasswordForgetPage from '../PasswordForget';
-import HomePage from '../Home';
+import HomePage from '../Home/Home';
+
+
 /*import AccountPage from '.../Account';
 import AdminPage from '.../Admin';*/
 
@@ -73,18 +71,22 @@ import SearchedBlogs from '../blog/SearchedBlogs';
 import Contact from '../authOther/Contact';
 import Response from '../authOther/Response';
 import Privacy from '../authOther/Privacy';
-import SignUp from '../authOther/SignUp';
-import SignIn from '../authOther/SignIn';
+
+
+import SignUpPage from '../SignUp/SignUp';
+import SignInPage from '../SignIn/SignIn';
+import PasswordForgetPage from '../PasswordForget/PasswordForget';
+
+
 import Profile from '../authOther/Profile';
 import ProfilePic from '../authOther/ProfilePic';
 import Username from '../authOther/Username';
 import AboutUs from '../authOther/AboutUs';
 
 
-
-import * as ROUTES from '../../constants/routes';
-
 import {withAuthentication} from '../Session';
+
+
 
 const App = () =>(
 	
@@ -94,16 +96,11 @@ const App = () =>(
 		 	<Navigation />
 
 		 	
-		 	<Route exact path={ROUTES.LANDING} component={LandingPage} />
-	     	{/*<Route path={ROUTES.SIGN_UP} component={SignUpPage} />
-	      	<Route path={ROUTES.SIGN_IN} component={SignInPage} />*/}
-	      	<Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
-	      	<Route path={ROUTES.HOME} component={HomePage} />
-	      	{/*<Route path={ROUTES.ACCOUNT} component={AccountPage} />
-	      	<Route path={ROUTES.ADMIN} component={AdminPage} />*/}
-
-			{/*<Route exact path="/" component={Home} />
-			<Route path="/Home" component={Home} />*/}
+		 	<Route exact path={"/"} component={HomePage} />
+		 	<Route path ={"/Home"} component={HomePage} />
+	     	
+	      	<Route path={"/ForgotPassword"} component={PasswordForgetPage} />
+	      	
 			<Route path='/BusinessPage' component={BusinessPage} />
 			<Route path="/Business/:BusinessKey" component={SingleBusinessPage} />	
 			<Route path="/AddBusiness" component={AddBusiness} />
@@ -160,9 +157,12 @@ const App = () =>(
 			<Route path="/Profile" component={Profile} />
 			<Route path="/ProfilePic/:UserRef" component={ProfilePic} />
 			<Route path="/Username" component={Username} />
-			<Route path="/SignUp" component={SignUp} />
-			<Route path="/SignIn" component={SignIn} />
+			
+
 			<Route path="/AboutUs" component={AboutUs} />
+
+			<Route path="/SignUp" component={SignUpPage} />
+			<Route path="/Signin" component={SignInPage} />
 		</div>		
  	</Router>
 )

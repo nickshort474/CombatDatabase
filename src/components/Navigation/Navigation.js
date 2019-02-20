@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import SignOutButton from '../SignOut';
-import * as ROUTES from '../../constants/routes';
+import SignOutButton from '../SignOut/SignOut';
+
 
 
 import { AuthUserContext } from '../Session';
@@ -22,11 +22,11 @@ const Navigation = () => (
 
 const NavigationAuth = () => (
   <div>
-      <Link to={ROUTES.LANDING} className="btn btn-inverse signinBtn"  data-toggle="collapse" data-target=".navbar-collapse">Landing</Link>
+      
    
-      <Link to={ROUTES.HOME} className="btn btn-inverse signinBtn"  data-toggle="collapse" data-target=".navbar-collapse">Home</Link>
+      {/*<Link to={ROUTES.HOME} className="btn btn-inverse signinBtn"  data-toggle="collapse" data-target=".navbar-collapse">Home</Link>*/}
    
-      <Link to={ROUTES.ACCOUNT} className="btn btn-primary signinBtn"  data-toggle="collapse" data-target=".navbar-collapse">Account</Link>
+      <Link to="/Profile" className="btn btn-primary signinBtn"  data-toggle="collapse" data-target=".navbar-collapse">Profile</Link>
    
       <SignOutButton />
    </div>
@@ -34,9 +34,9 @@ const NavigationAuth = () => (
 
 const NavigationNonAuth = () => (
  <div>
-    <Link to={ROUTES.LANDING} className="btn btn-inverse signinBtn"   data-target=".navbar-collapse">Landing</Link>
+    {/*<Link to={ROUTES.HOME} className="btn btn-inverse signinBtn"   data-target=".navbar-collapse">Home</Link>*/}
     
-    <Link to={ROUTES.SIGN_IN} className="btn btn-primary"   data-target=".navbar-collapse">Sign In</Link>
+    <Link to={"/Signin"} className="btn btn-primary"   data-target=".navbar-collapse">Sign In</Link>
  
   </div>
 );

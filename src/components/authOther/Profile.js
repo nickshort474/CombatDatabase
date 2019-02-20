@@ -8,7 +8,7 @@ import constants from '../../redux/constants';
 import Geosuggest from 'react-geosuggest';
 
 import defaultLogo from '../../assets/images/default.jpg'
-
+import PasswordChange from '../PasswordChange/PasswordChangeForm';
 
 const google = window.google;
 
@@ -37,6 +37,7 @@ export default class Profile extends Component{
 		
 		var storeState = store.getState();
 		this.userUID = storeState.userUID;
+		console.log(this.userUID);
 		this.firestore = firebase.firestore()
 		
 		
@@ -243,8 +244,8 @@ export default class Profile extends Component{
 												<label>{this.state.userName}</label>
 											</div>
 											<div className="col-sm-6">
-												<input type="button" value="Update Username"  onClick={this._handleUsernameChange.bind(this)} /><br />
-												<input type="button" value="Update Profile Pic"  onClick={this._handleProfilePic.bind(this)} />
+												<input type="button" value="Update Username" className="btn btn-primary" onClick={this._handleUsernameChange.bind(this)} /><br />
+												<input type="button" value="Update Profile Pic" className="btn btn-primary" onClick={this._handleProfilePic.bind(this)} />
 											</div>
 										</div>
 
@@ -325,7 +326,7 @@ export default class Profile extends Component{
 										
 
 
-										<div className="row">
+										{/*<div className="row">
 											<div className="col-sm-6">
 												<label>Contactable by:</label>
 											</div>
@@ -336,7 +337,7 @@ export default class Profile extends Component{
 													<option value="Everyone">Everyone</option>
 												</select>
 											</div>
-										</div>
+										</div>*/}
 										<hr />
 										
 				                        <div className="row">
@@ -365,11 +366,20 @@ export default class Profile extends Component{
 										</div>	
 											
 				                        <hr />
-										<input type="submit" value="Update profile" onClick={this._submitForm.bind(this)}/>
+										<input type="submit" value="Update profile" className="btn btn-primary" onClick={this._submitForm.bind(this)}/>
+										
 									</form>
+									
+								</div>
+								<div className="box">
+									<div>
+										<PasswordChange />
+									</div>
 								</div>
 							</div>
 						</div>
+						
+						
 					</div>
 				</div>
 			</div>

@@ -56,9 +56,9 @@ const HeaderNavigation = () => (
                 	
                 	<li><Link to="/" data-target=".navbar-collapse">Home</Link></li>
                 	<li><Link to="/BusinessPage" data-target=".navbar-collapse">Business</Link></li>
-                    <li><Link to="/Events" data-target=".navbar-collapse">Events</Link></li>
-                    <li><Link to="/Styles" data-target=".navbar-collapse">Styles</Link></li>
-					<li><Link to="/ViewBlogs" data-target=".navbar-collapse">Blogs</Link></li>
+                  <li><Link to="/Events" data-target=".navbar-collapse">Events</Link></li>
+                  <li><Link to="/Styles" data-target=".navbar-collapse">Styles</Link></li>
+					        <li><Link to="/ViewBlogs" data-target=".navbar-collapse">Blogs</Link></li>
 				
                 </ul>
                 <div className="pull-right navbar-buttons">
