@@ -11,14 +11,14 @@ import constants from '../../redux/constants';
 
 
 
-class BusinessPage extends Component{
+class Business extends Component{
 	
 
 	constructor(props){
 		super(props);
 
-		store.dispatch({type:constants.SAVE_PAGE, page:"BusinessPage"});
-		store.dispatch({type:constants.SAVE_PREV_PAGE, prevPage:"BusinessPage"});
+		store.dispatch({type:constants.SAVE_PAGE, page:"Business"});
+		store.dispatch({type:constants.SAVE_PREV_PAGE, prevPage:"Business"});
 		
 		this.state = {
 			items:[],
@@ -153,4 +153,4 @@ class BusinessPage extends Component{
 		)
 	}
 }
-export default withRouter(withFirebase(BusinessPage));
+export default withRouter(withFirebase(Business));

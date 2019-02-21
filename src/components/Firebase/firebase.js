@@ -12,32 +12,35 @@ var config = {
 
 
 class Firebase {
-  constructor() {
-    app.initializeApp(config);
-    this.auth = app.auth();
 
-    this.firestore = app.firestore();
+    constructor(){
 
-    this.googleProvider = new app.auth.GoogleAuthProvider(); 
-  }
+        app.initializeApp(config);
 
-   // *** Auth API ***
+        this.auth = app.auth();
 
-  doCreateUserWithEmailAndPassword = (email, password) =>
-    this.auth.createUserWithEmailAndPassword(email, password);
+        this.firestore = app.firestore();
 
-  doSignInWithEmailAndPassword = (email, password) =>
-    this.auth.signInWithEmailAndPassword(email, password);
+        this.googleProvider = new app.auth.GoogleAuthProvider(); 
+    }
 
-  doSignOut = () => this.auth.signOut();
 
-  doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
+     // *** Auth API ***
+    doCreateUserWithEmailAndPassword = (email, password) =>
+      this.auth.createUserWithEmailAndPassword(email, password);
 
-  doPasswordUpdate = password =>  this.auth.currentUser.updatePassword(password);
-  
-  doSignInWithGoogle = () =>   this.auth.signInWithPopup(this.googleProvider);
+    doSignInWithEmailAndPassword = (email, password) =>
+      this.auth.signInWithEmailAndPassword(email, password);
 
-  mainRef = () => this.firestore;
+    doSignOut = () => this.auth.signOut();
+
+    doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
+
+    doPasswordUpdate = password =>  this.auth.currentUser.updatePassword(password);
+    
+    doSignInWithGoogle = () =>   this.auth.signInWithPopup(this.googleProvider);
+
+    mainRef = () => this.firestore;
 }
 
 

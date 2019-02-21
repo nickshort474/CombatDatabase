@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import {withRouter,Link} from 'react-router-dom';
 import {firebase} from '@firebase/app';
 
-import {_compressImage} from '../../Components/CompressImage';
-import {_handleDisable} from '../../Components/HandleDisable';
+import {_compressImage} from '../../utils/CompressImage';
+import {_handleDisable} from '../../utils/HandleDisable';
 
 
 import store from '../../redux/store';

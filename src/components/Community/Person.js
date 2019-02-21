@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import {firebase} from '@firebase/app';
+import {withFirebase} from '../Firebase';
 
 import store from '../../redux/store';
 import constants from '../../redux/constants';
 
-export default class SinglePersonPage extends Component{
+class Person extends Component{
 	
 	constructor(){
 		super();
@@ -28,10 +28,11 @@ export default class SinglePersonPage extends Component{
 	componentWillMount(){
 		window.scrollTo(0, 0);
 		this.userUID = store.getState().userUID;
-		store.dispatch({type:constants.SAVE_PAGE, page:`User/${this.props.match.params.UserKey}`})
-
+		store.dispatch({type:constants.SAVE_PAGE, page:`Person/${this.props.match.params.PersonKey}`})
+		
+		this.firestore = this.props.firebase.mainRef();
 		this._getUserInfo();
-
+		
 
 	}
 	
@@ -39,26 +40,12 @@ export default class SinglePersonPage extends Component{
 	_getUserInfo(){
 
 		
-		let firestore = firebase.firestore();
-
-		let ref = firestore.collection("People").doc(this.props.match.params.UserKey);
-
 		
 
+		let ref = this.firestore.collection("People").doc(this.props.match.params.PersonKey);
 		ref.get().then((snapshot)=>{
 			
 			
-			
-			if(snapshot.data().contact !== "Everyone"){
-				this.buttonStyle = {
-					visibility:"hidden"
-				}
-			}else{
-				this.buttonText = "Friend Request"
-			}
-
-			
-
 			this.setState({
 				firstName:snapshot.data().firstName,
 				lastName:snapshot.data().lastName,
@@ -69,7 +56,6 @@ export default class SinglePersonPage extends Component{
 				styles:snapshot.data().styles,
 				age:snapshot.data().age,
 				location:snapshot.data().address,
-				contact:snapshot.data().contact,
 				profilePic:snapshot.data().profilePicUrl,
 				buttonText:this.buttonText
 				
@@ -79,7 +65,7 @@ export default class SinglePersonPage extends Component{
 		let list = [];
 		let isFriend = false;
 
-		let ref2 = firestore.collection("People").doc(this.props.match.params.UserKey).collection("followers");
+		let ref2 = this.firestore.collection("People").doc(this.props.match.params.PersonKey).collection("followers");
 		
 		ref2.get().then((snapshot)=>{
 
@@ -221,3 +207,5 @@ export default class SinglePersonPage extends Component{
 	}
 }
 	
+
+	export default withFirebase(Person);

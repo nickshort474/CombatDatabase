@@ -13,7 +13,7 @@ export default class Username extends Component{
 		super();
 
 		this.storeState = store.getState();
-		this.userName = this.storeState.userName;
+		this.userName = this.storeState.userName ? this.state.userName : "";
 		this.userUID = this.storeState.userUID;
 
 		this.firestore = firebase.firestore();
@@ -37,7 +37,7 @@ export default class Username extends Component{
 
 	_submitForm(){
 		// check for matching usernames first
-		let ref = this.firestore.collection('userUIDs');
+		let ref = this.firestore.collection('Users');
 		let query = ref.where("userName", "==", this.state.userName);
 		
 		let match = false;
@@ -57,8 +57,19 @@ export default class Username extends Component{
 		}).then(()=>{
 			if(!match){
 				console.log("update")
-				this.firestore.collection('userUIDs').doc(this.userUID).update({userName:this.state.userName});
-				this.firestore.collection('People').doc(this.userUID).update({userName:this.state.userName});
+
+				let ref = this.firestore.collection('People').doc(this.userUID);
+				ref.get().then((snapshot)=>{
+					if(snapshot.exists){
+						console.log("user exists and has filled in profile info!")
+						ref.update({userName:this.state.userName});
+						this.firestore.collection('Users').doc(this.userUID).update({userName:this.state.userName, profileCreated:true});
+					}else{
+						ref.set({userName:this.state.userName})
+						this.firestore.collection('Users').doc(this.userUID).update({userName:this.state.userName, profileCreated:true});
+					}
+				})
+						
 				this.props.history.push("/Profile");
 			}
 		})

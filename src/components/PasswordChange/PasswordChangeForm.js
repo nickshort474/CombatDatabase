@@ -66,5 +66,5 @@ const PasswordChangeForm = withFirebase(PasswordChangeFormBase);
 
 export default PasswordChange;
 
-//export { PasswordChangeForm };
+
 

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {firebase} from '@firebase/app';
 
-import {_handleDisable} from '../../Components/HandleDisable';
+import {_handleDisable} from '../../utils/HandleDisable';
 
 import store from '../../redux/store';
 

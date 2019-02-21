@@ -38,8 +38,8 @@ export default class Home extends Component{
 			        	<div className="row">
 			        		<div className="col-xs-12 col-sm-8">
 			        			<div className="box">	
-				        			<p><span className="text-18"><span style={this.nameStyle}>Combat</span>DB</span> is aiming to be the number one resource for martial artists, self defence practitioners and fitness enthusiasts all over the world. 
-				        			Our mission to build a community driven resource with a range a growing features.</p> 
+				        			<p><span className="text-18"><span style={this.nameStyle}>Combat</span>DB</span> is aiming to be the number one resource for martial artists, self defence practitioners and fitness enthusiasts all over the world.</p>
+				        			<p>Our mission to build a community driven resource with a range a growing features.</p> 
 				        			
 			        			</div>
 			        		</div>
@@ -48,7 +48,7 @@ export default class Home extends Component{
 			        			<div className="box">
 	        					
 			        				<div style={this.linkStyle}>
-										<Link to="/BusinessPage">Business Listings</Link><p className="text-10">Clubs, shops and other businesses</p> 
+										<Link to="/Business">Business Listings</Link><p className="text-10">Clubs, shops and other businesses</p> 
 			        				</div>
 			        				<div style={this.linkStyle}>
 										<Link to="/Community">Community</Link><p className="text-10">Make connections, send messages, build your community</p> 
@@ -59,9 +59,9 @@ export default class Home extends Component{
 			        				<div style={this.linkStyle}>
 										<Link to="/Styles">Styles</Link><p className="text-10">Database of styles</p> 	
 			        				</div>
-			        				{/*<div style={this.linkStyle}>
-										<Link to="/Blogs">Blogs</Link><p className="text-10">Share your views, opinions and thoughts</p> 
-			        				</div>*/}
+			        				<div style={this.linkStyle}>
+										<Link to="/ViewBlogs">Blogs</Link><p className="text-10">Share your views, opinions and thoughts</p> 
+			        				</div>
 			        				<div style={this.linkStyle}>
 			        					<Link to="/Contact">Contact</Link><p className="text-10">Get in contact, problems, issues or suggestions</p> 
 			        				</div>

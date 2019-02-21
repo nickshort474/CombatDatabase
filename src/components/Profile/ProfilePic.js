@@ -23,7 +23,7 @@ export default class ProfilePic extends Component{
 			addedPic:false
 		}
 		
-		let userRef = this.firestore.collection("People").doc(this.props.match.params.UserRef);	
+		let userRef = this.firestore.collection("PeopleImages").doc(this.props.match.params.UserRef);	
 		
 		userRef.get().then((snapshot)=>{
 			
@@ -120,8 +120,9 @@ export default class ProfilePic extends Component{
 			//add reference to image to People section in firestore
 			console.log(downloadURL);
 			
-			let profileRef = this.firestore.collection("People").doc(this.props.match.params.UserRef);
-			profileRef.update({profilePicUrl:downloadURL});
+			let profileRef = this.firestore.collection("PeopleImages").doc(this.props.match.params.UserRef);
+
+			profileRef.set({profilePicUrl:downloadURL});
 			this.props.history.push("/Profile");
 		})
 		

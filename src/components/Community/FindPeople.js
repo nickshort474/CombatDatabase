@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {firebase} from '@firebase/app';
 
-import Map from '../../Components/Map';
+import Map from '../../utils/Map';
 import Geosuggest from 'react-geosuggest';
 
 import store from '../../redux/store';

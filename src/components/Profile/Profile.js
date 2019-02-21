@@ -9,8 +9,20 @@ import Geosuggest from 'react-geosuggest';
 
 import defaultLogo from '../../assets/images/default.jpg'
 import PasswordChange from '../PasswordChange/PasswordChangeForm';
+/*import {AuthUserContext, withAuthorization } from '../Session';*/
 
 const google = window.google;
+
+/*const ProfilePage = () => (
+	<AuthUserContext.Consumer>
+		{authUser => (
+			<div>
+				<Profile />
+			</div>
+		)}
+	</AuthUserContext.Consumer>
+)*/
+
 
 export default class Profile extends Component{
 
@@ -21,17 +33,15 @@ export default class Profile extends Component{
 		store.dispatch({type:constants.SAVE_PAGE, page:"Profile"});
 
 		this.state = {
-			firstName:" ",
-			lastName:" ",
-			userName:" ",
-			age:" ",
-			styles:" ",
-			clubs:" ",
-			bio:" ",
-			contact:"No-one",
-			generalLoc:" ",
-			lat:" ",
-			lng:" "
+			firstName:"",
+			lastName:"",
+			userName:"",
+			age:"",
+			styles:"",
+			bio:"",
+			generalLoc:"",
+			lat:"",
+			lng:"",
 			
 		}
 		
@@ -39,7 +49,14 @@ export default class Profile extends Component{
 		this.userUID = storeState.userUID;
 		console.log(this.userUID);
 		this.firestore = firebase.firestore()
-		
+		if(this.userUID){
+			console.log("signed in")
+			this.signedIn = true
+		}else{
+			console.log("redirect");
+			this.signedIn = false
+			this.props.history.push('/Signin')
+		}
 		
 	}
 	
@@ -55,45 +72,51 @@ export default class Profile extends Component{
 	    if (this.userUID) {
 	    	
 	    	// connect to userUIDs db section
-			let ref = this.firestore.collection('userUIDs').doc(this.userUID);
+			let ref = this.firestore.collection('Users').doc(this.userUID);
 
 			//get snapshot
 			ref.get().then((snapshot)=>{
 				
-				//get username
-				let userName = snapshot.data().userName;
+				
+				
 				// check for profileCreated in userUIDs db section
 				if(snapshot.data().profileCreated){
 	    			
-					
-
 	    			//connect to People section
 	    			let userRef = this.firestore.collection("People").doc(this.userUID);	
+
+					
 
  					//gather user data to display
 	    			userRef.get().then((snapshot2) => {
 	    				
+						//get user details or assign to empty string if not details in database
+						let userName = snapshot.data().userName ? snapshot.data().userName: "";
+						let firstName = snapshot2.data().firstName ? snapshot2.data().firstName : "";
+						let lastName = snapshot2.data().lastName ? snapshot2.data().lastName : "";
+						let age = snapshot2.data().age ? snapshot2.data().age : "";
+						let styles = snapshot2.data().styles ? snapshot2.data().styles : "";
+						let bio = snapshot2.data().bio ? snapshot2.data().bio : "";
+						let generalLoc = snapshot2.data().generalLoc ? snapshot2.data().generalLoc : ""
+						let lat = snapshot2.data().lat ? snapshot2.data().lat : "";
+						let lng = snapshot2.data().lng ? snapshot2.data().lng : "";
+
+
 						this.setState({
-							firstName:snapshot2.data().firstName,
-							lastName:snapshot2.data().lastName,
+							firstName:firstName,
+							lastName:lastName,
 							userName:userName,
-							age:snapshot2.data().age,
-							styles:snapshot2.data().styles,
-							clubs:snapshot2.data().clubs,
-							bio:snapshot2.data().bio,
-							contact:snapshot2.data().contact,
-							generalLoc:snapshot2.data().generalLoc,
-							lat:snapshot2.data().lat,
-							lng:snapshot2.data().lng
+							age:age,
+							styles:styles,
+							bio:bio,
+							generalLoc:generalLoc,
+							lat:lat,
+							lng:lng
 						});
 					
 	    			})
 	    		}else{
-
-	    			//no profile info to load - prompt user to add info
-	    			this.setState({
-	    				userName:userName
-	    			})
+	    			//Leave fields blank for first input
 	    		}
 			});
 
@@ -114,44 +137,13 @@ export default class Profile extends Component{
 
 
 	//handle input fields
-
-	_changeFirstName(e){
+	_onChangeInput(e){
+		
 		this.setState({
-			firstName:e.target.value
+			[e.target.name]:e.target.value
 		})
 	}
 
-	_changeLastName(e){
-		this.setState({
-			lastName:e.target.value
-		})
-	}
-
-	
-	_changeStyles(e){
-		this.setState({
-			styles:e.target.value
-		})
-	}
-
-	_changeAge(e){
-		this.setState({
-			age:e.target.value
-		})
-		console.log(e.target.value);
-	}
-
-	_changeBio(e){
-		this.setState({
-			bio:e.target.value
-		})
-	}
-
-	_changeContact(e){
-		this.setState({
-			contact:e.target.value
-		})
-	}
 
 
 
@@ -172,7 +164,7 @@ export default class Profile extends Component{
 				styles:this.state.styles,
 				bio:this.state.bio,
 				age:this.state.age,
-				contact:this.state.contact,
+				userName:this.state.userName,
 				generalLoc:this.state.generalLoc,
 				lat:this.state.lat,
 				lng:this.state.lng
@@ -180,11 +172,12 @@ export default class Profile extends Component{
 
 			profileRef.set(userObj);
 
-			let userUIDRef = this.firestore.collection("userUIDs").doc(this.userUID);
+			let userUIDRef = this.firestore.collection("Users").doc(this.userUID);
 			    			
 			userUIDRef.update({
 				profileCreated:true,
 			})
+			alert("Profile Updated")
 			    
 		}else{
 		    // No user is signed in.
@@ -219,20 +212,18 @@ export default class Profile extends Component{
   	}
 
 	render(){
+
+		if(this.signedIn){
 		return(
 			<div>
 				<div className="container">
 					<div className="content-wrapper">
 						<div className="row">
-							<div className="col-sm-3">
-								<div className="box">
-									<p>Instructions go here</p>
-								</div>
-							</div>
-							<div className="col-sm-9">
+							
+							<div className="col-sm-12">
 								<div className="box">
 									
-									<h3 className="text-center">Profile page:</h3>
+									<h3 className="text-center">Profile:</h3>
 
 
 									<form action="">
@@ -244,7 +235,7 @@ export default class Profile extends Component{
 												<label>{this.state.userName}</label>
 											</div>
 											<div className="col-sm-6">
-												<input type="button" value="Update Username" className="btn btn-primary" onClick={this._handleUsernameChange.bind(this)} /><br />
+												<input type="button" value="Update Username" className="btn btn-primary" onClick={this._handleUsernameChange.bind(this)} /><br /><br />
 												<input type="button" value="Update Profile Pic" className="btn btn-primary" onClick={this._handleProfilePic.bind(this)} />
 											</div>
 										</div>
@@ -263,7 +254,7 @@ export default class Profile extends Component{
 												<label>First Name:</label>
 											</div>
 											<div className="col-sm-6">
-												<input type="text" name="firstName" value={this.state.firstName} onChange={this._changeFirstName.bind(this)} />
+												<input type="text" name="firstName" value={this.state.firstName} onChange={this._onChangeInput.bind(this)} />
 											</div>
 
 										</div>
@@ -273,7 +264,7 @@ export default class Profile extends Component{
 												<label>Last Name:</label>
 											</div>
 											<div className="col-sm-6">
-												<input type="text" name="lastName" value={this.state.lastName} onChange={this._changeLastName.bind(this)} />
+												<input type="text" name="lastName" value={this.state.lastName} onChange={this._onChangeInput.bind(this)} />
 											</div>
 
 										</div>
@@ -290,7 +281,7 @@ export default class Profile extends Component{
 												<label>Age range:</label>
 											</div>
 											<div className="col-sm-6">
-												<select name="ageRange" value={this.state.age} onChange={this._changeAge.bind(this)} >
+												<select name="age" value={this.state.age} onChange={this._onChangeInput.bind(this)} >
 													<option>Under 18</option>
 													<option>18 - 30</option>
 													<option>30+</option>
@@ -306,7 +297,7 @@ export default class Profile extends Component{
 												<label>Main Style Practiced:</label>
 											</div>
 											<div className="col-sm-6">
-												<input type="text" name="styles" value={this.state.styles} onChange={this._changeStyles.bind(this)} />
+												<input type="text" name="styles" value={this.state.styles} onChange={this._onChangeInput.bind(this)} />
 											</div>
 
 										</div>
@@ -317,12 +308,12 @@ export default class Profile extends Component{
 												<label htmlFor="bio">Bio:</label>
 											</div>
 											<div className="col-sm-6">
-												<textarea id="bio" name="bio" value={this.state.bio} onChange={this._changeBio.bind(this)} ></textarea>
+												<textarea id="bio" name="bio" value={this.state.bio} onChange={this._onChangeInput.bind(this)} ></textarea>
 											</div>
 
 										</div>
 										<br />
-										<hr />
+										
 										
 
 
@@ -383,6 +374,15 @@ export default class Profile extends Component{
 					</div>
 				</div>
 			</div>
-		)
+		
+		)}else{
+			return(
+				<p></p>
+			)
+		}
 	}
 }
+
+/*const condition = authUser => !!authUser 
+
+export default withAuthorization(condition)(ProfilePage);*/

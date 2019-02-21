@@ -26,5 +26,7 @@ export default {
 	HAS_SAVED_EVENT_SEARCH:'has saved event search',
 	SAVE_EVENT_SEARCH_TERM:'save event search',
 	SAVE_EVENT_SEARCH_VALUES:'save event search values',
-	SAVE_SEARCHED_EVENTS:'save searched events'
+	SAVE_SEARCHED_EVENTS:'save searched events',
+
+	CLEAR_STORE:'clear store'
 };

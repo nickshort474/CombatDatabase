@@ -18,8 +18,6 @@ const SignInPage = () => (
    
     <SignInForm />
    
-    
-
   </div>
 );
 
@@ -39,6 +37,7 @@ class SignInFormBase extends Component{
     	this.cursorStyle = {
     		cursor: "pointer"
     	}
+    	
   	}
 	
 
@@ -57,7 +56,7 @@ class SignInFormBase extends Component{
 	       	let userUID = authUser.user.uid;
 	       	this.setState({ ...INITIAL_STATE });
 	        store.dispatch({type:constants.SAVE_USER, userUID:userUID});
-	        this.props.history.push("/Home");
+	        this.props.history.push('/Home');
 
 	    }).catch(error => {
 
@@ -80,7 +79,12 @@ class SignInFormBase extends Component{
 		googleButton.setAttribute("src", GoogleButtonPressed);
 
 		this.props.firebase.doSignInWithGoogle().then((authUser) => {
-	        let userUID = authUser.user.uid;
+			
+			let userUID = authUser.user.uid;
+
+			this._handleFirstSignIn(userUID);
+
+	        
 	        store.dispatch({type:constants.SAVE_USER, userUID:userUID});
 	        this.props.history.push("/Home");
 
@@ -92,6 +96,23 @@ class SignInFormBase extends Component{
 		
 		
 	}
+
+	_handleFirstSignIn(userUID){
+		let ref = this.props.firebase.mainRef().collection("Users").doc(userUID);
+
+
+		ref.get().then((snapshot)=>{
+			// if user exists no need to do anything
+			if(snapshot.exists){
+				console.log("user already exists")
+			}else{
+				//else is new user so create a reference in Users collection with empty profile ref;
+				ref.set({profileCreated:false})
+			}
+		})
+
+	}
+
 
 	_hoverGoogleButton(){
 		
@@ -166,6 +187,6 @@ class SignInFormBase extends Component{
 
 const SignInForm = withRouter(withFirebase(SignInFormBase));
 
-export { SignInForm };
+/*export { SignInForm };*/
 
 export default SignInPage;

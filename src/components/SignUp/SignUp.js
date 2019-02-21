@@ -30,6 +30,8 @@ class SignUpFormBase extends Component{
 	constructor(props){
 		super(props);
 		this.state = { ...INITIAL_STATE };
+
+		this.firestore = this.props.firebase.mainRef();
 	}
 	componentWillMount(){
 		window.scrollTo(0, 0);
@@ -78,7 +80,7 @@ class SignUpFormBase extends Component{
 	_checkForExistingUsername(){
 		
 		
-		let ref = this.props.firebase.mainRef().collection('userUIDs');
+		let ref = this.firestore.collection('userUIDs');
 		let query = ref.where("userName", "==",this.state.regUsername);
 		
 		let match = false;
@@ -106,13 +108,18 @@ class SignUpFormBase extends Component{
 	_createUser(){
 		const { regEmail, regPassword1 } = this.state;
 
-		this.props.firebase.doCreateUserWithEmailAndPassword(regEmail,regPassword1).then((authUser)=>{
+		this.firestore.doCreateUserWithEmailAndPassword(regEmail,regPassword1).then((authUser)=>{
 			this.setState({
 				...INITIAL_STATE
 			})
-			store.dispatch({type:constants.SAVE_USER, userName:authUser.uid})
-			console.log(authUser.uid)
-			this.props.history.push('/Home');
+			let userUID = authUser.user.uid;
+			store.dispatch({type:constants.SAVE_USER, userName:userUID})
+			
+
+			this._createUserInFirebase(userUID,this.state.regUsername,regEmail);
+
+
+			
 		}).catch((error)=>{
 			this.setState({
 				error:error
@@ -120,6 +127,19 @@ class SignUpFormBase extends Component{
 		})
 		
 	}
+
+	_createUserInFirebase(userUID, username, email){
+		
+		let ref = this.firestore.collection("UserUIDs").doc(userUID);
+		let obj = {
+			userName:username,
+			userEmail:email
+		}
+		ref.set(obj).then(()=>{
+			this.props.history.push('/Home');
+		})
+	}
+
 
 	_validate(email, username, password1, password2){
 		

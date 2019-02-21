@@ -1,17 +1,16 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import {firebase} from '@firebase/app';
+import {withFirebase} from '../Firebase';
 
 import PersonComp from './PersonComp';
 
 import store from '../../redux/store';
 import constants from '../../redux/constants';
 
-
-export default class ContactsList extends Component {
+class ContactsList extends Component {
 	
-	constructor(){
-		super();
+	constructor(props){
+		super(props);
 		this.state = {
 			items:[],
 			requestList:[]
@@ -23,11 +22,22 @@ export default class ContactsList extends Component {
 	componentWillMount() {
 		window.scrollTo(0, 0);
 		let storeState = store.getState();
+
 		this.userUID = storeState.userUID;
 		this.userName = storeState.userName;
-		this.firestore = firebase.firestore();
-		this._getContactsList();
-		this._getFriendRequests();
+		this.firestore = this.props.firebase.mainRef();
+
+		if(this.userUID){
+			console.log("user signed in");
+			this._getContactsList();
+			this._getFriendRequests();
+		}else{
+			this.setState({
+				signInNeeded:true
+			})
+		}
+		
+		
 		
 
 		
@@ -72,7 +82,7 @@ export default class ContactsList extends Component {
 	_handleRequestYes(e){
 		console.log(e.target.id)
 		// send users info (UID) to ..... People / request.userUID e.target.value / friends
-		let ref = this.firestore.collection("People").doc(e.target.id).collection("friends").doc(this.userUID);
+		/*let ref = this.firestore.collection("People").doc(e.target.id).collection("friends").doc(this.userUID);
 		let obj = {
 			userName:this.userName,
 			userUID:this.userUID
@@ -82,14 +92,14 @@ export default class ContactsList extends Component {
 
 		
 
-		this._deleteRequest(e.target.id);
+		this._deleteRequest(e.target.id);*/
 		
 
 	}
 
 	_handleRequestNo(e){
-		
-		this._deleteRequest(e.target.id);
+		console.log(e.target.id)
+		//this._deleteRequest(e.target.id);
 	}
 
 	_deleteRequest(id){
@@ -109,6 +119,8 @@ export default class ContactsList extends Component {
 
 
 	render(){
+
+
 		let people = this.state.items.map((person)=>{
 
 			return <PersonComp  userName={person.userName} uid={person.userUID}  key={person.userUID} />
@@ -133,7 +145,7 @@ export default class ContactsList extends Component {
 					<div className="box text-center">
 						
 						<div>{people}</div>
-						<Link to={"/NewMessage/Friends/all"}><button className="btn-primary">Message all friends</button></Link>
+						
 					</div>
 				</div>
 			</div>
@@ -141,3 +153,6 @@ export default class ContactsList extends Component {
 		
 	}
 }
+
+
+export default withFirebase(ContactsList);

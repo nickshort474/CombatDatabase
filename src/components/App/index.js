@@ -2,34 +2,25 @@ import React from 'react';
 import {BrowserRouter as Router,Route} from 'react-router-dom';
 
 import Navigation from '../Navigation/Navigation';
-
 import HomePage from '../Home/Home';
 
+//Business listing files
+import Business from '../Business/Business';
+import AddBusiness from '../Business/AddBusiness';
+import FindBusiness from '../Business/FindBusiness';
+import SingleBusinessPage from '../Business/SingleBusinessPage';
+import ReviewPage from '../Business/ReviewPage';
+import EditBusiness from '../Business/EditBusiness';
+import AddBusinessImages from '../Business/AddBusinessImages';
+import EditBusinessLogo from '../Business/EditBusinessLogo';
 
-/*import AccountPage from '.../Account';
-import AdminPage from '.../Admin';*/
+import Community from '../Community/Community';
+import Person from '../Community/Person';
+import FindPeople from '../Community/FindPeople';
+import ContactsList from '../Community/ContactsList';
+import FriendRequest from '../Community/FriendRequest';
 
-//business listing files
-import BusinessPage from '../business/BusinessPage';
-import AddBusiness from '../business/AddBusiness';
-import FindBusiness from '../business/FindBusiness';
-import SingleBusinessPage from '../business/SingleBusinessPage';
-import ReviewPage from '../business/ReviewPage';
-import EditBusiness from '../business/EditBusiness';
-import AddBusinessImages from '../business/AddBusinessImages';
-import EditBusinessLogo from '../business/EditBusinessLogo';
-
-//people files
-/*import Community from '../people/Community';
-import SinglePersonPage from '../people/SinglePersonPage';
-import FindPeople from '../people/FindPeople';
-import ContactsList from '../people/ContactsList';
-import NewMessage from '../people/NewMessage';
-import NewCommunityMessage from '../people/NewCommunityMessage';
-import NewPrivateMessage from '../people/NewPrivateMessage';
-import MessageReply from '../people/MessageReply';
-import FriendRequest from '../people/FriendRequest';*/
-
+import NewMessage from '../Messages/NewMessage';
 
 //events files
 import EventsPage from '../events/EventsPage';
@@ -46,13 +37,6 @@ import EditStyle from '../styles/EditStyle';
 import EditHistory from '../styles/EditHistory';
 import Report from '../styles/Report';
 
-//forum files
-/*import Forum from '../forum/Forum';
-import ForumList from '../forum/ForumList';
-import ForumSingle from '../forum/ForumSingle';
-import AddThreadPage from '../forum/AddThreadPage';
-*/
-
 
 // Blog files 
 import MyBlogList from '../blog/MyBlogList';
@@ -67,10 +51,11 @@ import AddBlogPost from '../blog/AddBlogPost';
 import SearchedBlogs from '../blog/SearchedBlogs';
 
 
-//authorisation, profile, contact,other
-import Contact from '../authOther/Contact';
-import Response from '../authOther/Response';
-import Privacy from '../authOther/Privacy';
+//authorisation, profile, contact, other
+import Contact from '../AuthOther/Contact';
+import Response from '../AuthOther/Response';
+import Privacy from '../AuthOther/Privacy';
+import AboutUs from '../AuthOther/AboutUs';
 
 
 import SignUpPage from '../SignUp/SignUp';
@@ -78,10 +63,11 @@ import SignInPage from '../SignIn/SignIn';
 import PasswordForgetPage from '../PasswordForget/PasswordForget';
 
 
-import Profile from '../authOther/Profile';
-import ProfilePic from '../authOther/ProfilePic';
-import Username from '../authOther/Username';
-import AboutUs from '../authOther/AboutUs';
+import Profile from '../Profile/Profile';
+import ProfilePic from '../Profile/ProfilePic';
+import Username from '../Profile/Username';
+
+
 
 
 import {withAuthentication} from '../Session';
@@ -101,7 +87,7 @@ const App = () =>(
 	     	
 	      	<Route path={"/ForgotPassword"} component={PasswordForgetPage} />
 	      	
-			<Route path='/BusinessPage' component={BusinessPage} />
+			<Route path='/Business' component={Business} />
 			<Route path="/Business/:BusinessKey" component={SingleBusinessPage} />	
 			<Route path="/AddBusiness" component={AddBusiness} />
 			<Route path="/FindBusiness" component={FindBusiness} />
@@ -110,16 +96,19 @@ const App = () =>(
 			<Route path="/AddBusinessImages/:BusinessKey" component={AddBusinessImages} />
 			<Route path="/EditBusinessLogo/:BusinessKey" component={EditBusinessLogo} />
 
-			{/*
+			
 			<Route path="/Community" component={Community} />
-			<Route path="/User/:UserKey" component={SinglePersonPage} />
+			<Route path="/Person/:PersonKey" component={Person} />
 			<Route path="/FindPeople" component={FindPeople} />
 			<Route path="/ContactsList" component={ContactsList} />
+			<Route path="/FriendRequest/:UserKey" component={FriendRequest} />
 			<Route path="/NewMessage" component={NewMessage} />
+
+			{/*
 			<Route path="/NewCommunityMessage" component={NewCommunityMessage} />
 			<Route path="/NewPrivateMessage/:MessageName/:MessageUID" component={NewPrivateMessage} />
 			<Route path="/MessageReply/:MessageUser/:MessageID/:MessageType" component={MessageReply} />
-			<Route path="/FriendRequest/:UserKey" component={FriendRequest} />*/}
+			*/}
 
 			<Route path="/Events" component={EventsPage} />
 			<Route path="/SingleEvent/:EventKey" component={SingleEventPage} />
