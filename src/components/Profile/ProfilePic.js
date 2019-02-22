@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {firebase} from '@firebase/app';
  
-import {_handleDisable} from '../../utils/HandleDisable';
+import {_handleDisable,_handleEnable} from '../../utils/HandleDisable';
 
 import store from '../../redux/store';
 import constants from '../../redux/constants';
@@ -69,7 +69,7 @@ export default class ProfilePic extends Component{
 			let storageRef = firebase.storage().ref();
 
 			// upload img to storage
-			let profileImageFileLocation = `profile_pics/${this.props.match.params.UserRef}.jpg`;
+			let profileImageFileLocation = `profilePics/${this.props.match.params.UserRef}.jpg`;
 			let uploadTask = storageRef.child(profileImageFileLocation).putString(this.state.profilePic,'data_url');
 
 			// Register three observers:
@@ -112,8 +112,8 @@ export default class ProfilePic extends Component{
 	}
 
 
-	_submitForm(){
-
+	_submitForm(e){
+		e.preventDefault();
 		_handleDisable();
 		//add image to storage
 		this._addImageToStorage((downloadURL)=>{
@@ -123,7 +123,9 @@ export default class ProfilePic extends Component{
 			let profileRef = this.firestore.collection("PeopleImages").doc(this.props.match.params.UserRef);
 
 			profileRef.set({profilePicUrl:downloadURL});
+			_handleEnable();
 			this.props.history.push("/Profile");
+			
 		})
 		
 	}

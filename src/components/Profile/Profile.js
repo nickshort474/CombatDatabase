@@ -47,10 +47,13 @@ export default class Profile extends Component{
 		
 		var storeState = store.getState();
 		this.userUID = storeState.userUID;
-		console.log(this.userUID);
+		
 		this.firestore = firebase.firestore()
+
+
+
 		if(this.userUID){
-			console.log("signed in")
+			
 			this.signedIn = true
 		}else{
 			console.log("redirect");
@@ -80,8 +83,9 @@ export default class Profile extends Component{
 				
 				
 				// check for profileCreated in userUIDs db section
-				if(snapshot.data().profileCreated){
-	    			
+				if(snapshot.data().profileCreated === true){
+	    			console.log(snapshot.data().profileCreated)
+	    			this.profileCreated = true;
 	    			//connect to People section
 	    			let userRef = this.firestore.collection("People").doc(this.userUID);	
 
@@ -117,6 +121,8 @@ export default class Profile extends Component{
 	    			})
 	    		}else{
 	    			//Leave fields blank for first input
+	    			console.log(snapshot.data().profileCreated)
+	    			this.profileCreated = false;
 	    		}
 			});
 
@@ -156,7 +162,9 @@ export default class Profile extends Component{
 		    	
 		    //create profile
 			let profileRef = this.firestore.collection('People').doc(this.userUID);
-		    				    					    			
+		    
+
+
 			let userObj = {
 
 				firstName:this.state.firstName,
@@ -167,10 +175,25 @@ export default class Profile extends Component{
 				userName:this.state.userName,
 				generalLoc:this.state.generalLoc,
 				lat:this.state.lat,
-				lng:this.state.lng
+				lng:this.state.lng,
+				uid:this.userUID
+				
 			}
+			if(this.profileCreated === true){
+				console.log(this.profileCreated);
+				console.log("updating profile");
+				profileRef.update(userObj)
 
-			profileRef.set(userObj);
+			}else{
+				console.log(this.profileCreated)
+				console.log("creating profile");
+				let now = Date.now();
+				userObj["profileCreated"] = now;
+				console.log(userObj);
+				profileRef.set(userObj);
+				this.profileCreated = true;
+			}
+			
 
 			let userUIDRef = this.firestore.collection("Users").doc(this.userUID);
 			    			
@@ -386,3 +409,6 @@ export default class Profile extends Component{
 /*const condition = authUser => !!authUser 
 
 export default withAuthorization(condition)(ProfilePage);*/
+
+
+//1550762928909

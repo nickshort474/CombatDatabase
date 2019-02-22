@@ -11,7 +11,8 @@
 */
 
 
-import React, {Component} from 'react';
+import React,  {Component} from 'react';
+
 
 const google = window.google;
 
@@ -101,11 +102,8 @@ export default class Map extends Component {
           
           
           this.map = this._createMap();
-          
           this.marker = this._createMarker();
-          
-          //this.circle = this._createCircle();
-          
+                   
           google.maps.event.addListener(this.map, 'zoom_changed', ()=> this.handleZoomChange())
       })
 
@@ -131,6 +129,8 @@ export default class Map extends Component {
       )
   }
 
+  
+
   _createMarker() {
 
       // if coming from findbusiness do as is 
@@ -138,7 +138,7 @@ export default class Map extends Component {
           
           for(let obj of this.items){
              
-              let businessLink = "<a className='compTextStyle' href='#/Business/" + obj.key +"/FindBusiness'>Visit business page</a>"
+              let businessLink = "<a className='compTextStyle' href='/Business/" + obj.key +"/FindBusiness'>Visit business page</a>"
               let contentString = "<div class='InfoWindow'><h2>" + obj.businessName + "</h2><br /><p>" + businessLink + "</p></div>"
               
               let infowindow = new google.maps.InfoWindow({
@@ -195,7 +195,7 @@ export default class Map extends Component {
 
           for(obj of this.items){
              
-              let eventLink = "<a class='compTextStyle' href='#/SingleEvent/" + obj.eventID +"'>Visit event page</a>"
+              let eventLink = "<a class='compTextStyle' href='/SingleEvent/" + obj.eventID +"'>Visit event page</a>"
               let contentString = "<div class='InfoWindow'><h2>" + obj.eventName + "</h2><br /><p>" + obj.eventType + "</p></p>" + eventLink + "</p></div>"
               
               //let contentString = "Hello";
@@ -253,13 +253,14 @@ export default class Map extends Component {
 
           for(obj of this.items){
              
-              let peopleLink = "<a class='compTextStyle' href='#/User/" + obj.uid +"'>Visit users profile</a>"
+             let peopleLink = "<a class='compTextStyle' href='/Person/" + obj.uid +"'>Visit users profile</a>"
+               /* let people2Link = "<Link className='compTextStyle' to='/Person" + obj.uid + "'>Visit users profile</Link>"*/
               let contentString = "<div class='InfoWindow'><h2>" + obj.firstName + "</h2><br><p>" + obj.lastName + "</p><p>" + peopleLink + "</p></div>"
               
               //let contentString = "Hello";
 
               let infowindow = new google.maps.InfoWindow({
-                  content:  contentString
+                  content: contentString
               })
 
               

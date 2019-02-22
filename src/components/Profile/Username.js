@@ -68,9 +68,11 @@ export default class Username extends Component{
 						ref.set({userName:this.state.userName})
 						this.firestore.collection('Users').doc(this.userUID).update({userName:this.state.userName, profileCreated:true});
 					}
+					this.props.history.push("/Profile");
 				})
+
 						
-				this.props.history.push("/Profile");
+				
 			}
 		})
 	}

@@ -45,7 +45,7 @@ class ContactsList extends Component {
 
 	_getContactsList(){
 		
-		let ref = this.firestore.collection("People").doc(this.userUID).collection("friends");
+		let ref = this.firestore.collection("People").doc(this.userUID).collection("ContactList");
 		let items = [];
 				
 		ref.get().then((snapshot)=>{
@@ -68,7 +68,7 @@ class ContactsList extends Component {
 	_getFriendRequests(){
 		let requestList = []
 
-		let ref = this.firestore.collection("People").doc(this.userUID).collection("friendRequests");
+		let ref = this.firestore.collection("People").doc(this.userUID).collection("ContactRequests");
 		ref.get().then((snapshot)=>{
 			snapshot.forEach((snap)=>{
 				requestList.push(snap.data())

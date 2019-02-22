@@ -130,10 +130,11 @@ class SignUpFormBase extends Component{
 
 	_createUserInFirebase(userUID, username, email){
 		
-		let ref = this.firestore.collection("UserUIDs").doc(userUID);
+		let ref = this.firestore.collection("Users").doc(userUID);
 		let obj = {
 			userName:username,
-			userEmail:email
+			userEmail:email,
+			profileCreated:false
 		}
 		ref.set(obj).then(()=>{
 			this.props.history.push('/Home');

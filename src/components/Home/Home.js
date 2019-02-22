@@ -4,7 +4,7 @@ import store from '../../redux/store';
 import constants from '../../redux/constants';
 
 //import SideBarAdvert from '../Components/SideBarAdvert';
-
+import imgSrc from '../../assets/images/background/background-3.jpg';
 
 export default class Home extends Component{
 	
@@ -23,7 +23,7 @@ export default class Home extends Component{
 
 	componentWillMount(){
 		window.scrollTo(0, 0);
-		
+		console.log(imgSrc);
 	}
 
 
@@ -41,6 +41,10 @@ export default class Home extends Component{
 				        			<p><span className="text-18"><span style={this.nameStyle}>Combat</span>DB</span> is aiming to be the number one resource for martial artists, self defence practitioners and fitness enthusiasts all over the world.</p>
 				        			<p>Our mission to build a community driven resource with a range a growing features.</p> 
 				        			
+			        			</div>
+			        			<div className="box">	
+				        			<img src={imgSrc} style={{"width":"100%"}} alt="This weeks!" />
+				        			<Link to="/HomeImageUpload"><p className="text-10">Upload your image for a chance to see it on the combatdb hmoepage</p></Link>
 			        			</div>
 			        		</div>
 

@@ -18,7 +18,9 @@ import Community from '../Community/Community';
 import Person from '../Community/Person';
 import FindPeople from '../Community/FindPeople';
 import ContactsList from '../Community/ContactsList';
-import FriendRequest from '../Community/FriendRequest';
+import ContactRequest from '../Community/ContactRequest';
+import SearchForPeople from '../Community/SearchForPeople';
+
 
 import NewMessage from '../Messages/NewMessage';
 
@@ -88,7 +90,7 @@ const App = () =>(
 	      	<Route path={"/ForgotPassword"} component={PasswordForgetPage} />
 	      	
 			<Route path='/Business' component={Business} />
-			<Route path="/Business/:BusinessKey" component={SingleBusinessPage} />	
+			<Route path="/SingleBusiness/:BusinessKey" component={SingleBusinessPage} />	
 			<Route path="/AddBusiness" component={AddBusiness} />
 			<Route path="/FindBusiness" component={FindBusiness} />
 			<Route path="/Review/:BusinessKey" component={ReviewPage} />
@@ -101,9 +103,9 @@ const App = () =>(
 			<Route path="/Person/:PersonKey" component={Person} />
 			<Route path="/FindPeople" component={FindPeople} />
 			<Route path="/ContactsList" component={ContactsList} />
-			<Route path="/FriendRequest/:UserKey" component={FriendRequest} />
-			<Route path="/NewMessage" component={NewMessage} />
-
+			<Route path="/ContactRequest/:PersonKey" component={ContactRequest} />
+			<Route path="/NewMessage/:Username/:UserUID" component={NewMessage} />
+			<Route path="/SearchForPeople" component={SearchForPeople} />
 			{/*
 			<Route path="/NewCommunityMessage" component={NewCommunityMessage} />
 			<Route path="/NewPrivateMessage/:MessageName/:MessageUID" component={NewPrivateMessage} />

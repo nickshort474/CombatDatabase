@@ -11,7 +11,7 @@ export default class BusinessComp extends Component{
 
 		return(
 			<div className="well">
-				<Link to={"/Business/" + this.props.businessKey} >
+				<Link to={"/SingleBusiness/" + this.props.businessKey} >
 					<div className="row">
 						
 						<div className="col-sm-8 compTextStyle">

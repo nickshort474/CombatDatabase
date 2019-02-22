@@ -41,6 +41,8 @@ class Firebase {
     doSignInWithGoogle = () =>   this.auth.signInWithPopup(this.googleProvider);
 
     mainRef = () => this.firestore;
+
+   
 }
 
 
