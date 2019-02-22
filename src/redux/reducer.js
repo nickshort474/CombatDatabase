@@ -9,21 +9,25 @@ const initialState = {
 const reducer = (state = initialState, action) => {
 	
 	switch (action.type){
+
 		case constants.CREATE_USER:
 			return initialState;
 		case constants.SAVE_USER:
 			return Object.assign({},state,{userUID:action.userUID})
 		case constants.SAVE_USERNAME:
-			return Object.assign({},state,{userName:action.userName})	
+			return Object.assign({},state,{userName:action.userName})
 		case constants.REMOVE_USER:
 			return Object.assign({},state,{userUID:""})
+
 		case constants.SAVE_PAGE:
 			return Object.assign({},state,{page:action.page})
 		case constants.SAVE_PREV_PAGE:
 			return Object.assign({},state,{prevPage:action.prevPage})
+		
 		case constants.RESTORE:
 			state = action.obj;
 			return state
+
 		case constants.SAVE_STYLE:
 			return Object.assign({},state,{style:action.style})
 		case constants.SAVE_BLOGS:
@@ -64,9 +68,11 @@ const reducer = (state = initialState, action) => {
 			return Object.assign({},state,{eventSearchValues:action.eventSearchValues})
 		case constants.SAVE_SEARCHED_EVENTS:
 			return Object.assign({},state,{eventSearchObj:action.eventSearchObj})
+
 		case constants.CLEAR_STORE:
 			state = initialState;	
 			return state
+
 		default:
 		return state;
 	}

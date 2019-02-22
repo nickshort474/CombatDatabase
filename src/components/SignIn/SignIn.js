@@ -13,6 +13,8 @@ import { withFirebase } from '../Firebase';
 import store from '../../redux/store';
 import constants from '../../redux/constants';
 
+import LocalStorage from '../../utils/LocalStorage';
+
 const SignInPage = () => (
   <div>
    
@@ -37,7 +39,8 @@ class SignInFormBase extends Component{
     	this.cursorStyle = {
     		cursor: "pointer"
     	}
-    	
+    	let storeState = store.getState();
+    	this.prevPage = storeState.page;
   	}
 	
 
@@ -55,8 +58,10 @@ class SignInFormBase extends Component{
 	    this.props.firebase.doSignInWithEmailAndPassword(email, password).then((authUser) => {
 	       	let userUID = authUser.user.uid;
 	       	this.setState({ ...INITIAL_STATE });
-	        store.dispatch({type:constants.SAVE_USER, userUID:userUID});
-	        this.props.history.push('/Home');
+	       	LocalStorage.saveState(userUID);
+	        //store.dispatch({type:constants.SAVE_USER, userUID:userUID});
+
+	        this.props.history.push(this.prevPage);
 
 	    }).catch(error => {
 
@@ -84,9 +89,9 @@ class SignInFormBase extends Component{
 
 			this._handleFirstSignIn(userUID);
 
-	        
-	        store.dispatch({type:constants.SAVE_USER, userUID:userUID});
-	        this.props.history.push("/Home");
+	        LocalStorage.saveState(userUID);
+	        //store.dispatch({type:constants.SAVE_USER, userUID:userUID});
+	        this.props.history.push(this.prevPage);
 
 	    }).catch(error => {
 
@@ -142,7 +147,7 @@ class SignInFormBase extends Component{
 			              
 			               
 			                	<div className="box registration-form">
-			                    	<h2 className="text-center">Login</h2>
+			                    	<h2 className="text-center">Sign in</h2>
 			                        <form onSubmit={this._onSubmit.bind(this)}>
 			                        	<div className="form-group">
 			                                <label htmlFor="login_email">Email</label>
@@ -153,7 +158,7 @@ class SignInFormBase extends Component{
 			                                <input type="password" className="form-control" id="password"  onChange={this._onChange.bind(this)} value={this.state.password} placeholder="Password" />
 			                            </div>
 			                            <div className="text-center">
-			                           		<button type="submit" className="btn btn-primary login-btn">Login</button>
+			                           		<button type="submit" className="btn btn-primary login-btn">Sign In</button>
 			                           	 	<SignUpLink />
 			                            </div>
 			                            {/*<div className="checkbox remember"><label><input type="checkbox" /> Remember me on this computer</label></div>*/}

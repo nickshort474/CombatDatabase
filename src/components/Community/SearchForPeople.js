@@ -5,6 +5,8 @@ import {firebase} from '@firebase/app';
 import Map from '../../utils/Map';
 import Geosuggest from 'react-geosuggest';
 
+import MapComponent from '../Maps/MapComponent';
+
 import store from '../../redux/store';
 import constants from '../../redux/constants';
 
@@ -189,6 +191,7 @@ export default class SearchForPeople extends Component{
 				                        <button type="submit" className="btn btn-primary">Submit</button>
 
 				                    </form>
+				                    <MapComponent />
 				                </div>
 				            </div>
 		                </div>
