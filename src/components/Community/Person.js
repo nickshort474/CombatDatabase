@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import {withFirebase} from '../Firebase';
+import {firebase} from '@firebase/app';
 
 import store from '../../redux/store';
 import constants from '../../redux/constants';
+
+import LocalStorage from '../../utils/LocalStorage';
 
 import MessageComp from '../Messages/MessageComp';
 
@@ -14,35 +16,41 @@ class Person extends Component{
 		
 		
 		this.state = {
-			firstName:" ",
-			lastName:" ",
-			userNameLink:" ",
-			bio:" ",
-			clubs:" ",
-			styles:" ",
-			age:" ",
-			items:[],
-			friends:[],
-			requestSent:false,
 			messages:[]
+			
 		}
 				
 	}
 
 	componentWillMount(){
-		window.scrollTo(0, 0);
+		window.scrollTo(0, 100);
 		this.userUID = store.getState().userUID;
-		store.dispatch({type:constants.SAVE_PAGE, page:`Person/${this.props.match.params.PersonKey}`})
+		store.dispatch({type:constants.SAVE_PAGE, page:`/Person/${this.props.match.params.PersonKey}/${this.props.match.params.PersonUsername}`})
 		
-		this.firestore = this.props.firebase.mainRef();
+		this.firestore = firebase.firestore();
 		this._getUserInfo();
-		this._gatherMessages();
+		//this._gatherMessages();
+		
+		this.savedMsgState = LocalStorage.loadState();
+		console.log(this.savedMsgState);
+		
 
+		if(this.savedMsgState){
+			this.setState({
+				messages:this.savedMsgState
+			})
+		}else{
+			this._gatherMessages();
+		}
+
+		this._gatherMessageUpdates()
 	}
+	
 	
 	
 	_getUserInfo(){
 
+		//check whether perosn you asre vieing is already friend
 		let isFriend;
 		let ref2 = this.firestore.collection("People").doc(this.userUID).collection("ContactList").doc(this.props.match.params.PersonKey);
 		
@@ -61,6 +69,7 @@ class Person extends Component{
 			
 		})
 		
+		//check whether a firend request has been made
 		let ref3 = this.firestore.collection("People").doc(this.props.match.params.PersonKey).collection("ContactRequests");
 		let query = ref3.where("requestUserUID", "==", this.userUID);
 		query.get().then((snapshot)=>{
@@ -75,27 +84,6 @@ class Person extends Component{
 			})
 		})
 
-
-		let ref = this.firestore.collection("People").doc(this.props.match.params.PersonKey);
-		
-		ref.get().then((snapshot)=>{
-			
-			
-			this.setState({
-				firstName:snapshot.data().firstName,
-				lastName:snapshot.data().lastName,
-				userName:snapshot.data().userName,
-				userNameLink:`/NewMessage/${snapshot.data().userName}/${snapshot.data().uid}`,
-				bio:snapshot.data().bio,
-				clubs:snapshot.data().clubs,
-				styles:snapshot.data().styles,
-				age:snapshot.data().age,
-				location:snapshot.data().address,
-				profilePic:snapshot.data().profilePicUrl,
-				
-				
-			})
-		})
 
 	}
 
@@ -126,7 +114,11 @@ class Person extends Component{
 					if(counter === 0){
 						this.setState({
 							messages:messageArray
+						},()=>{
+							LocalStorage.saveState(messageArray);
+							window.scrollTo(0, 500);
 						})
+
 					}
 				})
 			})
@@ -134,6 +126,31 @@ class Person extends Component{
 		})
 	}
 
+	_gatherMessageUpdates(){
+		// check this.firestore.collection("Users").doc(this.userUID).collection("Messages"); for message number
+	}
+
+	/*_gatherMessageUpdates(){
+		let changeLocation;
+		let changeUser;
+
+		let ref = this.firestore.collection("Users").doc(this.userUID).collection("Messages");
+		let query = ref.orderBy("messageDate","asc");
+		query.onSnapshot((snapshot)=>{
+			snapshot.docChanges().forEach((change)=>{
+				if(change.type === "added"){
+					changeLocation = change.doc.data().messageLocation;
+					changeUser = change.doc.data().messageUser;
+				}
+			})
+		}).then(()=>{
+			let ref2 = this.firestore.collection("Messages").doc(changeUser).collection("Messages").doc(changeLocation);
+			ref2.get().then((snapshot)=>{
+
+			})
+				
+		})
+	}*/
 
 	_handleContactRequest(){
 		this.props.history.push(`/ContactRequest/${this.props.match.params.PersonKey}`)
@@ -142,17 +159,10 @@ class Person extends Component{
 
 	render(){
 
-		let imgStyles = {
-			width:"150px",
-			height:"150px"
-		};
-		
-	
-
 		let buttonToShow;
 
 		if(this.state.isFriend){
-			buttonToShow = <Link to={this.state.userNameLink}><button className="btn-primary">PM {this.state.userName}</button></Link>
+			buttonToShow = <Link to={`/NewMessage/${this.props.match.params.PersonUsername}/${this.props.match.params.PersonKey}`}><button className="btn-primary">PM {this.props.match.params.PersonUsername}</button></Link>
 		}else if(this.state.isFriend === false && this.state.requestSent === false ){
 			buttonToShow = <button className="btn-primary" onClick={this._handleContactRequest.bind(this)} style={this.buttonStyle} >Contact Request </button>
 		}else if(this.state.requestSent === true){
@@ -178,84 +188,23 @@ class Person extends Component{
 			<div className="container">
 
 				<div className="content-wrapper">
-					<div className="row box">
-						
-						<div className="">
-							<div className="col-sm-8">
-								<Link to="/Community">&lt; Back to people listing</Link>
-							</div>
-							<div className="col-sm-4">
-								<div>{buttonToShow}</div>
-							</div>
-					    </div>
-					    
+				
 
-					</div>
-
-
-					<div className="row box">
-						<div className="col-sm-12">
-							
-
-								<div className="row">
-									<div className="col-sm-8">
-										<h2>{this.state.userName}</h2>
-										<p>Also known as: {this.state.firstName + " " + this.state.lastName}</p>
-										
-									</div>
-									<div className="col-sm-4">
-										<img src={this.state.profilePic} style={imgStyles} alt="placeholder" />
-									</div>
-								</div>
-								<hr />
-								<div className="row">
-									<p className="col-sm-2">Bio</p>
-									<div className="col-sm-10">
-										<p>{this.state.bio}</p>
-									</div>
-								</div>
-								<hr />
-								<div className="row">
-									<p className="col-sm-2">Styles</p>
-									<div className="col-sm-10">
-										<p>{this.state.styles}</p>
-									</div>
-								</div>
-								<hr />
-								<div className="row">
-									<p className="col-sm-2">Clubs</p>
-									<div className="col-sm-10">
-										<p>{this.state.clubs}</p>
-									</div>
-								</div>
-								<hr />
-								<div className="row">
-									<p className="col-sm-2">Location</p>
-									<div className="col-sm-10">
-										<p>{this.state.location}</p>
-									</div>
-								</div>
-								<hr />
-								{/*<div className="row">
-									<p className="col-sm-2">Friends</p>
-									<div className="col-sm-10">
-										{friendsList}
-									</div>
-								</div>
-								<hr />*/}
-								<div className="row">
-									<p className="col-sm-2">Contactable by</p>
-									<div className="col-sm-8">
-										<p>{this.state.contact}</p>
-									</div>
-									
-								</div>
-							</div>
-							
-					</div>
 					<div className="row box">
 						{messages}
 					</div>
+					<div className="row box">
+						<div className="col-sm-4">
+							{buttonToShow}
+						</div><br />
+						<div className="col-sm-4">
+							<Link to={`/PersonProfile/${this.props.match.params.PersonKey}`}><button className="btn-primary">Show profile</button></Link>
+						</div>
+						<div className="col-sm-4">
+							<Link to="/Community">&lt; Back to contact list</Link>
+						</div>
+					</div>
+					
 				</div>
 			</div>
 		)
@@ -263,4 +212,4 @@ class Person extends Component{
 }
 	
 
-	export default withFirebase(Person);
+	export default Person;

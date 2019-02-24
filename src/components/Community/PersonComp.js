@@ -12,7 +12,7 @@ export default class PersonComp extends Component{
 				<section className="well">
 					<div className="row">
 						
-						<Link to={`/Person/${this.props.uid}`}>
+						<Link to={`/Person/${this.props.uid}/${this.props.userName}`}>
 							
 							<div className="col-sm-4 text-left compTextStyle">
 								<div className="row">

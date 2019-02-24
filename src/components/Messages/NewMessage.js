@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {withRouter,Link} from 'react-router-dom';
-import {withFirebase} from '../Firebase';
+import {firebase} from '@firebase/app';
 
 
 import {_handleDisable,_handleEnable} from '../../utils/HandleDisable';
@@ -15,14 +15,13 @@ class NewMessage extends Component{
 	constructor(props){
 		super(props);
 		
-		// save cuurent page to redux
-		store.dispatch({type:constants.SAVE_PAGE, page:"NewMessage/Community/null"});
+		
 
 		// get current user from store
 		let storeState = store.getState();
 		this.user = storeState.userUID;
-				
-		this.firestore = this.props.firebase.mainRef();
+		this.prevPage = storeState.page;		
+		this.firestore = firebase.firestore();
 
 		// setup initial state
 		this.state = {
@@ -35,6 +34,10 @@ class NewMessage extends Component{
 	
 	componentWillMount() {
 		window.scrollTo(0, 0);
+		// save cuurent page to redux
+		this.url = `NewMessage/${this.props.match.params.UserUID}/${this.user}`;
+
+		store.dispatch({type:constants.SAVE_PAGE, page:this.url});
 	}
 
 
@@ -101,7 +104,7 @@ class NewMessage extends Component{
 
 					messageToRef.add(repeatObj).then(()=>{
 						_handleEnable();
-						this.props.history.push('/Community')
+						this.props.history.push(`/Person/${this.props.match.params.UserUID}`);
 					}) 
 				})
 			})
@@ -124,7 +127,7 @@ class NewMessage extends Component{
 		    <div className="container">
 			 	<section className="content-wrapper">
 					<div className="box">
-					   		<Link to="/Community">&lt; Go back</Link>
+					   		<Link to={this.prevPage}>&lt; Go back</Link>
 					</div>
 					<div className="box">
 						<div className="row">
@@ -165,4 +168,4 @@ class NewMessage extends Component{
 	}
 }
 
-export default withFirebase(withRouter(NewMessage));
+export default withRouter(NewMessage);

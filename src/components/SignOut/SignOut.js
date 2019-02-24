@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 
-/*import store from '../../redux/store';
-import constants from '../../redux/constants';*/
-import LocalStorage from '../../utils/LocalStorage';
+import store from '../../redux/store';
+import constants from '../../redux/constants';
+
 
 class SignOutButton extends Component{
 	
@@ -13,8 +13,8 @@ class SignOutButton extends Component{
 		this.props.firebase.doSignOut().then(()=>{
 
 			//signed out so clear all data from store ready for another user or another fresh session
-			//store.dispatch({type:constants.CLEAR_STORE})
-			LocalStorage.saveState(null);
+			store.dispatch({type:constants.CLEAR_STORE});
+		
 
 			//redirect
 			this.props.history.push('/Home');

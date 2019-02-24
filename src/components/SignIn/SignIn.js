@@ -13,7 +13,6 @@ import { withFirebase } from '../Firebase';
 import store from '../../redux/store';
 import constants from '../../redux/constants';
 
-import LocalStorage from '../../utils/LocalStorage';
 
 const SignInPage = () => (
   <div>
@@ -58,9 +57,10 @@ class SignInFormBase extends Component{
 	    this.props.firebase.doSignInWithEmailAndPassword(email, password).then((authUser) => {
 	       	let userUID = authUser.user.uid;
 	       	this.setState({ ...INITIAL_STATE });
-	       	LocalStorage.saveState(userUID);
-	        //store.dispatch({type:constants.SAVE_USER, userUID:userUID});
-
+	       
+	        
+	        
+	       	store.dispatch({type:constants.SAVE_USER,userUID:userUID})
 	        this.props.history.push(this.prevPage);
 
 	    }).catch(error => {
@@ -89,8 +89,8 @@ class SignInFormBase extends Component{
 
 			this._handleFirstSignIn(userUID);
 
-	        LocalStorage.saveState(userUID);
-	        //store.dispatch({type:constants.SAVE_USER, userUID:userUID});
+		
+	        store.dispatch({type:constants.SAVE_USER,userUID:userUID})
 	        this.props.history.push(this.prevPage);
 
 	    }).catch(error => {

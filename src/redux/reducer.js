@@ -69,6 +69,8 @@ const reducer = (state = initialState, action) => {
 		case constants.SAVE_SEARCHED_EVENTS:
 			return Object.assign({},state,{eventSearchObj:action.eventSearchObj})
 
+			
+
 		case constants.CLEAR_STORE:
 			state = initialState;	
 			return state

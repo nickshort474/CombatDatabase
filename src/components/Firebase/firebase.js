@@ -18,9 +18,7 @@ class Firebase {
         app.initializeApp(config);
 
         this.auth = app.auth();
-
-        this.firestore = app.firestore();
-
+      
         this.googleProvider = new app.auth.GoogleAuthProvider(); 
     }
 
@@ -40,7 +38,7 @@ class Firebase {
     
     doSignInWithGoogle = () =>   this.auth.signInWithPopup(this.googleProvider);
 
-    mainRef = () => this.firestore;
+    
 
    
 }

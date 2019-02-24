@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router-dom';
-//import { firebase } from '@firebase/app';
+import { firebase } from '@firebase/app';
 
-import { withFirebase } from '../Firebase';
+
 
 import BusinessComp from './BusinessComp';
 
@@ -27,6 +27,8 @@ class Business extends Component{
 		}
 
 		this.showLimit = 2;
+
+		this.firestore = firebase.firestore()
 	}
 
 	
@@ -37,8 +39,9 @@ class Business extends Component{
 		this.counter = 0;		
 		this.items = [];
 	    
-	    let ref = this.props.firebase.mainRef().collection("Business").orderBy("creationDate","desc").limit(this.showLimit);
+	    let ref = this.firestore.collection("Business").orderBy("creationDate","desc").limit(this.showLimit);
 
+	    
 	    ref.get().then((snapshot)=>{
 	    	this.lastVisible = snapshot.docs[snapshot.docs.length - 1];
 
@@ -72,7 +75,7 @@ class Business extends Component{
 	_handleMoreButton(){
 		this.counter = 0;
 
-		let ref = this.props.firebase.mainRef().collection("Business").orderBy("creationDate", "desc").startAfter(this.lastVisible).limit(this.showLimit);
+		let ref = this.firestore.collection("Business").orderBy("creationDate", "desc").startAfter(this.lastVisible).limit(this.showLimit);
 		
 		ref.get().then((snapshot)=>{
 			this.lastVisible = snapshot.docs[snapshot.docs.length - 1];
@@ -153,4 +156,4 @@ class Business extends Component{
 		)
 	}
 }
-export default withRouter(withFirebase(Business));
+export default withRouter(Business);

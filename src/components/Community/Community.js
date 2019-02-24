@@ -5,10 +5,19 @@ import store from '../../redux/store';
 import constants from '../../redux/constants';
 import PersonComp from './PersonComp';
 
-import { withFirebase } from '../Firebase';
-import LocalStorage from '../../utils/LocalStorage';
+import firebase from '@firebase/app';
+import {AuthUserContext} from '../Session';
 
+const CommunitySignedIn = () => (
+	
+	<AuthUserContext.Consumer>
+		{authUser =>
+			(authUser) ? <Community propName={authUser} /> : <p>Please sign in to see your community</p>
+		}
+	</AuthUserContext.Consumer>
 
+)
+	
 
 class Community extends Component{
 
@@ -16,14 +25,14 @@ class Community extends Component{
 		super(props);
 		
 		
-
+		
 		store.dispatch({type:constants.SAVE_PAGE, page:"/Community"});
 		
+		this.firestore = firebase.firestore();
 		
-		this.firestore = this.props.firebase.mainRef();
+
+		this.userUID = this.props.propName.uid;
 		
-		this.userUID = LocalStorage.loadState();
-		console.log(this.userUID);
 
 		this.state = {
 			items:[],
@@ -35,11 +44,8 @@ class Community extends Component{
 			this._getContactRequests();
 		}
 		
-
-
-		
-		
 	}
+
 
 	_getPeople(){
 		
@@ -203,4 +209,5 @@ class Community extends Component{
 }
 
 
-export default withFirebase(Community);
+//export default Community;
+export default CommunitySignedIn

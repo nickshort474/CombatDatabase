@@ -9,37 +9,33 @@ import { AuthUserContext } from '../Session';
 
 
 const Navigation = () => (
-  <div>
-    <AuthUserContext.Consumer>
-      {authUser =>
-        authUser ? <NavigationAuth /> : <NavigationNonAuth />
-      }
+ 	<div>
+    	<AuthUserContext.Consumer>
+      		{authUser =>
+       			 authUser ? <NavigationAuth /> : <NavigationNonAuth />
+      		}
 
-    </AuthUserContext.Consumer>
-  </div>
+    	</AuthUserContext.Consumer>
+  	</div>
 );
 
 
 
 const NavigationAuth = () => (
-  <div>
+    <div>
       
+        <Link to="/Profile" className="btn btn-primary"  data-target=".navbar-collapse">Profile</Link>
    
-      {/*<Link to={ROUTES.HOME} className="btn btn-inverse signinBtn"  data-toggle="collapse" data-target=".navbar-collapse">Home</Link>*/}
-   
-      <Link to="/Profile" className="btn btn-primary"  data-target=".navbar-collapse">Profile</Link>
-   
-      <SignOutButton />
-   </div>
+      	<SignOutButton />
+    </div>
 );
 
 const NavigationNonAuth = () => (
- <div>
-    {/*<Link to={ROUTES.HOME} className="btn btn-inverse signinBtn"   data-target=".navbar-collapse">Home</Link>*/}
-    
-    <Link to="/Signin" className="btn btn-primary"  data-target=".navbar-collapse">Sign In</Link>
- 
-  </div>
+	<div>
+       
+    	<Link to="/Signin" className="btn btn-primary"  data-target=".navbar-collapse">Sign In</Link>
+ 	
+  	</div>
 );
 
 

@@ -17,6 +17,7 @@ import EditBusinessLogo from '../Business/EditBusinessLogo';
 
 import Community from '../Community/Community';
 import Person from '../Community/Person';
+import PersonProfile from '../Community/PersonProfile';
 import FindPeople from '../Community/FindPeople';
 import ContactsList from '../Community/ContactsList';
 import ContactRequest from '../Community/ContactRequest';
@@ -103,7 +104,8 @@ class App extends Component{
 
 						
 						<Route path="/Community" component={Community} />
-						<Route path="/Person/:PersonKey" component={Person} />
+						<Route path="/Person/:PersonKey/:PersonUsername" component={Person} />
+						<Route path="/PersonProfile/:PersonKey" component={PersonProfile} />
 						<Route path="/FindPeople" component={FindPeople} />
 						<Route path="/ContactsList" component={ContactsList} />
 						<Route path="/ContactRequest/:PersonKey" component={ContactRequest} />
