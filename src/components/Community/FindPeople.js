@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import {withFirebase} from '../Firebase';
+import {firebase} from '@firebase/app';
 
-
+import LocalStorage from '../../utils/LocalStorage';
 import PersonComp from './PersonComp';
 
 import store from '../../redux/store';
@@ -21,8 +21,8 @@ class FindPeople extends Component{
 			items:[],
 			
 		}
-		this.firestore = this.props.firebase.mainRef();
-		this.userUID = store.getState().userUID;
+		this.firestore = firebase.firestore();
+		this.userUID = LocalStorage.loadState("user");
 		this._getLatestPeople();
 	}
 
@@ -144,4 +144,4 @@ class FindPeople extends Component{
 	}
 }
 
-export default withFirebase(FindPeople);
+export default FindPeople;

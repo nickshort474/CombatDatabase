@@ -4,6 +4,9 @@ import {firebase} from '@firebase/app';
 /*import SideBarAdvert from '../../Components/SideBarAdvert';*/
 import BlogPostComp from './BlogPostComp';
 import store from '../../redux/store';
+import LocalStorage from '../../utils/LocalStorage';
+		
+
 
 export default class BlogPostList extends Component{
 	
@@ -20,9 +23,9 @@ export default class BlogPostList extends Component{
 		let storeState = store.getState();
 
 		this.firestore = firebase.firestore();
-		this.userUID = storeState.userUID;
-		this.prevPage = "/" + storeState.page;
 		
+		this.prevPage = "/" + storeState.page;
+		this.userUID = LocalStorage.loadState("user");
 	}
 	
 	componentWillMount() {

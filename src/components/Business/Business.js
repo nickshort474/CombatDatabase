@@ -8,6 +8,7 @@ import BusinessComp from './BusinessComp';
 
 import store from '../../redux/store';
 import constants from '../../redux/constants';
+import LocalStorage from '../../utils/LocalStorage';
 
 
 
@@ -26,7 +27,7 @@ class Business extends Component{
 			
 		}
 
-		this.showLimit = 2;
+		this.showLimit = 10;
 
 		this.firestore = firebase.firestore()
 	}
@@ -43,7 +44,7 @@ class Business extends Component{
 
 	    
 	    ref.get().then((snapshot)=>{
-	    	this.lastVisible = snapshot.docs[snapshot.docs.length - 1];
+	    	//this.lastVisible = snapshot.docs[snapshot.docs.length - 1];
 
 	    	snapshot.forEach((element)=>{
 			
@@ -72,7 +73,7 @@ class Business extends Component{
 	}
 
 
-	_handleMoreButton(){
+	/*_handleMoreButton(){
 		this.counter = 0;
 
 		let ref = this.firestore.collection("Business").orderBy("creationDate", "desc").startAfter(this.lastVisible).limit(this.showLimit);
@@ -90,13 +91,13 @@ class Business extends Component{
 	    	
 		})
 
-	}
+	}*/
 
 	_addBusiness(){
+		let userUID = LocalStorage.loadState("user");
 		
-		let user = store.getState().userUID;
 		
-		if(user){
+		if(userUID){
 			// redirect to AddBusiness page
 			this.props.history.push('/AddBusiness');
 			
@@ -112,12 +113,12 @@ class Business extends Component{
 
 	render(){
 
-		let moreButton;
+		/*let moreButton;
 
 		if(this.counter === this.showLimit){
 			console.log(this.counter)
 			moreButton = <button className="btn-primary" onClick={this._handleMoreButton.bind(this)}>Show more businesses</button>
-		}
+		}*/
 
 
 		let business = this.state.items.map((business) =>{
@@ -142,9 +143,9 @@ class Business extends Component{
 							<div className="box">
 								<h2 className="text-center">Recently listed businesses</h2>
 								<div>{business}</div>
-								<div className="text-center">
+								{/*<div className="text-center">
 									<p>{moreButton}</p>
-								</div>	
+								</div>	*/}
 							</div>
 
 						</div>

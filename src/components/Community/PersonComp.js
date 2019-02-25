@@ -8,32 +8,26 @@ export default class PersonComp extends Component{
 	render(){
 		
 		return(
-			<div>
-				<section className="well">
-					<div className="row">
+			<div className="row text-center">
+				<section className="well col-xs-8">
+					
 						
-						<Link to={`/Person/${this.props.uid}/${this.props.userName}`}>
-							
-							<div className="col-sm-4 text-left compTextStyle">
-								<div className="row">
-									
-									<h2>{this.props.userName} </h2>
-								</div>	
-								<div className="row">									
-									<p>{this.props.styles}</p>
-								</div>	
-																							
+						<Link to={`/PersonProfile/${this.props.uid}/${this.props.userName}`}>
+							<div className="text-left compTextStyle">
+								
+								<h2>{this.props.userName} </h2>
+								
+																										
 							</div>
-
-							<div className="col-sm-4">
-								<p>{this.props.bio}</p>
-							</div>
-							<div className="hidden-xs col-sm-4">
-								<img src={this.props.img} className="img-thumbnail" alt="placeholder" width="150px" height="150px"/>
-							</div>
-
 						</Link>	
-					</div>
+						
+												
+					
+				</section>
+				<section className="col-xs-4">
+					
+					<Link to={`/Messages/${this.props.userName}/${this.props.uid}`}><button className="btn-primary">See messages {this.props.userName}</button></Link>
+						
 				</section>
 			</div>
 

@@ -5,17 +5,22 @@ import {firebase} from '@firebase/app';
 import store from '../../redux/store';
 import constants from '../../redux/constants';
 
-
+import LocalStorage from '../../utils/LocalStorage';
+		
 
 export default class ReviewPage extends Component{
 	
 	constructor(){
 		super();
 
+		let pageString = `Review/${this.props.match.params.BusinessKey}`
+		store.dispatch({type:constants.SAVE_PAGE, page:pageString});
 		
-		let storeState = store.getState();
-		this.userName = storeState.userName;
-		console.log(this.userName);
+		this.firestore = firebase.firestore();
+
+		this._getUserName()
+		
+		
 
 		this.state = {
 			reviewTitle:"Title",
@@ -26,10 +31,14 @@ export default class ReviewPage extends Component{
 		}
 	}
 
-	componentWillMount(){
-		let pageString = `Review/${this.props.match.params.BusinessKey}`
-		store.dispatch({type:constants.SAVE_PAGE, page:pageString});
+	_getUserName(){
+		this.userUID = LocalStorage.loadState("user");
+		let ref = this.firestore.collection("Users").doc(this.userUID);
+		ref.get().then((snapshot)=>{
+			this.userName = snapshot.data().userName;
+		})
 	}
+
 
 	
 	_handleTitleInput(e){
@@ -68,12 +77,10 @@ export default class ReviewPage extends Component{
 
 
 	_handleSubmit(e){
-		console.log(this.state.reviewTitle);
-		console.log(this.state.reviewComment);
-		console.log(this.state.stars);
+		
 
-		let firestore = firebase.firestore();
-		let reviewRef = firestore.collection("Reviews").doc(this.props.match.params.BusinessKey).collection("Review").doc(this.userName);
+		
+		let reviewRef = this.firestore.collection("Reviews").doc(this.props.match.params.BusinessKey).collection("Review").doc(this.userName);
 
 		let obj = {
 			Username:this.userName,

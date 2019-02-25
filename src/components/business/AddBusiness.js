@@ -14,7 +14,8 @@ import defaultLogo from '../../assets/images/default.jpg';
 import {_disable,_enable} from '../../utils/DisableGreyOut';
 import {_compressImage} from '../../utils/CompressImage';
 
-
+import LocalStorage from '../../utils/LocalStorage';
+		
 const google = window.google;
 
 
@@ -36,8 +37,8 @@ class AddBusiness extends Component{
 		}
 
 
-
-		this.userUID = store.getState().userUID;
+		this.userUID = LocalStorage.loadState("user");
+		
 		store.dispatch({type:constants.SAVE_PAGE, page:"AddBusiness"});
 
   		this.textStyle = {

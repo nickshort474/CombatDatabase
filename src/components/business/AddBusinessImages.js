@@ -4,8 +4,7 @@ import { firebase } from '@firebase/app';
 
 import {_compressImage} from '../../utils/CompressImage';
 
-/*import store from '../../redux/store';
-import constants from '../../redux/constants';*/
+
 
 
 export default class AddBusinessImages extends Component{

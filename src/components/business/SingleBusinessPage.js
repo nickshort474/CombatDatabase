@@ -11,6 +11,9 @@ import constants from '../../redux/constants';
 
 import defaultLogo from '../../assets/images/default.jpg'
 
+import LocalStorage from '../../utils/LocalStorage';
+
+
 export default class SingleBusinessPage extends Component{
 	
 	
@@ -20,8 +23,8 @@ export default class SingleBusinessPage extends Component{
 		// get previous page from redux for back button
 		let storeState = store.getState();
 		let previousPage = storeState.prevPage;
-		this.user = storeState.userUID;
 		
+		this.user = LocalStorage.loadState("user");
 
 		// save current page ref to redux
 		let pageString = `Business/${this.props.match.params.BusinessKey}`
@@ -119,9 +122,9 @@ export default class SingleBusinessPage extends Component{
 
 		if(this.state.owner === true){
 			
-			EditPage = <Link to={`/EditBusiness/${this.props.match.params.BusinessKey}`}><p>Edit this page</p></Link>
-			AddImages = <Link to={`/AddBusinessImages/${this.props.match.params.BusinessKey}`}><p>Add images</p></Link>
-			EditLogo = <div><Link to={`/EditBusinessLogo/${this.props.match.params.BusinessKey}`}><p>Edit business logo</p></Link></div>
+			EditPage = <Link to={`/EditBusiness/${this.props.match.params.BusinessKey}`}><p>Edit the information on this page</p></Link>
+			AddImages = <Link to={`/AddBusinessImages/${this.props.match.params.BusinessKey}`}><p>Click here to add images to your page</p></Link>
+			EditLogo = <div><Link to={`/EditBusinessLogo/${this.props.match.params.BusinessKey}`}><p>Edit your business logo</p></Link></div>
 		}
 
 		return(

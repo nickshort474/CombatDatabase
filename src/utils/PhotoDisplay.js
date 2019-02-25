@@ -137,8 +137,8 @@ export default class PhotoDisplay extends Component{
 			return(
 			
 				<div className="gallery">
-					<div className="box">
-						<div className="text-center">Click to view images</div>
+					{this.state.items.length > 0 ?<div className="box">
+						
 						<Lightbox
 						 
 						  images={imageArray}
@@ -151,7 +151,7 @@ export default class PhotoDisplay extends Component{
 						
 						<div onClick={this._openLightBox.bind(this)}>{images}</div>
 						
-					</div>
+					</div> : null}
 				</div>		
 		)
 		}else{

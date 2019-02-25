@@ -8,7 +8,8 @@ import MyBlogComp from './MyBlogComp';
 
 import store from '../../redux/store';
 import constants from '../../redux/constants';
-
+import LocalStorage from '../../utils/LocalStorage';
+		
 
 export default class MyBlogList extends Component{
 	
@@ -32,18 +33,16 @@ export default class MyBlogList extends Component{
 		// scroll window back to start
 		window.scrollTo(0, 0);
 
-		// gather UID from store
-		var storeState = store.getState();
-		let user = storeState.userUID;
 		
+		this.user = LocalStorage.loadState("user");
 		
 		
 		// if user signed in gather blogs from firebase using UID
-		if(user){
+		if(this.user){
 			this.setState({
-				user:user
+				user:this.user
 			}) 
-			this._getMyBlogData(user);
+			this._getMyBlogData(this.user);
 
 		}else{
 
@@ -64,7 +63,7 @@ export default class MyBlogList extends Component{
 
 	    let firestore = firebase.firestore();
 
-	    let ref = firestore.collection("BlogUserList").doc(user).collection("blogs");
+	    let ref = firestore.collection("BlogUserList").doc(this.user).collection("blogs");
 
 	    ref.get().then((snapshot)=>{
 
@@ -110,10 +109,10 @@ export default class MyBlogList extends Component{
 					<div className="row">
 
 						
-						<div className="col-sm-3 textCenterMobile">
+						<div className="col-sm-3 text-center">
 							
-							<Link to="/AddBlog"><button type="button" className="btn btn-primary extraMargin">New Blog</button></Link>
-							<Link to="/ViewBlogs"><button type="button" className="btn btn-primary extraMargin">View Other Blog</button></Link>							
+							{this.user ? <Link to="/AddBlog"><button type="button" className="btn btn-primary extraMargin">New Blog</button></Link> : null}
+							<Link to="/ViewBlogs"><button type="button" className="btn btn-primary extraMargin">Other Blogs</button></Link>							
 						</div>
 						<div className="col-sm-9">
 							<div className="box">

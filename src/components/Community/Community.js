@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
+import firebase from '@firebase/app';
 
 import store from '../../redux/store';
 import constants from '../../redux/constants';
+//import LocalStorage from '../../utils/LocalStorage';
+
 import PersonComp from './PersonComp';
 
-import firebase from '@firebase/app';
 import {AuthUserContext} from '../Session';
 
 const CommunitySignedIn = () => (
@@ -161,7 +163,7 @@ class Community extends Component{
 
 		
 		contactList = this.state.items.map((contact,index)=>{
-			return <PersonComp  userName={contact.userName} uid={contact.userUID} key={index} />
+			return <PersonComp userName={contact.userName} uid={contact.userUID}  key={index} />
 		})
 		
 		
@@ -187,7 +189,7 @@ class Community extends Component{
 						<div className="row">
 							<p>Your Community:</p>
 							<div>{this.userUID ? <Link to="/FindPeople"><button type="button" className="btn btn-primary extraMargin">Find people</button></Link> : signInMessage} </div>
-							{/*<Link to="/FindPeople"><button type="button" className="btn btn-primary extraMargin">Find people</button></Link>*/}
+							
 							
 						</div>
 					</div>
@@ -197,9 +199,10 @@ class Community extends Component{
 						
 					
 					<div className="row box text-center">
-							
-						{contactList}
-						
+						<div className="col-xs-9">	
+							{contactList}
+						</div>
+
 					</div>
 					
 				</div>
@@ -210,4 +213,4 @@ class Community extends Component{
 
 
 //export default Community;
-export default CommunitySignedIn
+export default CommunitySignedIn;

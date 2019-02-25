@@ -9,19 +9,11 @@ import Geosuggest from 'react-geosuggest';
 
 import defaultLogo from '../../assets/images/default.jpg'
 import PasswordChange from '../PasswordChange/PasswordChangeForm';
-/*import {AuthUserContext, withAuthorization } from '../Session';*/
+
+import LocalStorage from '../../utils/LocalStorage';
 
 const google = window.google;
 
-/*const ProfilePage = () => (
-	<AuthUserContext.Consumer>
-		{authUser => (
-			<div>
-				<Profile />
-			</div>
-		)}
-	</AuthUserContext.Consumer>
-)*/
 
 
 export default class Profile extends Component{
@@ -45,9 +37,8 @@ export default class Profile extends Component{
 			
 		}
 		
-		var storeState = store.getState();
-		this.userUID = storeState.userUID;
 		
+		this.userUID = LocalStorage.loadState("user");
 		this.firestore = firebase.firestore()
 
 
@@ -405,10 +396,3 @@ export default class Profile extends Component{
 		}
 	}
 }
-
-/*const condition = authUser => !!authUser 
-
-export default withAuthorization(condition)(ProfilePage);*/
-
-
-//1550762928909

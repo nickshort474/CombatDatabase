@@ -1,7 +1,7 @@
 import constants from './constants';
 
 const initialState = {
-	userUID:"",
+	/*userUID:"",*/
 	page:""
 	
 }
@@ -10,14 +10,14 @@ const reducer = (state = initialState, action) => {
 	
 	switch (action.type){
 
-		case constants.CREATE_USER:
+		/*case constants.CREATE_USER:
 			return initialState;
 		case constants.SAVE_USER:
 			return Object.assign({},state,{userUID:action.userUID})
 		case constants.SAVE_USERNAME:
 			return Object.assign({},state,{userName:action.userName})
 		case constants.REMOVE_USER:
-			return Object.assign({},state,{userUID:""})
+			return Object.assign({},state,{userUID:""})*/
 
 		case constants.SAVE_PAGE:
 			return Object.assign({},state,{page:action.page})

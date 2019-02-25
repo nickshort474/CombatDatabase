@@ -9,6 +9,9 @@ import BlogComp from './BlogComp';
 import store from '../../redux/store';
 import constants from '../../redux/constants';
 
+import LocalStorage from '../../utils/LocalStorage';
+		
+
 export default class ViewBlogs extends Component{
 	
 	
@@ -16,9 +19,8 @@ export default class ViewBlogs extends Component{
 		super();
 
 		store.dispatch({type:constants.SAVE_PAGE, page:"ViewBlogs"});
-		let storeState = store.getState()
-		this.userUID = storeState.userUID;
-
+		
+		this.userUID = LocalStorage.loadState("user");
 		this.state = {
 			latestBlogs:[],
 			followedBlogs:[]

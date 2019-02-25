@@ -3,7 +3,8 @@ import {withFirebase} from '../Firebase';
 
 import {_handleDisable,_handleEnable} from '../../utils/HandleDisable';
 
-import store from '../../redux/store';
+import LocalStorage from '../../utils/LocalStorage';
+
 
 class ContactRequest extends Component{
 	
@@ -13,9 +14,8 @@ class ContactRequest extends Component{
 			requestContent:""
 		}
 
-		let storeState = store.getState()
-		this.userUID = storeState.userUID;
 		
+		this.userUID = LocalStorage.loadState("user");
 		this.firestore = this.props.firebase.mainRef();
 	}
 

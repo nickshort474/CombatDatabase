@@ -8,6 +8,8 @@ import {_disable} from '../../utils/DisableGreyOut';
 
 import store from '../../redux/store';
 import constants from '../../redux/constants';
+import LocalStorage from '../../utils/LocalStorage';
+		
 
 import $ from 'jquery';
 
@@ -39,9 +41,7 @@ import $ from 'jquery';
 		this.hasImage = false;
 	    this._addPara();
 	    
-	    var storeState = store.getState();
-		this.userUID = storeState.userUID;
-		
+	   	this.userUID = LocalStorage.loadState("user");
 	}
 
 

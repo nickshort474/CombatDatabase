@@ -5,6 +5,7 @@ import {firebase} from '@firebase/app';
 
 import store from '../../redux/store';
 import constants from '../../redux/constants';
+import LocalStorage from '../../utils/LocalStorage';
 
 
 export default class Username extends Component{
@@ -12,10 +13,8 @@ export default class Username extends Component{
 	constructor(){
 		super();
 
-		this.storeState = store.getState();
-		this.userName = this.storeState.userName ? this.state.userName : "";
-		this.userUID = this.storeState.userUID;
-
+		
+		this.userUID = LocalStorage.loadState("user");
 		this.firestore = firebase.firestore();
 
 		store.dispatch({type:constants.SAVE_PAGE, page:"Username"});

@@ -4,7 +4,7 @@ import { withFirebase } from '../Firebase';
 
 import store from '../../redux/store';
 import constants from '../../redux/constants';
-
+import LocalStorage from '../../utils/LocalStorage';
 
 class SignOutButton extends Component{
 	
@@ -15,6 +15,8 @@ class SignOutButton extends Component{
 			//signed out so clear all data from store ready for another user or another fresh session
 			store.dispatch({type:constants.CLEAR_STORE});
 		
+			//delete user from LocalStorage to match google auth
+			LocalStorage.saveState("user",null);
 
 			//redirect
 			this.props.history.push('/Home');

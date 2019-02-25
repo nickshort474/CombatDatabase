@@ -1,11 +1,15 @@
 import React, {Component} from 'react';
 import {firebase} from '@firebase/app';
 import {withRouter, Link} from 'react-router-dom';
+
 import store from '../../redux/store';
 import $ from 'jquery';
+
 import GetImage from '../../utils/GetImage';
 import {_disable,_enable} from '../../utils/DisableGreyOut';
 
+import LocalStorage from '../../utils/LocalStorage';
+		
 
 class AddBlog extends Component{
 
@@ -21,10 +25,10 @@ class AddBlog extends Component{
 			keyWord4:"",
 			keyWord5:"",
 		}
-		this.storeState = store.getState();
-		this.user = this.storeState.userUID;
-		this.firestore = firebase.firestore();
 		
+		
+		this.firestore = firebase.firestore();
+		this.user = LocalStorage.loadState("user");
 		//this.keyWordArray = [];
 		this.blogKeywordObj = {};
 	}

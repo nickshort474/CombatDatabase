@@ -9,6 +9,7 @@ import LocalStorage from '../../utils/LocalStorage';
 
 import MessageComp from '../Messages/MessageComp';
 
+
 class Person extends Component{
 	
 	constructor(){
@@ -24,26 +25,30 @@ class Person extends Component{
 
 	componentWillMount(){
 		window.scrollTo(0, 100);
-		this.userUID = store.getState().userUID;
+		
 		store.dispatch({type:constants.SAVE_PAGE, page:`/Person/${this.props.match.params.PersonKey}/${this.props.match.params.PersonUsername}`})
 		
 		this.firestore = firebase.firestore();
+		this.userUID = LocalStorage.loadState("user");
+		this.savedMsgState = LocalStorage.loadState("messages");
+		
 		this._getUserInfo();
-		//this._gatherMessages();
-		
-		this.savedMsgState = LocalStorage.loadState();
-		console.log(this.savedMsgState);
-		
 
+		this._checkForNewMessages();
+
+		//this._gatherMessages();	
+		
+		
+/*
 		if(this.savedMsgState){
 			this.setState({
 				messages:this.savedMsgState
 			})
 		}else{
 			this._gatherMessages();
-		}
+		}*/
 
-		this._gatherMessageUpdates()
+		//this._gatherMessageUpdates()
 	}
 	
 	
@@ -72,8 +77,9 @@ class Person extends Component{
 		//check whether a firend request has been made
 		let ref3 = this.firestore.collection("People").doc(this.props.match.params.PersonKey).collection("ContactRequests");
 		let query = ref3.where("requestUserUID", "==", this.userUID);
+		
 		query.get().then((snapshot)=>{
-			
+			console.log("line 76 " + snapshot)
 			snapshot.forEach((snap)=>{
 				if(snap.data().requestUserUID === this.userUID){
 					// user has already sent request
@@ -87,44 +93,65 @@ class Person extends Component{
 
 	}
 
+	_checkForNewMessages(){
+
+		let lastMsg = LocalStorage.loadState("lastMesssge");
+		let ref = this.firestore.collection("Messages").doc(this.userUID).collection(this.props.match.params.PersonKey);
+		let query = ref.orderBy("messageDate", "desc").limit(1);
+		query.get().then((snapshot)=>{
+			snapshot.forEach((snap)=>{
+				console.log(snap.data().messageDate)
+				if(snap.data().messageDate === lastMsg){
+					
+					console.log("no new messages");
+				}
+				else{
+					console.log("need to download new messages!")
+				}
+			})
+		})
+	}
+
+
 	_gatherMessages(){
 		
-		let counter = 0;
-		let locationItems = [];
-		let userItems = [];
+		let items = [];
 		
-		let messageArray = [];
 
-		let ref = this.firestore.collection("Users").doc(this.userUID).collection("Messages");
+		let ref = this.firestore.collection("Messages").doc(this.userUID).collection(this.props.match.params.PersonKey);
 		let query = ref.orderBy("messageDate","asc");
 		
 		query.get().then((snapshot)=>{
 			snapshot.forEach((snap)=>{
-				locationItems.push(snap.data().messageLocation);
-				userItems.push(snap.data().messageUser);
-				counter++
-			})
-			locationItems.forEach((item,index)=>{
-				counter--;
-				let userString = userItems[index].toString();
-				let ref2 = this.firestore.collection("Messages").doc(userString).collection("Messages").doc(item);
 				
-				ref2.get().then((snapshot)=>{
-					messageArray.push(snapshot.data());
-					if(counter === 0){
-						this.setState({
-							messages:messageArray
-						},()=>{
-							LocalStorage.saveState(messageArray);
-							window.scrollTo(0, 500);
-						})
-
-					}
-				})
+				items.push(snap.data());
+				
 			})
+			this.setState({
+				messages:items
+			},()=>{
+				this._saveToState(items)
+				window.scrollTo(0, 500);
+			})
+
 			
 		})
 	}
+
+	_saveToState(items){
+		let len = items.length - 1;
+		let lastItem = items[len].messageDate;
+		console.log(lastItem);
+		LocalStorage.saveState("messages",items);
+		LocalStorage.saveState("lastMessage",lastItem);
+
+	}
+
+
+
+
+
+
 
 	_gatherMessageUpdates(){
 		// check this.firestore.collection("Users").doc(this.userUID).collection("Messages"); for message number
@@ -191,6 +218,7 @@ class Person extends Component{
 				
 
 					<div className="row box">
+						<h2>Last 10 messages</h2>
 						{messages}
 					</div>
 					<div className="row box">

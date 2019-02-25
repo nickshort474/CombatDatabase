@@ -7,6 +7,9 @@ import PersonComp from './PersonComp';
 import store from '../../redux/store';
 import constants from '../../redux/constants';
 
+import LocalStorage from '../../utils/LocalStorage';
+
+
 class ContactsList extends Component {
 	
 	constructor(props){
@@ -24,7 +27,8 @@ class ContactsList extends Component {
 		let storeState = store.getState();
 
 		this.userUID = storeState.userUID;
-		this.userName = storeState.userName;
+		
+		this.userUID = LocalStorage.loadState("user");
 		this.firestore = this.props.firebase.mainRef();
 
 		if(this.userUID){

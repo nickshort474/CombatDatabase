@@ -7,6 +7,9 @@ import ProcessEpoch from '../../utils/ProcessEpoch';
 
 import store from '../../redux/store';
 import constants from '../../redux/constants';
+import LocalStorage from '../../utils/LocalStorage';
+
+
 
 import defaultLogo from '../../assets/images/default.jpg'
 
@@ -23,8 +26,8 @@ export default class SingleEventPage extends Component{
 		let storeState = store.getState();
 		let previousPage = storeState.prevPage;
 
-		this.user = storeState.userUID;
-
+		
+		this.user = LocalStorage.loadState("user");
 		this._getEventInfo();
 
 		this.setState({

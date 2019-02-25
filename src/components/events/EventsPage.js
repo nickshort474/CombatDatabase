@@ -6,6 +6,7 @@ import SingleEventComp from './SingleEventComp';
 
 import store from '../../redux/store';
 import constants from '../../redux/constants';
+import LocalStorage from '../../utils/LocalStorage';
 
 export default class EventsPage extends Component{
 	
@@ -20,7 +21,7 @@ export default class EventsPage extends Component{
 		this.state = {
 			items:[]
 		}
-		this.showLimit = 2;
+		this.showLimit = 10;
 		
 	}
 	
@@ -36,7 +37,7 @@ export default class EventsPage extends Component{
 		let ref = this.firestore.collection("Events").orderBy("creationDate","desc").limit(this.showLimit);
 		
 		ref.get().then((snapshot)=>{
-			this.lastVisible = snapshot.docs[snapshot.docs.length - 1];
+			//this.lastVisible = snapshot.docs[snapshot.docs.length - 1];
 
 			snapshot.forEach((element)=>{
 				
@@ -65,10 +66,10 @@ export default class EventsPage extends Component{
 	}
 
 	_addEvent(){
+		let userUID = LocalStorage.loadState("user");
 		
-		let user = store.getState().userUID;
 		
-		if(user){
+		if(userUID){
 			// redirect to AddEvents page
 			this.props.history.push('/AddEvents');
 			
@@ -78,7 +79,7 @@ export default class EventsPage extends Component{
 		}
 	}
 
-	_handleMoreButton(){
+	/*_handleMoreButton(){
 		this.counter = 0;
 
 		let ref = this.firestore.collection("Events").orderBy("creationDate", "desc").startAfter(this.lastVisible).limit(this.showLimit);
@@ -97,17 +98,17 @@ export default class EventsPage extends Component{
 		})
 
 	}
-
+*/
 
 	render(){
 
-		let moreButton;
+		/*let moreButton;
 
 		if(this.counter === this.showLimit){
 			console.log(this.counter)
 			moreButton = <button className="btn-primary" onClick={this._handleMoreButton.bind(this)}>Show more events</button>
 		}
-
+*/
 
 		let events = this.state.items.map((event)=>{
 			
@@ -136,9 +137,9 @@ export default class EventsPage extends Component{
 			                		{events}
 			                		
 			                	</div>
-			                	<div className="text-center">
+			                	{/*<div className="text-center">
 									<p>{moreButton}</p>
-								</div>
+								</div>*/}
 			                </div>
 
 			                

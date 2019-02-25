@@ -15,6 +15,8 @@ import {_disable,_enable} from '../../utils/DisableGreyOut';
 import store from '../../redux/store';
 import constants from '../../redux/constants';
 
+import LocalStorage from '../../utils/LocalStorage';
+
 
 const google = window.google;
 
@@ -39,8 +41,9 @@ class AddEvents extends Component{
 		store.dispatch({type:constants.SAVE_PAGE, page:"AddEvents"});
 		store.dispatch({type:constants.EVENT_HAS_IMAGE, eventHasImg:false})
 
-		let storeState = store.getState();
-		this.user = storeState.userUID;
+		
+		
+		this.userUID = LocalStorage.loadState("user");
 		
 		//firestore ref
 		this.firestore = firebase.firestore();

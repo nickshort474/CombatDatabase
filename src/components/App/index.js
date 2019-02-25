@@ -16,14 +16,13 @@ import AddBusinessImages from '../Business/AddBusinessImages';
 import EditBusinessLogo from '../Business/EditBusinessLogo';
 
 import Community from '../Community/Community';
-import Person from '../Community/Person';
 import PersonProfile from '../Community/PersonProfile';
 import FindPeople from '../Community/FindPeople';
-import ContactsList from '../Community/ContactsList';
+/*import ContactsList from '../Community/ContactsList';*/
 import ContactRequest from '../Community/ContactRequest';
 import SearchForPeople from '../Community/SearchForPeople';
 
-
+import Messages from '../Messages/Messages';
 import NewMessage from '../Messages/NewMessage';
 
 //events files
@@ -104,10 +103,10 @@ class App extends Component{
 
 						
 						<Route path="/Community" component={Community} />
-						<Route path="/Person/:PersonKey/:PersonUsername" component={Person} />
+						<Route path="/Messages/:PersonUsername/:PersonKey" component={Messages} />
 						<Route path="/PersonProfile/:PersonKey" component={PersonProfile} />
 						<Route path="/FindPeople" component={FindPeople} />
-						<Route path="/ContactsList" component={ContactsList} />
+						{/*<Route path="/ContactsList" component={ContactsList} />*/}
 						<Route path="/ContactRequest/:PersonKey" component={ContactRequest} />
 						<Route path="/NewMessage/:Username/:UserUID" component={NewMessage} />
 						<Route path="/SearchForPeople" component={SearchForPeople} />

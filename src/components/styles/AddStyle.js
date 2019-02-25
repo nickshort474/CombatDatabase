@@ -2,12 +2,15 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {firebase} from '@firebase/app';
 
+
+
 export default class AddStyle extends Component{
 	
 
 
 	componentWillMount(){
 		window.scrollTo(0, 0);
+
 	}
 
 	_handleInput(e){

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import firebase from '@firebase/app';
 
 import {withRouter} from 'react-router-dom';
 
@@ -11,8 +12,7 @@ import { PasswordForgetLink } from '../PasswordForget/PasswordForget';
 import { withFirebase } from '../Firebase';
 
 import store from '../../redux/store';
-import constants from '../../redux/constants';
-
+import LocalStorage from '../../utils/LocalStorage';
 
 const SignInPage = () => (
   <div>
@@ -39,7 +39,12 @@ class SignInFormBase extends Component{
     		cursor: "pointer"
     	}
     	let storeState = store.getState();
-    	this.prevPage = storeState.page;
+    	if(storeState.page !== ""){
+    		this.prevPage = storeState.page;
+    	}else{
+    		this.prevPage = "/Home";
+    	}
+    	
   	}
 	
 
@@ -58,9 +63,10 @@ class SignInFormBase extends Component{
 	       	let userUID = authUser.user.uid;
 	       	this.setState({ ...INITIAL_STATE });
 	       
-	        
-	        
-	       	store.dispatch({type:constants.SAVE_USER,userUID:userUID})
+	        //save reference to user in localStoarge to match google auth state
+	        LocalStorage.saveState("user",userUID);
+
+	       	//store.dispatch({type:constants.SAVE_USER,userUID:userUID})
 	        this.props.history.push(this.prevPage);
 
 	    }).catch(error => {
@@ -89,8 +95,10 @@ class SignInFormBase extends Component{
 
 			this._handleFirstSignIn(userUID);
 
-		
-	        store.dispatch({type:constants.SAVE_USER,userUID:userUID})
+			//save reference to user in localStoarge to match google auth state
+			LocalStorage.saveState("user",userUID);
+
+	        //store.dispatch({type:constants.SAVE_USER,userUID:userUID})
 	        this.props.history.push(this.prevPage);
 
 	    }).catch(error => {
@@ -103,7 +111,7 @@ class SignInFormBase extends Component{
 	}
 
 	_handleFirstSignIn(userUID){
-		let ref = this.props.firebase.mainRef().collection("Users").doc(userUID);
+		let ref = firebase.firestore().collection("Users").doc(userUID);
 
 
 		ref.get().then((snapshot)=>{

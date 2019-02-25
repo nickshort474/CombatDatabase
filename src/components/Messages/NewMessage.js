@@ -1,13 +1,9 @@
 import React, {Component} from 'react';
-import {withRouter,Link} from 'react-router-dom';
 import {firebase} from '@firebase/app';
 
 
-import {_handleDisable,_handleEnable} from '../../utils/HandleDisable';
 
-
-import store from '../../redux/store';
-import constants from '../../redux/constants';
+import LocalStorage from '../../utils/LocalStorage';
 
 
 class NewMessage extends Component{
@@ -15,12 +11,7 @@ class NewMessage extends Component{
 	constructor(props){
 		super(props);
 		
-		
-
-		// get current user from store
-		let storeState = store.getState();
-		this.user = storeState.userUID;
-		this.prevPage = storeState.page;		
+		this.user = LocalStorage.loadState("user");
 		this.firestore = firebase.firestore();
 
 		// setup initial state
@@ -34,13 +25,8 @@ class NewMessage extends Component{
 	
 	componentWillMount() {
 		window.scrollTo(0, 0);
-		// save cuurent page to redux
-		this.url = `NewMessage/${this.props.match.params.UserUID}/${this.user}`;
-
-		store.dispatch({type:constants.SAVE_PAGE, page:this.url});
+			
 	}
-
-
 
 	_handleInput(e){
 		
@@ -50,25 +36,34 @@ class NewMessage extends Component{
 
 	}
 
-	
-	
-	
-
-
 	_handlePost(e){
 		e.preventDefault();
-		_handleDisable();
+		
 		// collect data
-
 		
 		let content = e.target.content.value;
 		
 		if(content.length > 1){
 			
 			// set ref for user in Messages section
-			let ref = this.firestore.collection("Messages").doc(this.user).collection("Messages").doc();
+			let ref = this.firestore.collection("Messages").doc(this.user).collection(this.props.msgUser);
 
-			let docRef = ref.id;
+			// get rid of 1 old message to keep message store at 10
+			ref.get().then((snapshot)=>{
+				
+				if(snapshot.size === 11){
+					let query = ref.orderBy("messageDate", "asc").limit(1);
+					query.get().then((snapshot)=>{
+						
+						snapshot.forEach((snap)=>{
+							
+							this.firestore.collection("Messages").doc(this.user).collection(this.props.msgUser).doc(snap.id).delete();
+						})
+					})
+				}
+			})
+
+
 			//get date time
 			let now = Date.now();
 			
@@ -81,91 +76,48 @@ class NewMessage extends Component{
 				
 			}
 			//add message data to Messages section in firestore
-			ref.set(obj).then(()=>{
+			ref.add(obj).then(()=>{
 
-				// add message data 
-				let ownUserRef = this.firestore.collection("Users").doc(this.user).collection("Messages");
+				// set ref for user in Messages section
+				let ref2 = this.firestore.collection("Messages").doc(this.props.msgUser).collection(this.user);
 
-				let newObj = {
+				//get date time
+				let now = Date.now();
+				
+				// create object data
+				let obj2 = {
+					
+					messageContents:content,
 					messageDate:now,
 					messageUser:this.user,
-					messageLocation:docRef
+					
 				}
-
-				ownUserRef.add(newObj).then(()=>{
-					
-					let messageToRef = this.firestore.collection("Users").doc(this.props.match.params.UserUID).collection("Messages");
-					
-					let repeatObj = {
-						messageDate:now,
-						messageUser:this.user,
-						messageLocation:docRef
-					}
-
-					messageToRef.add(repeatObj).then(()=>{
-						_handleEnable();
-						this.props.history.push(`/Person/${this.props.match.params.UserUID}`);
-					}) 
+				//add message data to Messages section in firestore
+				ref2.add(obj2).then(()=>{
+										
 				})
 			})
-
 		}else{
-			alert("Please fill in subject and content")
+			alert("Please fill in some content")
 		}
 	}
 
-
 	
-
 
 
 	render(){
-
-	
 		return(
-							
-		    <div className="container">
-			 	<section className="content-wrapper">
-					<div className="box">
-					   		<Link to={this.prevPage}>&lt; Go back</Link>
-					</div>
-					<div className="box">
-						<div className="row">
-							<h2 className="text-center">New Message to {this.props.match.params.Username}</h2>
-						</div>	
-					</div>	
-				<form onSubmit={this._handlePost.bind(this)} action="">	
-					<div className="box text-center">
-						
-
-						<div className="row form-group">
-							<div className="col-sm-3">
-								<label htmlFor="content">Content</label>
-							</div>
-							<div className="col-sm-9">
-								<textarea id="content" value={this.state.content} placeholder="content" onChange={this._handleInput.bind(this)} />
-							</div>
+			<form onSubmit={this._handlePost.bind(this)} action="">	
+				<div className="row box text-center">
+					<div className="col-sm-9">
+							<textarea id="content" value={this.state.content} placeholder="content" onChange={this._handleInput.bind(this)} />
 						</div>
-						
-					</div>
-						
-					<div className="box text-center">
-						
+
 						<button type="submit" value="Post message" className="btn btn-primary extraMargin">Submit</button>
-
-						
-					</div>
-
-					
-				</form>		
-					
-					
-				</section>
-			</div>
-			
-
+				</div>
+			</form>	
 		)
 	}
 }
 
-export default withRouter(NewMessage);
+export default NewMessage;

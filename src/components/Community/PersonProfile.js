@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import {firebase} from '@firebase/app';
 
 import store from '../../redux/store';
+import LocalStorage from '../../utils/LocalStorage';
 
 
 class PersonProfile extends Component{
@@ -29,9 +30,9 @@ class PersonProfile extends Component{
 	componentWillMount(){
 		window.scrollTo(0, 0);
 		let storeState = store.getState();
-		this.userUID = storeState.userUID;
-		this.prevPage = storeState.page;
 		
+		this.prevPage = storeState.page;
+		this.userUID = LocalStorage.loadState("user");
 		this.firestore = firebase.firestore();
 		this._getUserInfo();
 		

@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {withRouter, Link} from 'react-router-dom';
 import {firebase} from '@firebase/app';
 
-import store from '../../redux/store';
+
+import LocalStorage from '../../utils/LocalStorage';
 
 
 
@@ -18,7 +19,7 @@ class EditStyle extends Component{
 			buttonText:""
 		}
 		this.firestore = firebase.firestore();
-		
+		this.user = LocalStorage.loadState("user");
 
 	}
 
@@ -29,8 +30,7 @@ class EditStyle extends Component{
 		
 	}
 	componentDidMount(){
-		this.storeState = store.getState();
-		this.user = this.storeState.userUID;
+		
 		
 		
 		let ref = this.firestore.collection("userUIDs").doc(this.user);

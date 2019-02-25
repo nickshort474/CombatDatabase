@@ -1,18 +1,18 @@
 
 
-const saveState = (state) => {
+const saveState = (name,state) => {
 	try{
 		const serialisedState = JSON.stringify(state);
 
-		window.localStorage.setItem('appState',serialisedState);
+		window.localStorage.setItem(name,serialisedState);
 	}catch(err){
 
 	}
 }
 
-const loadState = () => {
+const loadState = (name) => {
 	try{
-		const serialisedState = window.localStorage.getItem("appState");
+		const serialisedState = window.localStorage.getItem(name);
 
 		if(!serialisedState){
 			return undefined;
