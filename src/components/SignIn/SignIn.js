@@ -15,17 +15,17 @@ import store from '../../redux/store';
 import LocalStorage from '../../utils/LocalStorage';
 
 const SignInPage = () => (
-  <div>
+  	<div>
    
-    <SignInForm />
+   		<SignInForm />
    
-  </div>
+  	</div>
 );
 
 const INITIAL_STATE = {
-  email: '',
-  password: '',
-  error: null,
+  	email: '',
+  	password: '',
+  	error: null,
 };
 
 class SignInFormBase extends Component{
@@ -61,6 +61,8 @@ class SignInFormBase extends Component{
 
 	    this.props.firebase.doSignInWithEmailAndPassword(email, password).then((authUser) => {
 	       	let userUID = authUser.user.uid;
+	       	
+	       	//clear  state
 	       	this.setState({ ...INITIAL_STATE });
 	       
 	        //save reference to user in localStoarge to match google auth state

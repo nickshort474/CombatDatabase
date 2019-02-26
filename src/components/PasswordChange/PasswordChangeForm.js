@@ -15,24 +15,30 @@ const PasswordChange = () => (
 )
 
 class PasswordChangeFormBase extends Component{
+	
 	constructor(props){
 		super(props);
 
 		this.state = {
 			...INITIAL_STATE
 		};
+
 	}
 
 	_onSubmit(e){
 		e.preventDefault();
-		const { password1 } = this.state;
+
+		let password1  = this.state.password1;
 		this.props.firebase.doPasswordUpdate(password1).then(()=>{
+			
 			this.setState({
 				...INITIAL_STATE
-			})	
+			})
+
 		}).catch((error)=>{
+			
 			this.setState({
-				eroor:error
+				error:error
 			})
 		})
 		

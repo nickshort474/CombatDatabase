@@ -18,20 +18,27 @@ const INITIAL_STATE = {
 class PasswordForgetFormBase extends Component {
     
     constructor(props) {
-      super(props);
+        super(props);
 
-      this.state = { ...INITIAL_STATE };
+        this.state = {
+            ...INITIAL_STATE 
+        };
+
     }
 
     _onSubmit(e){
         e.preventDefault();
        
-        const { email } = this.state;
+        let email = this.state.email;
 
         this.props.firebase.doPasswordReset(email).then(() => {
 
-            this.setState({ ...INITIAL_STATE });
+            this.setState({
+                ...INITIAL_STATE 
+            });
+
             this.props.history.push('/Sign in')
+
         }).catch(error => {
 
             this.setState({ error });
@@ -49,17 +56,16 @@ class PasswordForgetFormBase extends Component {
 
 
     render() {
-        const { email, error } = this.state;
+        let { email, error } = this.state;
 
-        const isInvalid = email === '';
+        let isInvalid = email === '';
 
         return (
             <div className="container">
                 <div className="content-wrapper">
                     <div className="box text-center">
                         <h2>Forgotten your password?</h2>
-
-                        <p></p>
+                        
                         <form onSubmit={this._onSubmit.bind(this)}>
                             <input name="email" value={this.state.email} onChange={this._onChange.bind(this)} type="text" placeholder="Email Address" /><br /><br />
                             <button disabled={isInvalid} className="btn btn-primary" type="submit">Send email reset</button>

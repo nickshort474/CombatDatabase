@@ -12,11 +12,11 @@ export default class AddBusinessImages extends Component{
 	constructor(){
 		super();
 		this.state = {
-			caption0:"",
 			caption1:"",
 			caption2:"",
 			caption3:"",
-			caption4:""
+			caption4:"",
+			caption5:""
 			
 		}
 
@@ -31,17 +31,37 @@ export default class AddBusinessImages extends Component{
 		
 	
 		this.firestore = firebase.firestore()
-		let ref = this.firestore.collection("Business").doc(this.props.match.params.BusinessKey).collection("businessImages");
+		let ref = this.firestore.collection("Business").doc(this.props.match.params.BusinessKey).collection("businessThumbnailImages");
 
 		ref.get().then((snapshot)=>{
+			
+			let count = 1;
+			
 			snapshot.forEach((snap)=>{
+				
 				let str = String(snap.id)
 				let num = str.substr(5,1);
-				
+				console.log(num)
 				this.setState({
 					[`caption${num}`]:snap.data().caption,
 					[`businessPic${num}`]:snap.data().url
 				})
+				
+				this.thumbnailArray.push(snap.data().url);
+				this.captionObj[count] = snap.data().caption;
+				
+				
+			})
+		})
+
+		let ref2 = this.firestore.collection("Business").doc(this.props.match.params.BusinessKey).collection("businessImages");
+		ref2.get().then((snapshot)=>{
+			snapshot.forEach((snap)=>{
+				let str = String(snap.id)
+				let num = str.substr(5,1);
+
+				this.imageArray.push(snap.data().url);
+				
 			})
 		})
 
@@ -49,9 +69,7 @@ export default class AddBusinessImages extends Component{
 
 	_handleBrowseClick(e){
 	   
-		console.log(e.target.id);
-
-	    let fileinput = document.getElementById(e.target.id);
+		let fileinput = document.getElementById(e.target.id);
 	    fileinput.click();
 	}
 
@@ -111,7 +129,7 @@ export default class AddBusinessImages extends Component{
 
 		//add caption to caption object to loop through when adding data to firestore
 		this.captionObj[e.target.id] = e.target.value;
-
+		
 	}
 
 	_handleImageSubmit(e){
@@ -122,62 +140,81 @@ export default class AddBusinessImages extends Component{
 
 		for(let i = 0; i < this.imageArray.length; i++){
 			
-			// get image from image array
-			let img = this.imageArray[i];
+			if(typeof this.imageArray[i] !== "string"){
+				//upload images
+				console.log(typeof this.imageArray[i]);
+				
+				let num = i + 1;
+					// get image from image array
+					let img = this.imageArray[i];
 
-			// set the image name in storage to image1, image2 etc
-			let imageRef = `image${i}`;
-			
-			
-			let messageImageFileLocation = `businessImages/${this.props.match.params.BusinessKey}/${imageRef}.jpg`;
-			let uploadTask = this.storageRef.child(messageImageFileLocation).put(img);
-			// Register three observers:
-			// 1. 'state_changed' observer, called any time the state changes
-			// 2. Error observer, called on failure
-			// 3. Completion observer, called on successful completion
-			uploadTask.on('state_changed', (snapshot)=>{
-			    // Observe state change events such as progress, pause, and resume
-			    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-			    this.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-
-			    console.log('Upload is ' + this.progress + '% done');
-			    switch (snapshot.state) {
-
-			    	case firebase.storage.TaskState.PAUSED: // or 'paused'
-			        	console.log('Upload is paused');
-			        	break;
-
-			    		case firebase.storage.TaskState.RUNNING: // or 'running'
-			        	console.log('Upload is running');
-			       	 break;
-			       	 default:
-			       	 	console.log("defaulting");
-
-			    }
-
-			}, (error)=> {
-			    // Handle unsuccessful uploads
-			    console.log(error);
-			    // eslint-disable-next-line
-			}, () => {
-			    // Handle successful uploads on complete
-			    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-			    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL)=>{
+					// set the image name in storage to image1, image2 etc
+					let imageRef = `image${num}`;
 					
-					// add the url of image to download array
-					downloadArray.push(downloadURL);
 					
-					//increment counter 
-					uploadCounter++;
+					let messageImageFileLocation = `businessImages/${this.props.match.params.BusinessKey}/${imageRef}.jpg`;
+					let uploadTask = this.storageRef.child(messageImageFileLocation).put(img);
+					// Register three observers:
+					// 1. 'state_changed' observer, called any time the state changes
+					// 2. Error observer, called on failure
+					// 3. Completion observer, called on successful completion
+					uploadTask.on('state_changed', (snapshot)=>{
+					    // Observe state change events such as progress, pause, and resume
+					    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+					    this.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+
+					    console.log('Upload is ' + this.progress + '% done');
+					    switch (snapshot.state) {
+
+					    	case firebase.storage.TaskState.PAUSED: // or 'paused'
+					        	console.log('Upload is paused');
+					        	break;
+
+					    		case firebase.storage.TaskState.RUNNING: // or 'running'
+					        	console.log('Upload is running');
+					       	 break;
+					       	 default:
+					       	 	console.log("defaulting");
+
+					    }
+
+					}, (error)=> {
+					    // Handle unsuccessful uploads
+					    console.log(error);
+					    // eslint-disable-next-line
+					}, () => {
+					    // Handle successful uploads on complete
+					    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+					    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL)=>{
+							
+							// add the url of image to download array
+							downloadArray.push(downloadURL);
+							
+							//increment counter 
+							uploadCounter++;
+							
+							if(uploadCounter === this.imageArray.length){
+								//once all image uploads have been completed add reference to images to firestore
+								this._uploadRefToFirestore(downloadArray,"mainImages",()=>{
+									this._handleThumbnailSubmit();
+								});
+							}
+					    });
+					})
+			}else{
+				//do nothing
+				
+				downloadArray.push(this.imageArray[i])
+				uploadCounter++;
+				if(uploadCounter === this.imageArray.length){
+					//once all image uploads have been completed add reference to images to firestore
+					this._uploadRefToFirestore(downloadArray,"mainImages",()=>{
+						this._handleThumbnailSubmit();
+					});
+				}
+			}
+
 					
-					if(uploadCounter === this.imageArray.length){
-						//once all image uploads have been completed add reference to images to firestore
-						this._uploadRefToFirestore(downloadArray,"mainImages",()=>{
-							this._handleThumbnailSubmit();
-						});
-					}
-			    });
-			})
 		}
 				
 	}
@@ -190,62 +227,76 @@ export default class AddBusinessImages extends Component{
 
 		for(let i = 0; i < this.thumbnailArray.length; i++){
 			
-			// get image from image array
-			let img = this.thumbnailArray[i];
+			if(typeof this.thumbnailArray[i] !== "string"){
 
-			// set the image name in storage to image1, image2 etc
-			let imageRef = `thumbnail${i}`;
-			
-			
-			let messageImageFileLocation = `businessThumbnails/${this.props.match.params.BusinessKey}/${imageRef}.jpg`;
-			let uploadTask = this.storageRef.child(messageImageFileLocation).put(img);
-			// Register three observers:
-			// 1. 'state_changed' observer, called any time the state changes
-			// 2. Error observer, called on failure
-			// 3. Completion observer, called on successful completion
-			uploadTask.on('state_changed', (snapshot)=>{
-			    // Observe state change events such as progress, pause, and resume
-			    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-			    this.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+					let num = i + 1;
+					// get image from image array
+					let img = this.thumbnailArray[i];
 
-			    console.log('Upload is ' + this.progress + '% done');
-			    switch (snapshot.state) {
-
-			    	case firebase.storage.TaskState.PAUSED: // or 'paused'
-			        	console.log('Upload is paused');
-			        	break;
-
-			    		case firebase.storage.TaskState.RUNNING: // or 'running'
-			        	console.log('Upload is running');
-			       	 break;
-			       	 default:
-			       	 	console.log("defaulting");
-
-			    }
-
-			}, (error)=> {
-			    // Handle unsuccessful uploads
-			    console.log(error);
-			    // eslint-disable-next-line
-			}, () => {
-			    // Handle successful uploads on complete
-			    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-			    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL)=>{
+					// set the image name in storage to image1, image2 etc
+					let imageRef = `thumbnail${num}`;
 					
-					// add the url of image to download array
-					thumbnailDownloadArray.push(downloadURL);
 					
-					//increment counter 
-					uploadCounter++;
-					
-					if(uploadCounter === this.imageArray.length){
-						//once all image uploads have been completed add reference to images to firestore
-						this._uploadRefToFirestore(thumbnailDownloadArray,"thumbnails",()=>{
-							this.props.history.push(`/Business/${this.props.match.params.BusinessKey}`)
-						});
-					}
-			    });
-			})
+					let messageImageFileLocation = `businessThumbnails/${this.props.match.params.BusinessKey}/${imageRef}.jpg`;
+					let uploadTask = this.storageRef.child(messageImageFileLocation).put(img);
+					// Register three observers:
+					// 1. 'state_changed' observer, called any time the state changes
+					// 2. Error observer, called on failure
+					// 3. Completion observer, called on successful completion
+					uploadTask.on('state_changed', (snapshot)=>{
+					    // Observe state change events such as progress, pause, and resume
+					    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+					    this.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+
+					    console.log('Upload is ' + this.progress + '% done');
+					    switch (snapshot.state) {
+
+					    	case firebase.storage.TaskState.PAUSED: // or 'paused'
+					        	console.log('Upload is paused');
+					        	break;
+
+					    		case firebase.storage.TaskState.RUNNING: // or 'running'
+					        	console.log('Upload is running');
+					       	 break;
+					       	 default:
+					       	 	console.log("defaulting");
+
+					    }
+
+					}, (error)=> {
+					    // Handle unsuccessful uploads
+					    console.log(error);
+					    // eslint-disable-next-line
+					}, () => {
+					    // Handle successful uploads on complete
+					    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+					    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL)=>{
+							
+							// add the url of image to download array
+							thumbnailDownloadArray.push(downloadURL);
+							
+							//increment counter 
+							uploadCounter++;
+							
+							if(uploadCounter === this.imageArray.length){
+								//once all image uploads have been completed add reference to images to firestore
+								this._uploadRefToFirestore(thumbnailDownloadArray,"thumbnails",()=>{
+									this.props.history.push(`/Business/${this.props.match.params.BusinessKey}`)
+								});
+							}
+					    });
+					})
+			}else{
+				console.log(typeof this.thumbnailArray[i])
+				thumbnailDownloadArray.push(this.thumbnailArray[i])
+				uploadCounter++;
+				if(uploadCounter === this.thumbnailDownloadArray.length){
+					//once all image uploads have been completed add reference to images to firestore
+					this._uploadRefToFirestore(thumbnailDownloadArray,"mainImages",()=>{
+						this._handleThumbnailSubmit();
+					});
+				}
+			}
 		}
 				
 	}
@@ -256,9 +307,14 @@ export default class AddBusinessImages extends Component{
 		let firestore = firebase.firestore();
 		let batch = firestore.batch();
 
+		console.log(this.captionObj);
+
 		if(type === "thumbnails"){
-			for(let i = 0; i < downloadArray.length; i++){
+			for(let i = 1; i < downloadArray.length; i++){
 			
+
+				//let num = i + 1;
+
 				//create ref for each downloadURl / image
 				let ref = firestore.collection("Business").doc(this.props.match.params.BusinessKey).collection("businessThumbnailImages").doc(`image${i}`);
 				
@@ -273,8 +329,11 @@ export default class AddBusinessImages extends Component{
 
 		}else{
 			//loop through download array
-			for(let i = 0; i < downloadArray.length; i++){
+			for(let i = 1; i < downloadArray.length; i++){
 			
+				//let num = i + 1;
+				console.log(this.captionObj[i] + " i")
+				
 				//create ref for each downloadURl / image
 				let ref = firestore.collection("Business").doc(this.props.match.params.BusinessKey).collection("businessImages").doc(`image${i}`);
 				
@@ -319,11 +378,11 @@ export default class AddBusinessImages extends Component{
 									<label htmlFor="image">Image 1</label>
 								</div>
 								<div className="col-sm-3">
-									<input type="file" id="0" name="fileUpload" style={{display:"none"}} onChange={this._handleMessagePic.bind(this)} />
-									<input type="button" value="Add Image" id="0" onClick={this._handleBrowseClick.bind(this)} className="btn btn-primary extraMargin"/>
+									<input type="file" id="1" name="fileUpload" style={{display:"none"}} onChange={this._handleMessagePic.bind(this)} />
+									<input type="button" value="Add Image" id="1" onClick={this._handleBrowseClick.bind(this)} className="btn btn-primary extraMargin"/>
 								</div>	
 								<div className="col-sm-6">
-									<img src={this.state.businessPic0}  id="businessPic0"  alt="" />
+									<img src={this.state.businessPic1}  id="businessPic1"  alt="" />
 								</div>
 							</div>
 
@@ -332,7 +391,7 @@ export default class AddBusinessImages extends Component{
 									<p>Image 1 caption:</p>
 								</div>
 								<div className="col-sm-6">
-									<input type="text" id="0" onChange={this._handleCaptionChange.bind(this)} value={this.state.caption0} />
+									<input type="text" id="1" onChange={this._handleCaptionChange.bind(this)} value={this.state.caption1} />
 								</div>
 							</div>
 						</div>
@@ -345,37 +404,11 @@ export default class AddBusinessImages extends Component{
 									<label htmlFor="image">Image 2</label>
 								</div>
 								<div className="col-sm-3">
-									<input type="file" id="1" name="fileUpload" style={{display:"none"}} onChange={this._handleMessagePic.bind(this)} />
-									<input type="button" value="Add Image" id="1" onClick={this._handleBrowseClick.bind(this)} className="btn btn-primary extraMargin"/>
-								</div>	
-								<div className="col-sm-6">
-									<img src={this.state.businessPic1}  id="businessPic1"  alt="" />
-								</div>
-							</div>
-
-							<div className="row">
-								<div className="col-sm-6">
-									<p>Image 2 caption:</p>
-								</div>
-								<div className="col-sm-6">
-									<input type="text" id="1" onChange={this._handleCaptionChange.bind(this)} value={this.state.caption1} />
-								</div>
-							</div>
-							
-						</div>
-
-
-						<div className="box">	
-							<div className="row">
-								<div className="col-sm-3">
-									<label htmlFor="image">Image 3</label>
-								</div>
-								<div className="col-sm-3">
 									<input type="file" id="2" name="fileUpload" style={{display:"none"}} onChange={this._handleMessagePic.bind(this)} />
 									<input type="button" value="Add Image" id="2" onClick={this._handleBrowseClick.bind(this)} className="btn btn-primary extraMargin"/>
 								</div>	
 								<div className="col-sm-6">
-									<img src={this.state.businessPic2}  id="businessPic2"  alt="" />
+									<img src={this.state.businessPic2}  id="businessPic1"  alt="" />
 								</div>
 							</div>
 
@@ -390,23 +423,24 @@ export default class AddBusinessImages extends Component{
 							
 						</div>
 
-						<div className="box">
+
+						<div className="box">	
 							<div className="row">
 								<div className="col-sm-3">
-									<label htmlFor="image">Image 4</label>
+									<label htmlFor="image">Image 3</label>
 								</div>
 								<div className="col-sm-3">
 									<input type="file" id="3" name="fileUpload" style={{display:"none"}} onChange={this._handleMessagePic.bind(this)} />
 									<input type="button" value="Add Image" id="3" onClick={this._handleBrowseClick.bind(this)} className="btn btn-primary extraMargin"/>
 								</div>	
 								<div className="col-sm-6">
-									<img src={this.state.businessPic3}  id="businessPic3"  alt="" />
+									<img src={this.state.businessPic3}  id="businessPic2"  alt="" />
 								</div>
 							</div>
 
 							<div className="row">
 								<div className="col-sm-6">
-									<p>Image 2 caption:</p>
+									<p>Image 3 caption:</p>
 								</div>
 								<div className="col-sm-6">
 									<input type="text" id="3" onChange={this._handleCaptionChange.bind(this)} value={this.state.caption3} />
@@ -415,26 +449,54 @@ export default class AddBusinessImages extends Component{
 							
 						</div>
 
+
 						<div className="box">
 							<div className="row">
 								<div className="col-sm-3">
-									<label htmlFor="image">Image 5</label>
+									<label htmlFor="image">Image 4</label>
 								</div>
 								<div className="col-sm-3">
 									<input type="file" id="4" name="fileUpload" style={{display:"none"}} onChange={this._handleMessagePic.bind(this)} />
 									<input type="button" value="Add Image" id="4" onClick={this._handleBrowseClick.bind(this)} className="btn btn-primary extraMargin"/>
 								</div>	
 								<div className="col-sm-6">
-									<img src={this.state.businessPic4}  id="businessPic4"  alt="" />
+									<img src={this.state.businessPic3}  id="businessPic3"  alt="" />
 								</div>
 							</div>
 
 							<div className="row">
 								<div className="col-sm-6">
-									<p>Image 2 caption:</p>
+									<p>Image 4 caption:</p>
 								</div>
 								<div className="col-sm-6">
 									<input type="text" id="4" onChange={this._handleCaptionChange.bind(this)} value={this.state.caption4} />
+								</div>
+							</div>
+							
+						</div>
+
+
+
+						<div className="box">
+							<div className="row">
+								<div className="col-sm-3">
+									<label htmlFor="image">Image 5</label>
+								</div>
+								<div className="col-sm-3">
+									<input type="file" id="5" name="fileUpload" style={{display:"none"}} onChange={this._handleMessagePic.bind(this)} />
+									<input type="button" value="Add Image" id="5" onClick={this._handleBrowseClick.bind(this)} className="btn btn-primary extraMargin"/>
+								</div>	
+								<div className="col-sm-6">
+									<img src={this.state.businessPic5}  id="businessPic4"  alt="" />
+								</div>
+							</div>
+
+							<div className="row">
+								<div className="col-sm-6">
+									<p>Image 5 caption:</p>
+								</div>
+								<div className="col-sm-6">
+									<input type="text" id="5" onChange={this._handleCaptionChange.bind(this)} value={this.state.caption5} />
 								</div>
 							</div>
 							

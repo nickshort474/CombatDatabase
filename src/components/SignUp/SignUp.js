@@ -236,7 +236,7 @@ class SignUpFormBase extends Component{
 
 const SignUpLink = () => (
 	
-		<Link to={"/SignUp"}><button className="btn btn-primary">Sign Up</button></Link>
+	<Link to={"/SignUp"}><button className="btn btn-primary">Sign Up</button></Link>
 	
 );
 

@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import { firebase } from '@firebase/app';
 
 import GetImage from '../../utils/GetImage';
-import {_disable} from '../../utils/DisableGreyOut';
+import {_disable,_enable} from '../../utils/DisableGreyOut';
 
 
 import store from '../../redux/store';
@@ -107,6 +107,7 @@ export default class EditBusinessLogo extends Component{
 
 		// commit batch write
 		ref.update(obj).then(()=>{
+			_enable();
 			this.props.history.push(`/Business/${this.props.match.params.BusinessKey}`)
 			console.log("commited");
 		});
@@ -142,7 +143,7 @@ export default class EditBusinessLogo extends Component{
 
 						<div className="row text-center">
 
-							<button className="btn-primary" onClick={this._handleImageSubmit.bind(this)}>Upload images</button>
+							<button className="btn-primary" onClick={this._handleImageSubmit.bind(this)}>Upload</button>
 						</div>
 					</div>
 				</div>

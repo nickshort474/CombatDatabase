@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router,Route} from 'react-router-dom';
+import {HashRouter as Router,Route} from 'react-router-dom';
 
 
 import Navigation from '../Navigation/Navigation';
@@ -12,46 +12,47 @@ import FindBusiness from '../Business/FindBusiness';
 import SingleBusinessPage from '../Business/SingleBusinessPage';
 import ReviewPage from '../Business/ReviewPage';
 import EditBusiness from '../Business/EditBusiness';
-import AddBusinessImages from '../Business/AddBusinessImages';
+import AddBusinessImages from '../Business/AddBusinessImages2';
 import EditBusinessLogo from '../Business/EditBusinessLogo';
 
+//Community files
 import Community from '../Community/Community';
 import PersonProfile from '../Community/PersonProfile';
 import FindPeople from '../Community/FindPeople';
-/*import ContactsList from '../Community/ContactsList';*/
 import ContactRequest from '../Community/ContactRequest';
 import SearchForPeople from '../Community/SearchForPeople';
+
 
 import Messages from '../Messages/Messages';
 import NewMessage from '../Messages/NewMessage';
 
 //events files
-import EventsPage from '../events/EventsPage';
-import FindEvents from '../events/FindEvents';
-import AddEvents from '../events/AddEvents';
-import SingleEventPage from '../events/SingleEventPage';
-import EditEvent from '../events/EditEvent';
-import EditEventLogo from '../events/EditEventLogo';
+import EventsPage from '../Events/EventsPage';
+import FindEvents from '../Events/FindEvents';
+import AddEvents from '../Events/AddEvents';
+import SingleEventPage from '../Events/SingleEventPage';
+import EditEvent from '../Events/EditEvent';
+import EditEventLogo from '../Events/EditEventLogo';
 
 //styles files
-import Styles from '../styles/Styles';
-import AddStyle from '../styles/AddStyle';
-import EditStyle from '../styles/EditStyle';
-import EditHistory from '../styles/EditHistory';
-import Report from '../styles/Report';
+import Styles from '../Styles/Styles';
+import AddStyle from '../Styles/AddStyle';
+import EditStyle from '../Styles/EditStyle';
+import EditHistory from '../Styles/EditHistory';
+import Report from '../Styles/Report';
 
 
 // Blog files 
-import MyBlogList from '../blog/MyBlogList';
-import MyBlogPostList from '../blog/MyBlogPostList';
-import MySingleBlogPost from '../blog/MySingleBlogPost';
-import ViewBlogs from '../blog/ViewBlogs';
-import BlogPostList from '../blog/BlogPostList';
-import SingleBlogPost from '../blog/SingleBlogPost';
-import FindBlog from '../blog/FindBlog';
-import AddBlog from '../blog/AddBlog';
-import AddBlogPost from '../blog/AddBlogPost';
-import SearchedBlogs from '../blog/SearchedBlogs';
+import MyBlogList from '../Blog/MyBlogList';
+import MyBlogPostList from '../Blog/MyBlogPostList';
+import MySingleBlogPost from '../Blog/MySingleBlogPost';
+import ViewBlogs from '../Blog/ViewBlogs';
+import BlogPostList from '../Blog/BlogPostList';
+import SingleBlogPost from '../Blog/SingleBlogPost';
+import FindBlog from '../Blog/FindBlog';
+import AddBlog from '../Blog/AddBlog';
+import AddBlogPost from '../Blog/AddBlogPost';
+import SearchedBlogs from '../Blog/SearchedBlogs';
 
 
 //authorisation, profile, contact, other

@@ -3,6 +3,9 @@ import {firebase} from '@firebase/app';
 import {Link} from 'react-router-dom';
 
 import Map from '../../utils/Map';
+
+/*import MapContainer from '../../utils/MapComponent2';*/
+
 import Geosuggest from 'react-geosuggest';
 
 import constants from '../../redux/constants';
@@ -24,11 +27,15 @@ export default class FindBusiness extends Component{
 		this.first = false;
 		this.firestore = firebase.firestore();
 		
+		
+
 		this.state = {
 			items:"",
 			businessComps:[],
+			radius:"25"
 			
 		}
+		//store.dispatch({type:constants.HAS_SAVED_BUSINESS_SEARCH, hasSavedBusinessSearch:false})
 	}
 	
 	componentWillMount(){
@@ -46,18 +53,20 @@ export default class FindBusiness extends Component{
 		//if true load state and apply
 		if(hasSavedSearch){
 			console.log("has saved search");
+			console.log(hasSavedSearch)
 			let businessSearchValues = storeState.businessSearchValues;
 
 			this.lat = businessSearchValues.lat;
 			this.lng = businessSearchValues.lng;
-			this.radius = businessSearchValues.radius;
+			
 
 			this.setState({
 				location:storeState.businessSearchTerm,
 				items:storeState.businessSearchObj,
-				businessComps:storeState.businessSearchObj
+				businessComps:storeState.businessSearchObj,
+				radius:businessSearchValues.radius
 			},()=>{
-				this.child._updateMap(this.lng, this.lat, "FindBusiness",this.radius, this.state.items);
+				this.child._updateMap(this.lng, this.lat, "FindBusiness",this.state.radius, this.state.items);
 			})
 		}else{
 
@@ -67,13 +76,18 @@ export default class FindBusiness extends Component{
 	}
 	
 	_distanceChange(evt){
-		this.radius = evt.target.value;
+		
+		this.setState({
+			radius:evt.target.value,
+		})
 		
 				
 		if(!this.first){
 			this.first = true;
 		}else{
-			this._gatherCoords();
+			if(this.hasSuggestion){
+				this._gatherCoords();
+			}
 		}
 		
 		
@@ -81,6 +95,9 @@ export default class FindBusiness extends Component{
 
 	_onSuggestSelect(suggest) {
 		if(suggest){
+
+			this.hasSuggestion = true;
+			
 	    	this.location = suggest.gmaps.formatted_address;
 	    	this.lat = suggest.location.lat;
 	    	this.lng = suggest.location.lng;
@@ -103,7 +120,7 @@ export default class FindBusiness extends Component{
 
   	_gatherCoords(){
   			   
-	    let latDifference =   this.radius / 69;
+	    let latDifference =   this.state.radius / 69;
 	    let lowerLat = this.lat - latDifference;
 	    let upperLat = this.lat + latDifference;
 
@@ -113,10 +130,10 @@ export default class FindBusiness extends Component{
 	    let milesPerLong = longRadians * 69.172;
 	   
 
-	    let longDifference = this.radius / milesPerLong;
+	    let longDifference = this.state.radius / milesPerLong;
 	    let lowerLong = this.lng - longDifference;
 	    let upperLong = this.lng + longDifference;
-	   
+	  
 
 
 	    
@@ -148,7 +165,7 @@ export default class FindBusiness extends Component{
 	    		businessComps:items
 	    	});
 
-			this.child._updateMap(this.lng, this.lat, "FindBusiness",this.radius, items);
+			this.child._updateMap(this.lng, this.lat, "FindBusiness",this.state.radius, items);
 	    })
 
   	}
@@ -158,6 +175,8 @@ export default class FindBusiness extends Component{
 
   		return angle * (Math.PI / 180);
 	}
+
+	
 
 	render(){
 		let businessComps;
@@ -174,7 +193,7 @@ export default class FindBusiness extends Component{
 			        <section className="content-wrapper">
 
 			        	<div className="box">
-					   		<Link to="/BusinessPage">&#60; Back to business listings</Link>
+					   		<Link to="/Business">&#60; Back to business listings</Link>
 					    </div>
 
 		               	<div className="row">
@@ -196,7 +215,7 @@ export default class FindBusiness extends Component{
 				                    	<div className="form-group">
 				                            <label htmlFor="distance">Distance from:</label>
 				                           
-				                           	<select value={this.radius} onChange={this._distanceChange.bind(this)} >
+				                           	<select value={this.state.radius} onChange={this._distanceChange.bind(this)} >
 				                           		<option value="10">10</option>
 				                           		<option value="25">25</option>
 				                           		<option value="50">50</option>
@@ -218,7 +237,7 @@ export default class FindBusiness extends Component{
 									        />
 				                           
 				                        </div>
-
+				                      
 				                        <Map data={this.state.items} onRef={ref =>(this.child = ref)} />
 
 				                        {/*<p>What would you like to search by?</p>

@@ -70,7 +70,6 @@ export default class Map extends Component {
       google.maps.event.clearListeners(this.map, 'zoom_changed') 
   }
 
-
   _updateMap(lng,lat,page,radius,items){
       let zoom;
      
@@ -90,6 +89,7 @@ export default class Map extends Component {
           default:
               zoom = 1
       }
+
       this.items = items;
 
       this.setState({
@@ -129,7 +129,7 @@ export default class Map extends Component {
       )
   }
 
-  
+
 
   _createMarker() {
 
@@ -138,7 +138,7 @@ export default class Map extends Component {
           
           for(let obj of this.items){
              
-              let businessLink = "<a className='compTextStyle' href='/Business/" + obj.key +"/FindBusiness'>Visit business page</a>"
+              let businessLink = "<a class='compTextStyle' href='#/SingleBusiness/" + obj.key +"'>Visit business page</a>"
               let contentString = "<div class='InfoWindow'><h2>" + obj.businessName + "</h2><br /><p>" + businessLink + "</p></div>"
               
               let infowindow = new google.maps.InfoWindow({
@@ -195,7 +195,7 @@ export default class Map extends Component {
 
           for(obj of this.items){
              
-              let eventLink = "<a class='compTextStyle' href='/SingleEvent/" + obj.eventID +"'>Visit event page</a>"
+              let eventLink = "<a class='compTextStyle' href='#/SingleEvent/" + obj.eventID +"'>Visit event page</a>"
               let contentString = "<div class='InfoWindow'><h2>" + obj.eventName + "</h2><br /><p>" + obj.eventType + "</p></p>" + eventLink + "</p></div>"
               
               //let contentString = "Hello";
