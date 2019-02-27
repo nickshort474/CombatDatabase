@@ -3,8 +3,9 @@ import {Link} from 'react-router-dom';
 import store from '../../redux/store';
 import constants from '../../redux/constants';
 
-//import SideBarAdvert from '../Components/SideBarAdvert';
 import imgSrc from '../../assets/images/background/background-3.jpg';
+import LocalStorage from '../../utils/LocalStorage';
+
 
 export default class Home extends Component{
 	
@@ -12,24 +13,33 @@ export default class Home extends Component{
 	constructor(){
 		super();
 		store.dispatch({type:constants.SAVE_PAGE, page:"Home"});
-		console.log("home constructor");
+		
 		this.nameStyle = {
 			color:'red'
 		}
 		this.linkStyle = {
 			color:'white'
 		}
+
+		this.userUID = LocalStorage.loadState("user");
+		console.log(this.userUID);
 	}
 
 	componentWillMount(){
 		window.scrollTo(0, 0);
-		console.log(imgSrc);
+		
 	}
 
-
+	
 
 	
 	render(){
+
+		let uploadButton;
+
+		if(this.userUID){
+			uploadButton = <div><p className="text-10">Upload your image for a chance to see it on the combatdb homepage...<Link to="/HomeImageUpload"> click here</Link></p></div>
+		}
 
 		return(
 			
@@ -42,9 +52,9 @@ export default class Home extends Component{
 				        			<p>Our mission to build a community driven resource with a range a growing features.</p> 
 				        			
 			        			</div>
-			        			<div className="box">	
+			        			<div className="box text-center">	
 				        			<img src={imgSrc} style={{"width":"100%"}} alt="This weeks!" />
-				        			<Link to="/HomeImageUpload"><p className="text-10">Upload your image for a chance to see it on the combatdb hmoepage</p></Link>
+				        			{uploadButton}
 			        			</div>
 			        		</div>
 

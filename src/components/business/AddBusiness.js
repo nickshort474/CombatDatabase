@@ -301,7 +301,7 @@ class AddBusiness extends Component{
 			        <section className="content-wrapper">
 			        	
 			        	<div className="box">
-					   		<Link to="BusinessPage">&#60; Back to business</Link>
+					   		<Link to="BusinessPage">&#60; Back</Link>
 					    </div>
 
 		               	<div className="row">

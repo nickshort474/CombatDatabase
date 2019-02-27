@@ -6,6 +6,8 @@ import EditLink from "./EditLink";
 
 import store from '../../redux/store';
 import constants from '../../redux/constants';
+import LocalStorage from '../../utils/LocalStorage';
+
 
 export default class Styles extends Component{
 	
@@ -21,7 +23,7 @@ export default class Styles extends Component{
 		
 
 		if(style === undefined){
-			this.currentSelectedStyle = "Aikido";
+			this.currentSelectedStyle = "Karate";
 		}else{
 			this.currentSelectedStyle = style;
 		}
@@ -35,14 +37,14 @@ export default class Styles extends Component{
 			countryOfOrigin:"",
 			dateCreated:"",
 			definingFeatures:"",
-			famousPractioners:"",
+			famousPractitioners:"",
 			fulldescription:"",
 			history:""
 		}
 
 		
 		let styleItems = [];
-
+		this.userUID = LocalStorage.loadState("user");
 		
 		this.firestore = firebase.firestore();
 		let ref = this.firestore.collection("Styles");
@@ -91,7 +93,7 @@ export default class Styles extends Component{
 					countryOfOrigin:snapshot.data().Country,
 					dateCreated:snapshot.data().Created,
 					definingFeatures:snapshot.data().Features,
-					famousPractioners:snapshot.data().Practioners,
+					famousPractitioners:snapshot.data().Practitioners,
 					fullDescription:snapshot.data().Description,
 					history:snapshot.data().History
 				})
@@ -100,6 +102,15 @@ export default class Styles extends Component{
 			
 		}else{
 			console.log("no value");
+		}
+	}
+
+	_addStyle(){
+
+		if(this.userUID){
+			this.props.history.push('/AddStyle');
+		}else{
+			alert('Please sign in to add to the style wiki');
 		}
 	}
 
@@ -201,10 +212,10 @@ export default class Styles extends Component{
 								<div className="box">
 									<div className="row">
 										<div className="col-xs-6">
-											<p><i><b>Famous Practioners:</b></i></p>
+											<p><i><b>Famous practitioners:</b></i></p>
 										</div>
 										<div className="col-xs-6 text-right">
-											<EditLink data="Practioners" style={this.state.styleName} />
+											<EditLink data="Practitioners" style={this.state.styleName} />
 										</div>
 									</div>
 
@@ -212,14 +223,14 @@ export default class Styles extends Component{
 
 									
 
-									<div>{this.state.famousPractioners ? this.state.famousPractioners : <p>Please click the edit link ( <i className='fa fa-edit' alt='edit history'></i> ) to add additional info</p>}</div>
+									<div>{this.state.famousPractitioners ? this.state.famousPractitioners : <p>Please click the edit link ( <i className='fa fa-edit' alt='edit history'></i> ) to add additional info</p>}</div>
 
 								</div>
 
 								<div className="box">
 									<div className="row">
 										<div className="col-xs-6">
-											<p><i><b>Full Description:</b></i></p>
+											<p><i><b>Full description:</b></i></p>
 										</div>
 										<div className="col-xs-6 text-right">
 											<EditLink data="Description" style={this.state.styleName} />
@@ -254,16 +265,16 @@ export default class Styles extends Component{
 			        				<div className="col-sm-12">
 			        					
 			        					
-				        					<div className="col-sm-4">
-				        						<Link to="/AddStyle" className="clearFloat">
+				        					<div className="col-sm-4 addStyleButton" onClick={this._addStyle.bind(this)}>
+				        						{/*<Link to="/AddStyle" className="clearFloat">*/}
 					        						<div className="box text-center">
 					        							<h4>Add Style</h4><i className="fa fa-plus-circle fa-3x" alt="Add Style"></i>
 								                	</div>
-							                	</Link>
+							                	{/*</Link>*/}
 							                </div>
 
 							                <div className="col-sm-4">
-								                <Link to={"EditHistory/" + this.state.styleName}>
+								                <Link to={"/EditHistory/" + this.state.styleName}>
 								                <div className="box text-center">	
 									                <h4>Edit History</h4><i className="fa fa-history fa-3x" alt="Edit History" ></i>
 												</div>
@@ -271,7 +282,7 @@ export default class Styles extends Component{
 										 	</div>
 										 	
 										 	<div className="col-sm-4">
-								                <Link to="Report">
+								                <Link to={`/Report/${this.currentSelectedStyle}`}>
 									                <div className="box text-center">	
 										                <h4>Report Content</h4><i className="fa fa-flag-checkered fa-3x" alt="Report content" ></i>
 													</div>

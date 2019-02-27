@@ -10,7 +10,7 @@ const Footer = () => (
             	<div className="col-md-6 hidden-xs">
                 	<ul className="nav navbar-nav">
                         <li><Link to="/Contact">Contact Us</Link></li>
-                        <li><Link to="/About us">About us</Link></li>
+                        <li><Link to="/AboutUs">About us</Link></li>
                         <li><Link to="/Profile">Profile</Link></li>
                         <li><Link to="/Privacy">Privacy Policy</Link></li>
                         

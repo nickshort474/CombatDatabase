@@ -1766,7 +1766,10 @@ select{
  	border-style: solid;
 }
 
-
+.addStyleButton:hover{
+	color:#ae0c00;
+	cursor:pointer;
+}
 
 
 

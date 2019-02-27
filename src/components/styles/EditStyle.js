@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {withRouter, Link} from 'react-router-dom';
 import {firebase} from '@firebase/app';
-
+import {_disable,_enable} from '../../utils/DisableGreyOut';
 
 import LocalStorage from '../../utils/LocalStorage';
 
@@ -32,15 +32,12 @@ class EditStyle extends Component{
 	componentDidMount(){
 		
 		
-		
-		let ref = this.firestore.collection("userUIDs").doc(this.user);
-		
-		ref.get().then((snapshot)=>{
-			this.userName = snapshot.data().userName;
-		})
-
 		if(this.user){
-			
+			let ref = this.firestore.collection("Users").doc(this.user);
+			ref.get().then((snapshot)=>{
+				this.userName = snapshot.data().userName;
+			})
+
 			this._gatherEditInfo();
 			this.disabled = false;
 			this.setState({
@@ -76,42 +73,54 @@ class EditStyle extends Component{
 		
 	}
 
-	_handleStyle(event){
+	_handleStyle(e){
 		this.setState({
-			content:event.target.value
+			content:e.target.value
 		})
 	}
 
 
 
-	_editStyle(event){
-		
-		event.preventDefault();
-		let ref = this.firestore.collection("Styles").doc(this.props.match.params.Style);
+	_editStyle(e){
+		if(this.state.content > 4){
+			_disable();
+			
+			let ref = this.firestore.collection("Styles").doc(this.props.match.params.Style);
 
-		let category = this.props.match.params.Category;
-		console.log(category);
-		let newString = category.charAt(0) + category.slice(1);
-		let withoutWhitespace = newString.replace(" ", "");
-		console.log(withoutWhitespace);
-		//let categoryString  = category.toString();
-		let catObj = {};
-		catObj[withoutWhitespace] = this.state.content;
+			let category = this.props.match.params.Category;
+			
+			let newString = category.charAt(0) + category.slice(1);
+
+			let withoutWhitespace = newString.replace(" ", "");
 		
-		ref.update(catObj);
-				
-		let ref2 = this.firestore.collection("StyleHistory").doc(this.props.match.params.Style).collection("changes");
-		
-		
-		let obj = {
-			Category:this.props.match.params.Category,
-			Date:Date.now(),
-			Editor:this.user,
-			EditorName:this.userName
+			
+			let catObj = {};
+
+			catObj[withoutWhitespace] = this.state.content;
+			
+			ref.update(catObj);
+					
+			let ref2 = this.firestore.collection("StyleHistory").doc(this.props.match.params.Style).collection("changes");
+			
+			
+			let obj = {
+				Category:this.props.match.params.Category,
+				Date:Date.now(),
+				Editor:this.user,
+				EditorName:this.userName
+			}
+
+			ref2.add(obj).then(()=>{
+				_enable()
+				this.props.history.push('/Styles');
+			});
+
+
+		}else{
+			alert("please add some information to the category")
 		}
-
-		ref2.add(obj);
-		this.props.history.push('/Styles');
+		
+		
 
 		
 	}

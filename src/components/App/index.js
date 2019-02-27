@@ -4,6 +4,8 @@ import {HashRouter as Router,Route} from 'react-router-dom';
 
 import Navigation from '../Navigation/Navigation';
 import HomePage from '../Home/Home';
+import Footer from '../Footer';
+import HomeImageUpload from '../Home/HomeImageUpload';
 
 //Business listing files
 import Business from '../Business/Business';
@@ -89,8 +91,9 @@ class App extends Component{
 
 					 	
 					 	<Route exact path={"/"} component={HomePage} />
-					 	<Route path ={"/Home"} component={HomePage} />
-				     	
+					 	<Route path={"/Home"} component={HomePage} />
+				     	<Route path={"/HomeImageUpload"} component={HomeImageUpload} />
+
 				      	<Route path={"/ForgotPassword"} component={PasswordForgetPage} />
 				      	
 						<Route path='/Business' component={Business} />
@@ -128,7 +131,7 @@ class App extends Component{
 						<Route path="/AddStyle" component={AddStyle} />
 						<Route path="/EditStyle/:Category/:Style" component={EditStyle} />
 						<Route path="/EditHistory/:HistoryKey" component={EditHistory} />
-						<Route path="/Report" component={Report} />
+						<Route path="/Report/:ItemName" component={Report} />
 
 						{/*<Route path="Forum" component={Forum} />
 						<Route path="ForumList/:Name" component={ForumList} />
@@ -150,15 +153,19 @@ class App extends Component{
 						<Route path="/Contact" component={Contact} />
 						<Route path="/Response" component={Response} />
 						<Route path="/Privacy" component={Privacy} />
+						<Route path="/AboutUs" component={AboutUs} />
+
+
 						<Route path="/Profile" component={Profile} />
 						<Route path="/ProfilePic/:UserRef" component={ProfilePic} />
 						<Route path="/Username" component={Username} />
 						
 
-						<Route path="/AboutUs" component={AboutUs} />
+						
 
 						<Route path="/SignUp" component={SignUpPage} />
 						<Route path="/Signin" component={SignInPage} />
+						<Footer />
 					</div>		
 			 	</Router>
 		)

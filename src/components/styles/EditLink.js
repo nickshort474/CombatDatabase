@@ -13,7 +13,7 @@ export default class EditLink extends Component{
 				
 			<div>	
 			{/*Wiki edit button*/}
-				<Link to={`/EditTerm/${this.props.data}/${this.props.style}`}>
+				<Link to={`/EditStyle/${this.props.data}/${this.props.style}`}>
 					<i className="fa fa-edit" alt="edit history"></i>
 				</Link>
 			</div>
