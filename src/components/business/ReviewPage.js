@@ -1,17 +1,21 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {firebase} from '@firebase/app';
+import $ from 'jquery';
+
 
 import store from '../../redux/store';
 import constants from '../../redux/constants';
+
+import {_disable,_enable} from '../../utils/DisableGreyOut';
 
 import LocalStorage from '../../utils/LocalStorage';
 		
 
 export default class ReviewPage extends Component{
 	
-	constructor(){
-		super();
+	constructor(props){
+		super(props);
 
 		let pageString = `Review/${this.props.match.params.BusinessKey}`
 		store.dispatch({type:constants.SAVE_PAGE, page:pageString});
@@ -23,11 +27,9 @@ export default class ReviewPage extends Component{
 		
 
 		this.state = {
-			reviewTitle:"Title",
-			reviewComment:"Comment",
-			firstTitleClick:true,
-			firstCommentClick:true,
-			stars:"1"
+			reviewTitle:"",
+			reviewComment:"",
+			starRating:"3"
 		}
 	}
 
@@ -41,54 +43,77 @@ export default class ReviewPage extends Component{
 
 
 	
-	_handleTitleInput(e){
+	_handleInput(e){
 		this.setState({
-			reviewTitle:e.target.value
+			[e.target.id]:e.target.value
 		})
+
+		$(`#${e.target.id}`).removeClass('formError');
 	}
 
-	_handleCommentInput(e){
-		this.setState({
-			reviewComment:e.target.value
-		})
-	}
-	_handleStarInput(e){
-		this.setState({
-			stars:e.target.value
-		})
-	}
+
 
 	
 
-	_handleFirstClick(e){
+	
+	_handleSubmit(e){
+
+		e.preventDefault()
+
+		_disable();
+
+		let errorMsgs = this._validate()
 		
-		if(e.target.value === "Title" && this.state.firstTitleClick === true){
-			this.setState({
-				reviewTitle:"",
-				firstTitleClick:false
+		if(errorMsgs.length === 0){
+			let reviewRef = this.firestore.collection("Reviews").doc(this.props.match.params.BusinessKey).collection("Review").doc(this.userName);
+
+			let obj = {
+				Username:this.userName,
+				UserUID:this.userUID,
+				Title:this.state.reviewTitle,
+				Comment:this.state.reviewComment,
+				Stars:this.state.starRating
+			}
+			reviewRef.set(obj).then(()=>{
+				_enable();	
+				this.props.history.push("/SingleBusiness/" + this.props.match.params.BusinessKey)
 			})
-		}else if(e.target.value === "Comment" && this.state.firstCommentClick === true){
+			
+		}else{
+			_enable()
+
+			let msgComp = errorMsgs.map((msg,index)=>{
+				
+				return <div className="text-center" key={index}><p>{msg}</p></div>
+			})
+
+			let formattedComp = <div className="box">{msgComp}</div>
+			
 			this.setState({
-				reviewComment:"",
-				firstCommentClick:false
+				errors:formattedComp
 			})
 		}
+		
+		
 	}
 
 
-	_handleSubmit(e){
+	_validate(){
 		
+		//store error messages in array
+		const errorMsgs = [];
 
-		
-		let reviewRef = this.firestore.collection("Reviews").doc(this.props.match.params.BusinessKey).collection("Review").doc(this.userName);
-
-		let obj = {
-			Username:this.userName,
-			Title:this.state.reviewTitle,
-			Comment:this.state.reviewComment,
-			Stars:this.state.stars
+		if (this.state.reviewTitle.length < 1) {
+		   errorMsgs.push("Please provide a review title");
+		   $('#reviewTitle').addClass('formError');
 		}
-		reviewRef.set(obj)
+
+		if (this.state.reviewComment.length < 1) {
+		   errorMsgs.push("Please provide a review comment");
+		    $('#reviewComment').addClass('formError');
+		}
+		
+  		return errorMsgs;
 	}
 
 	render(){
@@ -97,7 +122,7 @@ export default class ReviewPage extends Component{
 				<section className="content-wrapper">
 					<div className="row">
 						<div className="col-sm-12">
-							<p className="box"><Link to={'/Business/' + this.props.match.params.BusinessKey}>&#60; Back</Link></p>
+							<p className="box"><Link to={'/SingleBusiness/' + this.props.match.params.BusinessKey}>&#60; Back</Link></p>
 							
 						</div>
 					</div>
@@ -106,30 +131,30 @@ export default class ReviewPage extends Component{
 							<p className="text-20 text-center">Review</p>
 						</div>	
 
-						<div className="row">
-							<div className="col-sm-6">
+						<div className="row form-group">
+							<label className="col-sm-4">
 								Review Title:
-							</div>
-							<div className="col-sm-6">
-								<input type="text" value={this.state.reviewTitle} onClick={this._handleFirstClick.bind(this)} onChange={this._handleTitleInput.bind(this)} />
+							</label>
+							<div className="col-sm-8">
+								<input type="text" value={this.state.reviewTitle} id="reviewTitle" className="form-control" onChange={this._handleInput.bind(this)} />
 							</div>
 						</div>
 
-						<div className="row">
-							<div className="col-sm-6">
+						<div className="row form-group">
+							<label className="col-sm-4">
 								Review comment:
-							</div>
-							<div className="col-sm-6">
-								<textarea  value={this.state.reviewComment} onClick={this._handleFirstClick.bind(this)} onChange={this._handleCommentInput.bind(this)} />
+							</label>
+							<div className="col-sm-8">
+								<textarea  value={this.state.reviewComment}  id="reviewComment" className="form-control" onChange={this._handleInput.bind(this)} />
 							</div>
 						</div>
 
-						<div className="row">
-							<div className="col-sm-6">
+						<div className="row form-group">
+							<label className="col-sm-4">
 								Star Rating:
-							</div>
-							<div className="col-sm-6">
-								<select name="starRating" value={this.state.optionState} onChange={this._handleStarInput.bind(this)}>
+							</label>
+							<div className="col-sm-8">
+								<select name="starRating" value={this.state.starRating}  className="form-control" id="starRating" onChange={this._handleInput.bind(this)}>
 									<option value="1">1</option>
 									<option value="2">2</option>
 									<option value="3">3</option>
@@ -138,7 +163,11 @@ export default class ReviewPage extends Component{
 								</select>
 							</div>
 						</div>
-						<button onClick={this._handleSubmit.bind(this)} value="Submit" className="btn-primary">Submit</button>
+						<div className="text-center">
+							<button onClick={this._handleSubmit.bind(this)} value="Submit" className="btn-primary">Submit</button>
+						</div>
+						<br />
+						{this.state.errors}
 					</div>
 				</section>
 			</div>

@@ -375,7 +375,9 @@ export default class Profile extends Component{
 										
 									</form>
 									
-								</div>
+								</div>	
+
+
 								<div className="box">
 									<div>
 										<PasswordChange />

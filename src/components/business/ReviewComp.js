@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-
+import {Link} from 'react-router-dom';
 
 export default class ReviewComp extends Component{
 	
@@ -65,7 +65,7 @@ export default class ReviewComp extends Component{
 						
 						<div className="row">
 							<div className="col-xs-6">{stars}</div>
-							<div className="text-8 col-xs-6 verticalAlign leftAlign">{this.props.user}</div>
+							<div className="text-8 col-xs-6 verticalAlign leftAlign"><Link to={"/PersonProfile/" + this.props.userUID}>{this.props.user}</Link></div>
 						</div>
 						
 					</div>

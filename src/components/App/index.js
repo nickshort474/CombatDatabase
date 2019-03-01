@@ -62,7 +62,7 @@ import Contact from '../AuthOther/Contact';
 import Response from '../AuthOther/Response';
 import Privacy from '../AuthOther/Privacy';
 import AboutUs from '../AuthOther/AboutUs';
-
+import Terms from '../AuthOther/Terms';
 
 import SignUpPage from '../SignUp/SignUp';
 import SignInPage from '../SignIn/SignIn';
@@ -154,7 +154,7 @@ class App extends Component{
 						<Route path="/Response" component={Response} />
 						<Route path="/Privacy" component={Privacy} />
 						<Route path="/AboutUs" component={AboutUs} />
-
+						<Route path="/Terms" component={Terms} />
 
 						<Route path="/Profile" component={Profile} />
 						<Route path="/ProfilePic/:UserRef" component={ProfilePic} />

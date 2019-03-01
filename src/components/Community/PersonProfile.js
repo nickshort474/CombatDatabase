@@ -35,7 +35,7 @@ class PersonProfile extends Component{
 		this.userUID = LocalStorage.loadState("user");
 		this.firestore = firebase.firestore();
 		this._getUserInfo();
-		
+		this._getProfileImage();
 
 	}
 
@@ -89,7 +89,7 @@ class PersonProfile extends Component{
 				styles:snapshot.data().styles,
 				age:snapshot.data().age,
 				location:snapshot.data().address,
-				profilePic:snapshot.data().profilePicUrl,
+				
 				
 				
 			})
@@ -97,41 +97,15 @@ class PersonProfile extends Component{
 
 	}
 
-/*	_gatherMessages(){
-		
-		let counter = 0;
-		let locationItems = [];
-		let userItems = [];
-		
-		let messageArray = [];
-
-		let ref = this.firestore.collection("Users").doc(this.userUID).collection("Messages");
-		let query = ref.orderBy("messageDate","asc");
-		
-		query.get().then((snapshot)=>{
-			snapshot.forEach((snap)=>{
-				locationItems.push(snap.data().messageLocation);
-				userItems.push(snap.data().messageUser);
-				counter++
+	_getProfileImage(){
+		let ref = this.firestore.collection("PeopleImages").doc(this.props.match.params.PersonKey);
+		ref.get().then((snapshot)=>{
+			this.setState({
+				profilePic:snapshot.data().profilePicUrl
 			})
-			locationItems.forEach((item,index)=>{
-				counter--;
-				let userString = userItems[index].toString();
-				let ref2 = this.firestore.collection("Messages").doc(userString).collection("Messages").doc(item);
-				
-				ref2.get().then((snapshot)=>{
-					messageArray.push(snapshot.data());
-					if(counter === 0){
-						this.setState({
-							messages:messageArray
-						})
-					}
-				})
-			})
-			
 		})
 	}
-*/
+
 
 	_handleContactRequest(){
 		this.props.history.push(`/ContactRequest/${this.props.match.params.PersonKey}`)
@@ -140,16 +114,12 @@ class PersonProfile extends Component{
 
 	render(){
 
-		let imgStyles = {
-			width:"150px",
-			height:"150px"
-		};
 		
 	
 
 		let buttonToShow;
 
-		if(this.state.isFriend === false && this.state.requestSent === false ){
+		if(this.state.isFriend === false && this.state.requestSent === false && this.userUID !== this.props.match.params.PersonKey ){
 			buttonToShow = <button className="btn-primary" onClick={this._handleContactRequest.bind(this)} style={this.buttonStyle} >Contact Request </button>
 		}else if(this.state.requestSent === true){
 			buttonToShow = <p>Contact Request Pending</p>
@@ -190,7 +160,7 @@ class PersonProfile extends Component{
 										
 									</div>
 									<div className="col-sm-4">
-										<img src={this.state.profilePic} style={imgStyles} alt="placeholder" />
+										<img src={this.state.profilePic} style={{"width":"100%"}} alt="placeholder" />
 									</div>
 								</div>
 								<hr />

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { withRouter, Link} from 'react-router-dom';
 
 import {withFirebase} from '../Firebase';
+import firebase from '@firebase/app';
 import $ from 'jquery';
 
 import {_disable,_enable} from '../../utils/DisableGreyOut';
@@ -21,6 +22,7 @@ const INITIAL_STATE = {
 	regPassword1:"",
 	regPassword2:"",
 	error:null,
+	termsClicked:false
 }
 
 
@@ -31,7 +33,7 @@ class SignUpFormBase extends Component{
 		super(props);
 		this.state = { ...INITIAL_STATE };
 
-		this.firestore = this.props.firebase.mainRef();
+		this.firestore = firebase.firestore();
 	}
 	componentWillMount(){
 		window.scrollTo(0, 0);
@@ -45,6 +47,27 @@ class SignUpFormBase extends Component{
 		})
 
 		$(`#${e.target.id}`).removeClass('formError');
+	}
+
+	_handleTerms(){
+		if(this.state.termsClicked){
+			console.log("true");
+			this.setState({
+				termsClicked:false
+			})
+
+			$('#terms').addClass('formError');
+
+		}else{
+
+			this.setState({
+				termsClicked:true
+			})
+
+			$('#terms').removeClass('formError');
+		}
+
+		
 	}
 
 
@@ -168,6 +191,10 @@ class SignUpFormBase extends Component{
 		   errorMsgs.push("Passwords don't match");
 		   $('#regPassword2').addClass('formError');
 		}
+		if(!this.state.termsClicked){
+			errorMsgs.push("Please agree to our terms and conditions");
+		   	$('#terms').addClass('formError');
+		}
   		return errorMsgs;
 	}
 
@@ -194,7 +221,7 @@ class SignUpFormBase extends Component{
 			               
 			                <div className="col-sm-12">
 			                	<div className="box registration-form">
-			                    	<h2>Registration</h2>
+			                    	<h2 className="text-center">Registration</h2>
 			                        <p>Create your new account here. Already have an account with us or Google? Then you can <Link to="SignIn">sign in</Link> with your existing username and password.</p>
 			                        
 			                        <form onSubmit={this._submitSignUp.bind(this)}>
@@ -215,11 +242,12 @@ class SignUpFormBase extends Component{
 			                                <label htmlFor="reg_pass2">Password again</label>
 			                                <input type="password" className="form-control" id="regPassword2" value={this.state.regPassword2} placeholder="Password" onChange={this._handleInput.bind(this)} />
 			                            </div>
-			                            {this.state.errors}
-
-
-			                            <button type="submit" className="btn btn-primary">Submit</button>
-			                            {this.state.error && <p>{this.state.error.message}</p>}
+			                           
+			                            <div className="text-center">
+			                            	<p id="terms"><input type="checkbox"  onClick={this._handleTerms.bind(this)} /> I agree to the <Link to="/Terms">Terms and Conditions</Link> and <Link to="/Privacy">Privacy Policy</Link></p>
+			                            	<button type="submit" className="btn btn-primary">Submit</button>
+			                            	 {this.state.errors}
+			                            </div>
 			                        </form>
 			                    </div>
 			                </div>

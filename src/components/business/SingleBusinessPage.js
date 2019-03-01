@@ -27,7 +27,7 @@ export default class SingleBusinessPage extends Component{
 		this.user = LocalStorage.loadState("user");
 
 		// save current page ref to redux
-		let pageString = `Business/${this.props.match.params.BusinessKey}`
+		let pageString = `/SingleBusiness/${this.props.match.params.BusinessKey}`
 		store.dispatch({type:constants.SAVE_PAGE, page:pageString});
 
 		//create ref to firestore
@@ -117,7 +117,7 @@ export default class SingleBusinessPage extends Component{
 		//map state review array to Review components
 		let reviews = this.state.reviews.map((review) => {
 			
-			return <Review title={review.Title} body={review.Comment} user={review.Username} stars={review.Stars} key={review.Title} />
+			return <Review title={review.Title} body={review.Comment} userUID={review.UserUID} user={review.Username} stars={review.Stars} key={review.Title} />
 		})
 
 		if(this.state.owner === true){
@@ -125,6 +125,16 @@ export default class SingleBusinessPage extends Component{
 			EditPage = <Link to={`/EditBusiness/${this.props.match.params.BusinessKey}`}><p>Edit the information on this page</p></Link>
 			AddImages = <Link to={`/AddBusinessImages/${this.props.match.params.BusinessKey}`}><p>Click here to add images to your page</p></Link>
 			EditLogo = <div><Link to={`/EditBusinessLogo/${this.props.match.params.BusinessKey}`}><p>Edit your business logo</p></Link></div>
+		}
+
+		let leaveReview;
+
+		if(this.user && !this.state.owner){
+			leaveReview = <div className="row"><div className="box"><Link to={`/Review/${this.props.match.params.BusinessKey}`}><p>Leave a review for this business</p></Link></div></div>
+		}else if(this.state.owner){
+			leaveReview = null
+		}else{
+			leaveReview = <div className="row"><div className="box">Please sign in to leave a review of this business</div></div>
 		}
 
 		return(
@@ -178,21 +188,20 @@ export default class SingleBusinessPage extends Component{
 							<div>
 								{reviews}
 							</div>
-							<div className="row">
-								<div className="box">
-									<Link to={`/Review/${this.props.match.params.BusinessKey}`}><p>Leave a review for this business</p></Link>
-								</div>
-							</div>
+
+							{leaveReview}
+							
 							<div className="row">
 								<div className="box">
 									{EditPage}
 								</div>
 							</div>
+
 						</div>
 
 						<div className="col-sm-3 text-center">
 							<div className="text-center">
-								<img src={this.state.businessLogo ? this.state.businessLogo: defaultLogo} className="img-thumbnail" width="100%"  alt="Business logo" />
+								<img src={this.state.businessLogo ? this.state.businessLogo: defaultLogo}  width="100%"  alt="Business logo" />
 							</div>
 							<div className="text-center">
 								{EditLogo}
