@@ -56,14 +56,16 @@ class NewMessage extends Component{
 					query.get().then((snapshot)=>{
 						
 						snapshot.forEach((snap)=>{
-							
+							console.log(snap.id);
 							this.firestore.collection("Messages").doc(this.user).collection(this.props.msgUser).doc(snap.id).delete();
+							this.firestore.collection("Messages").doc(this.props.msgUser).collection(this.user).doc(snap.id).delete();
 						})
 					})
 				}
 			})
 
-
+			let refDoc = ref.doc();
+			let messageID = refDoc.id;
 			//get date time
 			let now = Date.now();
 			
@@ -76,10 +78,10 @@ class NewMessage extends Component{
 				
 			}
 			//add message data to Messages section in firestore
-			ref.add(obj).then(()=>{
+			refDoc.set(obj).then(()=>{
 
 				// set ref for user in Messages section
-				let ref2 = this.firestore.collection("Messages").doc(this.props.msgUser).collection(this.user);
+				let ref2 = this.firestore.collection("Messages").doc(this.props.msgUser).collection(this.user).doc(messageID);
 
 				//get date time
 				let now = Date.now();
@@ -93,7 +95,7 @@ class NewMessage extends Component{
 					
 				}
 				//add message data to Messages section in firestore
-				ref2.add(obj2).then(()=>{
+				ref2.set(obj2).then(()=>{
 										
 				})
 			})

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import PrivacyDocument from '../Docs/PrivacyDocument';
+
 
 export default class Privacy extends Component{
 	
@@ -18,6 +18,22 @@ export default class Privacy extends Component{
 						<h2 className="text-center">Our Privacy Policy</h2>
 						<br />
 						
+						<p>The policy: This privacy policy notice is served by Aptly Named Media under the website; [www.combatdatabase.co.uk]. The purpose of this policy is to explain to you how we control, process, handle and protect your personal information through the business and while you browse or use this website. If you do not agree to the following policy you may wish to cease viewing / using this website, and or refrain from submitting your personal data to us.</p>
+						<br />
+
+
+						<h4>Policy key definitions:</h4>
+
+					    <p>"I", "our", "us", or "we" refer to the business, [Aptly Named Media].
+					    "you", "the user" refer to the person(s) using this website.
+					    GDPR means General Data Protection Act.
+					    PECR means Privacy & Electronic Communications Regulation.
+					    ICO means Information Commissioner's Office.
+					    Cookies mean small files stored on a users computer or device.
+						</p>
+						<br />
+
+
 						<div>
 							<h4>Who we are</h4>
 							<p>CombatDatabase.co.uk is delivered by Aptly Named Media &copy;We are committed to protecting the privacy of all personal information obtained from you during any visits to the combatdatabase.co.uk website.</p>
@@ -34,31 +50,35 @@ export default class Privacy extends Component{
 							<ul>
 								<li>
 									<h5>Contact form</h5>
-									<p>If you use our online form to contact us, we will collect questions, queries or feedback you leave, including your name, your enquiry and your email addresse. In some instances, this information may be passed to an authorised person in Aptly Named Media, government department, agency or public body that we believe can best respond or assist you.</p>
+									<p>If you use our online form to contact us, we will collect questions, queries or feedback you leave, including your name, your enquiry and your email address.</p>
 								</li>
 								<li>
 									<h5>Business pages</h5>
-									<p></p>
+									<p>If you use combatdatabase.co.uk to list and display a business, we will collect and hold any information you supply and make it publicly viewable. The information you provide may be monitored for quality purposes.</p>
 								</li>
 								<li>
 									<h5>Event pages</h5>
-									<p></p>
+									<p>If you use combatdatabase.co.uk to list and display an event, we will collect and hold any information you supply and make it publicly viewable. The information you provide may be monitored for quality purposes.</p>
 								</li>
 								<li>
 									<h5>Profile page</h5>
-									<p></p>
+									<p>Any profile data added to your account, will be collected and held and used in the displaying of your profile to other users</p>
 								</li>
 								<li>
 									<h5>Community pages</h5>
-									<p></p>
+									<p>Any messages sent throught the community pages will be collected and held but will only be viewable by the individual sending the message, the intended recipient of the message and any authorised person within Aptly Named Media.</p>
 								</li>
 								<li>
 									<h5>Home page</h5>
-									<p></p>
+									<p>Any images uploaded will be collected and held and if deemed appropriate may be displayed on any location on the combatdatabase.co.uk site.</p>
 								</li>
 								<li>
 									<h5>Blog pages</h5>
-									<p></p>
+									<p>Any text or images added to a blog hosted on combatdatabase.co.uk will be collected and held and may be used anywhere within the combatdatabase.co.uk site.</p>
+								</li>
+								<li>
+									<h5>Registration</h5>
+									<p>When you sign up through our own sign up form we will collect and hold your email address and password solely for authorisation purposes. Signing in with google will result in the collection and holding of google provided authentication data solely for authorisation purposes</p>
 								</li>
 							</ul>
 						</div>
@@ -141,7 +161,12 @@ export default class Privacy extends Component{
 
 						<div>
 							<h4>Our lawful basis for collecting your information</h4>
-							<p></p>
+							<p>Lawful basis: Consent</p>
+							<p>Where our purpose for processing is: To provide the features and functionality of combatdatabase.co.uk, to show other users relevant information regarding business, event and community.</p>
+   							<p>Which is necessary because: combatdatabase.co.uk relies on user uploaded information to provide aforementioned features and functionality</p>
+    						<p>We process your information in the following ways: We collect, hold and display user provided information in its original user uploaded format and state.</p>
+						    <p>Data retention period: We will continue to process your information under this basis until you withdraw consent or it is determined your consent no longer exists.</p>
+						    <p>Sharing your information: We do not share your information with third parties.</p>
 						</div>
 						<br />
 						<hr />
@@ -170,11 +195,11 @@ export default class Privacy extends Component{
 
 						<div>
 							<h4>Who do we share your information with?</h4>
-							<p>As required by law, we may disclose information to government bodies and law enforcement agencies for their enforcement purposes. We will never share information other than for the purpose for which it was provided to us (economic development related activities).</p>
+							<p>As required by law, we may disclose information to government bodies and law enforcement agencies for their enforcement purposes. We will never share information other than for the purpose for which it was provided to us</p>
 							<p>For business improvement (evaluation) purposes, we may also share your data with Aptly Named Medias professional advisers, consultants and contracted suppliers working on Aptly Named Medias behalf who are subject to obligations of confidence.</p>
 							<p>We share your information on the site with people and accounts you share and communicate with. So that others may view your profile, business and/or event.</p>
 							<p>Public listed profiles, events and business data are viewable by all</p>
-							<p>Messages sent to individuals are only viewable by the individual sending the message and the individual receiving the message</p>
+							<p>Messages sent to individuals are only viewable by the individual sending the messag, the intended recipient of the message and any authorised individual within Aptly Named Media</p>
 							<p>We do not take responsibility for private information accessed due to users not signing out of public or private computers and advise all users to employ safe and secure procedures during use of our site</p>
 							<p>We do not sell your personal information</p>
 						</div>

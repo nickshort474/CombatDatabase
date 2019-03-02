@@ -72,8 +72,8 @@ import PasswordForgetPage from '../PasswordForget/PasswordForget';
 import Profile from '../Profile/Profile';
 import ProfilePic from '../Profile/ProfilePic';
 import Username from '../Profile/Username';
-
-
+import DeleteAccount from '../DeleteAccount/DeleteAccount';
+import ChangePassword from '../PasswordChange/PasswordChangeForm';
 
 
 import {withAuthentication} from '../Session';
@@ -159,8 +159,8 @@ class App extends Component{
 						<Route path="/Profile" component={Profile} />
 						<Route path="/ProfilePic/:UserRef" component={ProfilePic} />
 						<Route path="/Username" component={Username} />
-						
-
+						<Route path="/DeleteAccount" component={DeleteAccount} />
+						<Route path="/ChangePassword" component={ChangePassword} />
 						
 
 						<Route path="/SignUp" component={SignUpPage} />

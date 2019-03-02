@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
 import {firebase} from '@firebase/app';
 import '@firebase/firestore'; 
 
@@ -8,8 +9,7 @@ import constants from '../../redux/constants';
 import Geosuggest from 'react-geosuggest';
 
 import defaultLogo from '../../assets/images/default.jpg'
-import PasswordChange from '../PasswordChange/PasswordChangeForm';
-
+ 
 import LocalStorage from '../../utils/LocalStorage';
 
 const google = window.google;
@@ -39,6 +39,7 @@ export default class Profile extends Component{
 		
 		
 		this.userUID = LocalStorage.loadState("user");
+		this.token = LocalStorage.loadState("token");
 		this.firestore = firebase.firestore()
 
 
@@ -225,6 +226,9 @@ export default class Profile extends Component{
     	
   	}
 
+
+
+
 	render(){
 
 		if(this.signedIn){
@@ -263,22 +267,22 @@ export default class Profile extends Component{
 
 
 
-										<div className="row">
+										<div className="row form-group">
 											<div className="col-sm-6">
 												<label>First Name:</label>
 											</div>
 											<div className="col-sm-6">
-												<input type="text" name="firstName" value={this.state.firstName} onChange={this._onChangeInput.bind(this)} />
+												<input type="text" name="firstName" value={this.state.firstName} className="form-control" onChange={this._onChangeInput.bind(this)} />
 											</div>
 
 										</div>
 										<br />
-										<div className="row">
+										<div className="row form-group">
 											<div className="col-sm-6">
 												<label>Last Name:</label>
 											</div>
 											<div className="col-sm-6">
-												<input type="text" name="lastName" value={this.state.lastName} onChange={this._onChangeInput.bind(this)} />
+												<input type="text" name="lastName" value={this.state.lastName} className="form-control" onChange={this._onChangeInput.bind(this)} />
 											</div>
 
 										</div>
@@ -290,12 +294,12 @@ export default class Profile extends Component{
 
 
 										<br />
-										<div className="row">
+										<div className="row form-group">
 											<div className="col-sm-6">
 												<label>Age range:</label>
 											</div>
 											<div className="col-sm-6">
-												<select name="age" value={this.state.age} onChange={this._onChangeInput.bind(this)} >
+												<select name="age" value={this.state.age} className="form-control" onChange={this._onChangeInput.bind(this)} >
 													<option>Under 18</option>
 													<option>18 - 30</option>
 													<option>30+</option>
@@ -306,23 +310,23 @@ export default class Profile extends Component{
 										</div>
 										<br />
 										
-										<div className="row">
+										<div className="row form-group">
 											<div className="col-sm-6">
 												<label>Main Style Practiced:</label>
 											</div>
 											<div className="col-sm-6">
-												<input type="text" name="styles" value={this.state.styles} onChange={this._onChangeInput.bind(this)} />
+												<input type="text" name="styles" value={this.state.styles} className="form-control" onChange={this._onChangeInput.bind(this)} />
 											</div>
 
 										</div>
 										
 										<br />
-										<div className="row">
+										<div className="row form-group">
 											<div className="col-sm-6">
 												<label htmlFor="bio">Bio:</label>
 											</div>
 											<div className="col-sm-6">
-												<textarea id="bio" name="bio" value={this.state.bio} onChange={this._onChangeInput.bind(this)} ></textarea>
+												<textarea id="bio" name="bio" value={this.state.bio} className="form-control" onChange={this._onChangeInput.bind(this)} ></textarea>
 											</div>
 
 										</div>
@@ -345,7 +349,7 @@ export default class Profile extends Component{
 										</div>*/}
 										<hr />
 										
-				                        <div className="row">
+				                        <div className="row form-group">
 											<div className="col-sm-6">
 												<label><p title="By providing this data others can make contact for challenges, matches, or social elements">Your General Location</p></label>
 												
@@ -355,7 +359,7 @@ export default class Profile extends Component{
 											</div>
 
 										</div>
-										<div className="row">
+										<div className="row form-group">
 											<div className="col-sm-6">
 												<p>Search for new location</p>
 											</div>
@@ -371,18 +375,22 @@ export default class Profile extends Component{
 										</div>	
 											
 				                        <hr />
-										<input type="submit" value="Update profile" className="btn btn-primary" onClick={this._submitForm.bind(this)}/>
+				                        <div className="text-center">
+											<input type="submit" value="Update profile" className="btn btn-primary" onClick={this._submitForm.bind(this)}/>
+										</div>
 										
 									</form>
 									
 								</div>	
 
 
-								<div className="box">
+								<div className="box text-center">
 									<div>
-										<PasswordChange />
+										{this.userUID ? <Link to="/DeleteAccount"><button className="btn btn-primarySmall">Delete Account</button></Link> : null}
+										{this.token === "password" ? <Link to="/ChangePassword"><button className="btn btn-primarySmall">Change Password</button></Link> : null}
 									</div>
 								</div>
+								
 							</div>
 						</div>
 						

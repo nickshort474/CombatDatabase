@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import firebase from '@firebase/app';
-
 import {withRouter} from 'react-router-dom';
+import $ from 'jquery';
 
 import GoogleButtonMain from '../../assets/images/google/btn_google_signin_dark_normal_web.png';
 import GoogleButtonFocus from '../../assets/images/google/btn_google_signin_dark_focus_web.png';
@@ -10,6 +10,8 @@ import GoogleButtonPressed from '../../assets/images/google/btn_google_signin_da
 import { SignUpLink } from '../SignUp/SignUp';
 import { PasswordForgetLink } from '../PasswordForget/PasswordForget';
 import { withFirebase } from '../Firebase';
+import {_disable, _enable} from '../../utils/DisableGreyOut';
+
 
 import store from '../../redux/store';
 import LocalStorage from '../../utils/LocalStorage';
@@ -54,37 +56,63 @@ class SignInFormBase extends Component{
 	 	 
 	}
 
-	_onSubmit(event){
-    	
-    	const { email, password } = this.state;
-    	console.log(email);
+	_onChange(e){
+    	this.setState({ 
+    		[e.target.id]: e.target.value 
+    	});
+    	$(`#${e.target.id}`).removeClass('formError');
+	
+ 	};
 
-	    this.props.firebase.doSignInWithEmailAndPassword(email, password).then((authUser) => {
-	       	let userUID = authUser.user.uid;
-	       	
-	       	//clear  state
-	       	this.setState({ ...INITIAL_STATE });
-	       
-	        //save reference to user in localStoarge to match google auth state
-	        LocalStorage.saveState("user",userUID);
+	_onSubmit(e){
+    	e.preventDefault();
+		_disable();
+		let errors = this._validate();
 
-	       	//store.dispatch({type:constants.SAVE_USER,userUID:userUID})
-	        this.props.history.push(this.prevPage);
+		if(errors.length > 0){
+			let msgComp = errors.map((msg,index)=>{
+				
+				return <div className="text-center" key={index}><p>{msg}</p></div>
+			})
+			let formattedComp = <div className="box">{msgComp}</div>
+			this.setState({
+				errors:formattedComp
+			})
+			
+			_enable();
+		}else{
+	    	const { email, password } = this.state;
+	    	
 
-	    }).catch(error => {
+		    this.props.firebase.doSignInWithEmailAndPassword(email, password).then((authUser) => {
+		       	let userUID = authUser.user.uid;
+		       	
+		       	//clear  state
+		       	this.setState({ ...INITIAL_STATE });
+		       
+		        //save reference to user in localStoarge to match google auth state
+		        LocalStorage.saveState("user",userUID);
+		        LocalStorage.saveState("token","password");
 
-	        this.setState({ error });
+		       	//store.dispatch({type:constants.SAVE_USER,userUID:userUID})
+		       	_enable();
+		        this.props.history.push(this.prevPage);
 
-	    });
+		    }).catch(error => {
+		    	_enable();
 
-	    event.preventDefault();
+		        this.setState({
+		        	error:error,
+		        	password:"",
+		        	errors:""
+		        });
+
+		    });
+		}
+	    
 	};
 
-  	_onChange(event){
-    	this.setState({ 
-    		[event.target.id]: event.target.value 
-    	});
- 	};
+  	
 
 	_signInGoogle(e){
 		
@@ -99,7 +127,7 @@ class SignInFormBase extends Component{
 
 			//save reference to user in localStoarge to match google auth state
 			LocalStorage.saveState("user",userUID);
-
+			LocalStorage.saveState("token",authUser.credential.accessToken)
 	        //store.dispatch({type:constants.SAVE_USER,userUID:userUID})
 	        this.props.history.push(this.prevPage);
 
@@ -142,7 +170,35 @@ class SignInFormBase extends Component{
 
 	}
 
+	_validate(){
+		
+		//store error messages in array
+		const errorMsgs = [];
 
+
+		if (!this._isValidEmail()) {
+		   errorMsgs.push("Please provide a valid email address");
+		   $('#email').addClass('formError');
+		}
+
+		
+		if (this.state.password.length <= 0) {
+		   errorMsgs.push("Please provide a password");
+		   $('#password').addClass('formError');
+		}
+		
+  		return errorMsgs;
+	}
+
+	_isValidEmail(){
+		if( /(.+)@(.+){2,}\.(.+){2,}/.test(this.state.email) ){
+			return true
+		}else{
+			$('#regEmail').removeClass('formError');
+			return false
+		}
+
+	}
 
 	render(){
 
@@ -170,13 +226,17 @@ class SignInFormBase extends Component{
 			                            <div className="text-center">
 			                           		<button type="submit" className="btn btn-primary login-btn">Sign In</button>
 			                           	 	<SignUpLink />
+			                           	 	<br />
+			                           	 	<br />
+			                           	 	{this.state.errors}<br />
+			                           	 	{this.state.error && <p>{this.state.error.message}</p>}
 			                            </div>
 			                            {/*<div className="checkbox remember"><label><input type="checkbox" /> Remember me on this computer</label></div>*/}
 			                           	
 			                        </form>
 			                    </div>
 
-			                    {this.state.error && <p>{this.state.error.message}</p>}
+			                    
 			                   
 			                    
 			            </div>

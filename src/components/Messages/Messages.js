@@ -71,7 +71,7 @@ class Messages extends Component{
 	render(){
 
 				
-		console.log("setting state " + this.noNewMessages);
+		
 
 		let messages = this.state.messages.map((msg,index)=>{
 

@@ -17,7 +17,7 @@ class SignOutButton extends Component{
 		
 			//delete user from LocalStorage to match google auth
 			LocalStorage.saveState("user",null);
-
+			LocalStorage.saveState("token",null);
 			//redirect
 			this.props.history.push('/Home');
 			

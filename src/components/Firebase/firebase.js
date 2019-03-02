@@ -38,9 +38,31 @@ class Firebase {
     
     doSignInWithGoogle = () =>   this.auth.signInWithPopup(this.googleProvider);
 
-    
+    doDeleteAccount = () => this.auth.currentUser.delete(); 
 
+    
+    
+    doGetGoogleCredentials = token => this.googleProvider.credential(null,token);
+
+    doGetPasswordCredentials = (email,password) => this.auth.EmailAuthProvider.credential(email,password);
+
+    doReauthenticatePassword = credentials => this.auth.currentUser.reauthenticateAndRetrieveDataWithCredential(credentials);
+
+    doReauthenticateGoogle = credentials => this.auth.currentUser.reauthenticateAndRetrieveDataWithCredential(credentials);
+        
+    doDeleteUser = () =>  this.auth.currentUser.delete();
    
+
+    /*doDeletePasswordAccount = (email,password) => {
+        
+        const credentials = this.auth.EmailAuthProvider.credential(email,password);
+        
+        this.auth.currentUser.reauthenticateAndRetrieveDataWithCredential(credentials).then(()=>{
+            this.auth.currentUser.delete();
+        })
+    };*/
+
+    
 }
 
 
