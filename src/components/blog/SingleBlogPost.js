@@ -153,7 +153,7 @@ export default class SingleBlogPost extends Component{
 		commentWell.appendChild(replyButton);
 				
 	}
-
+ 
 	_onCommentReply(e){
 		
 		let replyText = document.getElementById(`reply${e.target.id}`).value;
@@ -162,7 +162,10 @@ export default class SingleBlogPost extends Component{
 		
 		let ref = this.firestore.collection("BlogComments").doc(this.props.match.params.BlogUser).collection(this.props.match.params.BlogName).doc(this.props.match.params.PostKey).collection("Comments").doc(key);
 		let now = Date.now();		
-		ref.update({})
+		ref.update({
+
+		})
+		
 		let obj = {
 			text:replyText,
 			user:this.userUID,
