@@ -3,7 +3,9 @@ import {Link} from 'react-router-dom';
 import {firebase} from '@firebase/app';
 import LocalStorage from '../../utils/LocalStorage';
 
-import ProcessEpoch from '../../utils/ProcessEpoch';
+import BlogCommentComp from './BlogCommentComp';
+
+/*import ProcessEpoch from '../../utils/ProcessEpoch';*/
 
 export default class SingleBlogPost extends Component{
 	
@@ -78,9 +80,12 @@ export default class SingleBlogPost extends Component{
 				comments:commentArray,
 				commentKeys:commentKeyArray
 			})
+			//this._getCommentReplies();
 		})
 
 	}
+
+	
 
 	_commentText(e){
 		this.setState({
@@ -119,7 +124,7 @@ export default class SingleBlogPost extends Component{
 	}
 
 	
-	_replyToComment(e){
+/*	_replyToComment(e){
 
 		//grab id from button using its index value
 		let id = e.target.id;
@@ -131,9 +136,7 @@ export default class SingleBlogPost extends Component{
 		let commentWell = document.getElementById(`well${id}`)
 		
 
-		/*this.setState({
-			[`replying${e.target.id}`]:true
-		})*/
+		
 
 		//create input box and submit button for reply
 		var replyInput = document.createElement("INPUT");
@@ -160,11 +163,8 @@ export default class SingleBlogPost extends Component{
 		console.log(replyText);
 		let key = this.state.commentKeys[e.target.id];
 		
-		let ref = this.firestore.collection("BlogComments").doc(this.props.match.params.BlogUser).collection(this.props.match.params.BlogName).doc(this.props.match.params.PostKey).collection("Comments").doc(key);
+		let ref = this.firestore.collection("BlogComments").doc(this.props.match.params.BlogUser).collection(this.props.match.params.BlogName).doc(this.props.match.params.PostKey).collection("Comments").doc(key).collection("Replies");
 		let now = Date.now();		
-		ref.update({
-
-		})
 		
 		let obj = {
 			text:replyText,
@@ -172,11 +172,13 @@ export default class SingleBlogPost extends Component{
 			username:this.username,
 			timePosted:now
 		}
-		//ref.add(obj);
+
+		ref.add(obj).then(()=>{
+
+		})
 		
 		
-		
-	}
+	}*/
 
 	render(){
 
@@ -196,14 +198,16 @@ export default class SingleBlogPost extends Component{
 
 		comments = this.state.comments.map((comment,index)=>{
 			
-			return 	<div className="well" id={`well${index}`} key={index}>
+			return <BlogCommentComp commentKey={this.state.commentKeys[index]} index={index} text={comment.text}  userUID={this.props.match.params.BlogUser} blogName={this.props.match.params.BlogName} postKey={this.props.match.params.PostKey} username={comment.username} timePosted={comment.timePosted} key={index} />
+
+			/*return 	<div className="well" id={`well${index}`} key={index}>
 						
 						<p>{comment.text}</p>
 						<p>by:{comment.username}</p>
 						<ProcessEpoch date={comment.timePosted} hoursWanted={true} />
 						<button id={index} onClick={this._replyToComment.bind(this)}>Reply</button>
 						
-					</div>
+					</div>*/
 		})
 
 		return(
