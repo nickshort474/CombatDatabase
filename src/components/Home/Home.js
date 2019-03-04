@@ -60,12 +60,11 @@ export default class Home extends Component{
 
 			        		<div className="col-xs-12 col-sm-4">
 			        			<div className="box">
-	        					
-			        				<div style={this.linkStyle}>
-										<Link to="/Business">Business Listings</Link><p className="text-10">Clubs, shops and other businesses</p> 
+	        						<div style={this.linkStyle}>
+										<Link to="/Community">Community</Link><p className="text-10">Make connections, send messages, build your community</p> 
 			        				</div>
 			        				<div style={this.linkStyle}>
-										<Link to="/Community">Community</Link><p className="text-10">Make connections, send messages, build your community</p> 
+										<Link to="/Business">Business Listings</Link><p className="text-10">Clubs, shops and other businesses</p> 
 			        				</div>
 			        				<div style={this.linkStyle}>
 			        					<Link to="/Events">Events</Link><p className="text-10">Event listings</p> 
@@ -77,18 +76,20 @@ export default class Home extends Component{
 										<Link to="/ViewBlogs">Blogs</Link><p className="text-10">Share your views, opinions and thoughts</p> 
 			        				</div>
 			        				<div style={this.linkStyle}>
+			        					<Link to="/Profile">Profile</Link><p className="text-10">Check your profile, update and add more details</p> 
+			        				</div>
+			        				<div style={this.linkStyle}>
 			        					<Link to="/Contact">Contact</Link><p className="text-10">Get in contact, problems, issues or suggestions</p> 
 			        				</div>
 			        				<div style={this.linkStyle}>
-			        					<Link to="/Profile">Profile</Link><p className="text-10">Check your profile, update and add more details</p> 
+			        					<Link to="/AboutUs">About Us</Link><p className="text-10">Our team</p> 
 			        				</div>
 			        				<div style={this.linkStyle}>
 			        					<Link to="/Privacy">Privacy Policy</Link><p className="text-10">Your rights</p> 
 			        				</div>
 			        				<div style={this.linkStyle}>
-			        					<Link to="/AboutUs">About Us</Link><p className="text-10">Our team</p> 
+			        					<Link to="/Terms">Terms and conditions</Link><p className="text-10">Out terms</p> 
 			        				</div>
-
 		        				</div>
 			        		</div>
 			        	</div>

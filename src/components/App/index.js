@@ -20,7 +20,6 @@ import EditBusinessLogo from '../Business/EditBusinessLogo';
 //Community files
 import Community from '../Community/Community';
 import PersonProfile from '../Community/PersonProfile';
-import FindPeople from '../Community/FindPeople';
 import ContactRequest from '../Community/ContactRequest';
 import SearchForPeople from '../Community/SearchForPeople';
 
@@ -47,7 +46,7 @@ import Report from '../Styles/Report';
 // Blog files 
 import MyBlogList from '../Blog/MyBlogList';
 import MyBlogPostList from '../Blog/MyBlogPostList';
-import MySingleBlogPost from '../Blog/MySingleBlogPost';
+/*import MySingleBlogPost from '../Blog/MySingleBlogPost';*/
 import ViewBlogs from '../Blog/ViewBlogs';
 import BlogPostList from '../Blog/BlogPostList';
 import SingleBlogPost from '../Blog/SingleBlogPost';
@@ -109,8 +108,6 @@ class App extends Component{
 						<Route path="/Community" component={Community} />
 						<Route path="/Messages/:PersonUsername/:PersonKey" component={Messages} />
 						<Route path="/PersonProfile/:PersonKey" component={PersonProfile} />
-						<Route path="/FindPeople" component={FindPeople} />
-						{/*<Route path="/ContactsList" component={ContactsList} />*/}
 						<Route path="/ContactRequest/:PersonKey" component={ContactRequest} />
 						<Route path="/NewMessage/:Username/:UserUID" component={NewMessage} />
 						<Route path="/SearchForPeople" component={SearchForPeople} />
@@ -141,7 +138,7 @@ class App extends Component{
 
 						<Route path="/MyBlogList" component={MyBlogList} />
 						<Route path="/MyBlogPostList/:BlogUser/:BlogName" component={MyBlogPostList} />
-						<Route path="/MySingleBlogPost/:BlogUser/:BlogName/:PostKey" component={MySingleBlogPost} />
+						{/*<Route path="/MySingleBlogPost/:BlogUser/:BlogName/:PostKey" component={MySingleBlogPost} />*/}
 						<Route path="/ViewBlogs" component={ViewBlogs} />
 						<Route path="/BlogPostList/:BlogUser/:BlogName" component={BlogPostList} />
 						<Route path="/SingleBlogPost/:BlogUser/:BlogName/:PostKey" component={SingleBlogPost} />

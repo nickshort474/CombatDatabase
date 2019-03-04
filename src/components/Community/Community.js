@@ -163,7 +163,7 @@ class Community extends Component{
 
 		
 		contactList = this.state.items.map((contact,index)=>{
-			return <PersonComp userName={contact.userName} uid={contact.userUID}  key={index} />
+			return <PersonComp userName={contact.userName} uid={contact.userUID} haveReplied={contact.haveReplied} key={index} />
 		})
 		
 		
@@ -187,13 +187,13 @@ class Community extends Component{
 				<div className="content-wrapper">
 					<div className="row box text-center">
 						<div className="row">
-							<p>Your Community:</p>
-							<div>{this.userUID ? <Link to="/FindPeople"><button type="button" className="btn btn-primary extraMargin">Find people</button></Link> : signInMessage} </div>
+							
+							<div>{this.userUID ? <Link to="/SearchForPeople"><button type="button" className="btn btn-primary extraMargin">Find people</button></Link> : signInMessage} </div>
 							
 							
 						</div>
 					</div>
-									
+					<p>Your Community:</p>				
 					{requests}
 						
 						

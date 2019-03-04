@@ -83,12 +83,7 @@ class FindBlog extends Component{
 	}
 
 
-	_handleInput(testReturn){
-		console.log(testReturn);
-		if(testReturn.length > 0){
-
-		} 
-	}
+	
 
 	render(){
 
@@ -118,7 +113,7 @@ class FindBlog extends Component{
 				                    	
 				                        <h2>Search:</h2>
 				                        
-									     <AutoSuggest list={this.state.keyWordList} handler={this._handleInput.bind(this)}/>
+									     <AutoSuggest list={this.state.keyWordList} page="searchForBlog" />
 
 									     <hr />
 				                        

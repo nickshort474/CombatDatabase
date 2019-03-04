@@ -96,7 +96,10 @@ class NewMessage extends Component{
 				}
 				//add message data to Messages section in firestore
 				ref2.set(obj2).then(()=>{
-										
+					let ref3 = this.firestore.collection("People").doc(this.user).collection("ContactList").doc(this.props.msgUser);
+					ref3.update({haveReplied:false});
+					let ref4 = this.firestore.collection("People").doc(this.props.msgUser).collection("ContactList").doc(this.user);
+					ref4.update({haveReplied:true});					
 				})
 			})
 		}else{

@@ -142,7 +142,7 @@ export default class BlogPostList extends Component{
 		})
 
 		if(this.state.showFollow === "show"){
-			showFollowButton = <button type="button" className="btn-primary" disabled={this.state.isEnabled} onClick={this._followBlog.bind(this)}>Follow this Blog</button>
+			showFollowButton = <button type="button" className="btn btn-primary" disabled={this.state.isEnabled} onClick={this._followBlog.bind(this)}>Follow this Blog</button>
 		}else if(this.state.showFollow === "signIn"){
 			showFollowButton = <div>Please sign in to follow this blog</div>
 		}else if(this.state.showFollow === "hide"){

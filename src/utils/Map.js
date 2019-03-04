@@ -1,14 +1,3 @@
-/*
-  initialize with: 
-
-  this.state = {
-      initialCenter:{ lng: 1.2, lat: 51.8 }
-  }
-
-  <GoogleMap initialCenter={this.state.initialCenter}/>
-  591657550.5 zoom level
-  1128.497220 per zoom level
-*/
 
 
 import React,  {Component} from 'react';
@@ -195,7 +184,7 @@ export default class Map extends Component {
 
           for(obj of this.items){
              
-              let eventLink = "<a class='compTextStyle' href='#/SingleEvent/" + obj.eventID +"'>Visit event page</a>"
+              let eventLink = "<a class='compTextStyle' href='/#/SingleEvent/" + obj.eventID +"'>Visit event page</a>"
               let contentString = "<div class='InfoWindow'><h2>" + obj.eventName + "</h2><br /><p>" + obj.eventType + "</p></p>" + eventLink + "</p></div>"
               
               //let contentString = "Hello";
@@ -253,7 +242,7 @@ export default class Map extends Component {
 
           for(obj of this.items){
              
-             let peopleLink = "<a class='compTextStyle' href='/Person/" + obj.uid +"'>Visit users profile</a>"
+             let peopleLink = "<a class='compTextStyle' href='/#/PersonProfile/" + obj.uid +"'>Visit users profile</a>"
                /* let people2Link = "<Link className='compTextStyle' to='/Person" + obj.uid + "'>Visit users profile</Link>"*/
               let contentString = "<div class='InfoWindow'><h2>" + obj.firstName + "</h2><br><p>" + obj.lastName + "</p><p>" + peopleLink + "</p></div>"
               

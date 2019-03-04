@@ -5,10 +5,13 @@ import {firebase} from '@firebase/app';
 import Map from '../../utils/Map';
 import Geosuggest from 'react-geosuggest';
 
-import MapComponent from '../Maps/MapComponent';
+/*import MapComponent from '../Maps/MapComponent';*/
 
 import store from '../../redux/store';
 import constants from '../../redux/constants';
+
+import AutoSuggest from '../../utils/AutoSuggest'; 
+
 
 const google = window.google;
 
@@ -23,6 +26,7 @@ export default class SearchForPeople extends Component{
 			items:[],
 			searchName:""
 		}
+
 		this.firestore = firebase.firestore();
 		this.radius = "10";
   		this.first = false;	
@@ -31,6 +35,27 @@ export default class SearchForPeople extends Component{
 	componentWillMount(){
 		window.scrollTo(0, 0);
 
+		let usernameList = [];
+
+		//clear searchTerm every time come to SearchPeoplepage
+		store.dispatch({type:constants.SAVE_PEOPLE_SEARCH_TERM, peopleSearchTerm:undefined})
+		
+		let ref = this.firestore.collection("Usernames");
+		
+
+		ref.get().then((snapshot)=>{
+			
+			snapshot.forEach((snap)=>{
+				console.log(snap.id)
+				usernameList.push(snap.id)
+			})
+			
+			this.setState({
+				usernameList:usernameList
+			})
+			console.log(this.state.usernameList);
+						
+		})
 	}
 
 	
@@ -110,21 +135,41 @@ export default class SearchForPeople extends Component{
     	//this.child._updateMap(this.lng,this.lat, "FindPeople","25");
   	}
 
-  	_handleInput(e){
-  		this.setState({
-  			searchName:e.target.value
-  		})
-  	}
+  
+
 
 
 	_submitNameForm(e){
+		e.preventDefault();
+
+
+		let storeState = store.getState();
+		let searchTerm = storeState.peopleSearchTerm;	
 		
-		console.log(this.state.searchName);
-		this.firestore.collection()
+
+		// if searchTerm !exist then???
+		if(searchTerm === undefined){
+			console.log("no match ")
+			alert("please select a keyword from the search list")
+			
+		}else{
+
+			//let value = searchTerm.trim().toLowerCase();
+			
+			let ref = this.firestore.collection("Usernames").doc(searchTerm);
+			ref.get().then((snapshot)=>{
+				console.log(snapshot.data().uid);
+						
+				this.props.history.push("/PersonProfile/" + snapshot.data().uid);
+			})
+		}
 
 	}
 
 	render(){
+
+		console.log(this.state.usernameList);
+
 		return(
 			<div>
 				
@@ -132,7 +177,7 @@ export default class SearchForPeople extends Component{
 			        <section className="content-wrapper">
 
 			        	<div className="box">
-					   		<Link to="/Community">&lt; Go back</Link>
+					   		<Link to="/Community">&lt; Back</Link>
 					    </div>
 
 		               	<div className="row">
@@ -184,14 +229,14 @@ export default class SearchForPeople extends Component{
 
 				                    <form onSubmit={this._submitNameForm.bind(this)}>
 				                        <h3>Search by name:</h3>
-				                        <input type="text" value={this.state.searchName} onChange={this._handleInput.bind(this)} /><br />
-				                       
+				                        {/*<input type="text" value={this.state.searchName} onChange={this._handleInput.bind(this)} /><br />*/}
+				                        <AutoSuggest list={this.state.usernameList}  page="searchForPeople" />
 				                        <hr />
 
-				                        <button type="submit" className="btn btn-primary">Submit</button>
+				                        <button type="submit" className="btn btn-primary">Show users profile</button>
 
 				                    </form>
-				                    <MapComponent />
+				                   
 				                </div>
 				            </div>
 		                </div>

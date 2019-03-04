@@ -83,11 +83,18 @@ class DeleteAccount extends Component {
         LocalStorage.saveState("user",null);
         LocalStorage.saveState("token",null);
 
+        //add reference to deleted user to DeletedUIDs section for later possible clear up of business, events and blogs.
+        let ref = this.firestore.collection("DeletedUIDs");
+        ref.add({"uid":uid})
+
         //delete firebase storage
         this.firestore.ref.collection("Users").doc(uid).delete();
-        this.firestore.ref.collection("Users").doc(uid).delete();
-        this.firestore.ref.collection("Users").doc(uid).delete();
-        this.firestore.ref.collection("Users").doc(uid).delete();
+        this.firestore.ref.collection("People").doc(uid).delete();
+        this.firestore.ref.collection("PeopleImages").doc(uid).delete();
+        this.firestore.ref.collection("Messages").doc(uid).delete();
+
+
+
         this.props.history.push('/Home');
     }
 

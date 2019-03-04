@@ -34,14 +34,35 @@ class PersonProfile extends Component{
 		this.prevPage = storeState.page;
 		this.userUID = LocalStorage.loadState("user");
 		this.firestore = firebase.firestore();
-		this._getUserInfo();
-		this._getProfileImage();
+		
+		// check if collection("People").doc(this.props.match.params.PersonKey) exists
+		let ref = this.firestore.collection("People").doc(this.props.match.params.PersonKey);
+		ref.get().then((snapshot)=>{
+			console.log(snapshot.exists)
+			if(snapshot.exists){
+				//if it does...
+				this.userExists = true;
+				this._getUserInfo();
+				this._getProfileImage();
+			}else{
+				//else inform user "this account is no longer active"
+				//show delete contact button instead of profile
+				//onDelete delete this users reference within - ("People").doc(this.userUID).collection("ContactList").doc(this.props.match.params.PersonKey).delete() 
+				this.userExists = false
 
+			}
+		})
+		
+		 
+		
+		
 	}
 
 	
 	_getUserInfo(){
 
+		
+		
 		let isFriend;
 		let ref2 = this.firestore.collection("People").doc(this.userUID).collection("ContactList").doc(this.props.match.params.PersonKey);
 		
@@ -111,6 +132,10 @@ class PersonProfile extends Component{
 		this.props.history.push(`/ContactRequest/${this.props.match.params.PersonKey}`)
 	}
 
+	_deleteContact(){
+		this.firestore.collection("People").doc(this.userUID).collection("ContactList").doc(this.props.match.params.PersonKey).delete();
+		this.props.history.push('/Community');
+	}
 
 	render(){
 
@@ -134,25 +159,23 @@ class PersonProfile extends Component{
 			<div className="container">
 
 				<div className="content-wrapper">
+					
 					<div className="row box">
-						
 						<div className="">
 							<div className="col-sm-8">
-								<Link to={this.prevPage}>&lt; Back </Link>
+								<Link to={"/" + this.prevPage}>&lt; Back </Link>
 							</div>
 							<div className="col-sm-4">
 								<div>{buttonToShow}</div>
 							</div>
 					    </div>
-					    
-
 					</div>
 
 
-					<div className="row box">
-						<div className="col-sm-12">
-							
+					{this.userExists ? 
 
+						<div className="row box">
+							<div className="col-sm-12">
 								<div className="row">
 									<div className="col-sm-8">
 										<h2>{this.state.userName}</h2>
@@ -192,13 +215,6 @@ class PersonProfile extends Component{
 									</div>
 								</div>
 								<hr />
-								{/*<div className="row">
-									<p className="col-sm-2">Friends</p>
-									<div className="col-sm-10">
-										{friendsList}
-									</div>
-								</div>
-								<hr />*/}
 								<div className="row">
 									<p className="col-sm-2">Contactable by</p>
 									<div className="col-sm-8">
@@ -207,9 +223,22 @@ class PersonProfile extends Component{
 									
 								</div>
 							</div>
-							
-					</div>
+						</div> 
+					: 
+						<div className="row box">
+							<div className="col-sm-12 text-center">
+								<p>Unfortunately it looks like this user has deleted their account, would you like to remove them from your contact list?</p><button className="btn btn-primarySmall" onClick={this._deleteContact.bind(this)}>Delete contact</button>
+							</div>
+						</div>
+						
+
+
+
+
+					}
 					
+
+
 				</div>
 			</div>
 		)

@@ -36,6 +36,9 @@ const reducer = (state = initialState, action) => {
 			return Object.assign({},state,{blogSearchTerm:action.blogSearchTerm})	
 		case constants.SAVE_PEOPLE:
 			return Object.assign({},state,{peopleListings:action.people})
+		case constants.SAVE_PEOPLE_SEARCH_TERM:
+			return Object.assign({},state,{peopleSearchTerm:action.peopleSearchTerm})		
+
 		case constants.EVENT_HAS_IMAGE:
 			return Object.assign({},state,{eventHasImg:action.eventHasImg})
 		case constants.EVENT_IMAGE:

@@ -12,7 +12,9 @@ export default class ProcessEpoch extends Component{
 		},()=>{
 			this._processEpoch();
 		})
-		
+		if(this.props.hoursWanted){
+
+		}
 		
 	}
 	
@@ -43,7 +45,9 @@ export default class ProcessEpoch extends Component{
 		this.setState({
 			date:this.date,
 			month:this.month,
-			day:this.day
+			day:this.day,
+			hours:this.hours,
+			minutes:this.minutes
 		})
 	}
 
@@ -51,7 +55,7 @@ export default class ProcessEpoch extends Component{
 		
 		return(
 			
-			<div className="text-10"> {this.state.day} {this.state.date} {this.state.month}</div>
+			<div className="text-10"> {this.state.day} {this.state.date} {this.state.month} {this.props.hoursWanted ? `${this.state.hours}:${this.state.minutes}` : null}</div>
             
 		)
 	}

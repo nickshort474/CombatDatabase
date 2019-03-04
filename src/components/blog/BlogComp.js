@@ -13,11 +13,9 @@ export default class BlogComp extends Component{
 
 				<div className="row">
 					<Link to={"/BlogPostList/" + this.props.blogUser + "/" + this.props.blogName}>
-						<div className="compTextStyle col-sm-8">
+						<div className="col-sm-8 compTextStyle">
 							<h2>{this.props.blogName}</h2>
 							<p>{this.props.description}</p>
-							<p>Blog Type: {this.props.type}</p>
-							
 						</div>
 						<div className="col-sm-4">
 							<img src={this.props.logo ? this.props.logo : defaultLogo} className="thumbnail" alt="Blog logo" width="100%" />

@@ -9,7 +9,10 @@ export default {
 	SAVE_STYLE:'save style',
 	SAVE_BLOGS:'save blogs',
 	SAVE_BLOG_SEARCH_TERM:'save blog search term',
+
 	SAVE_PEOPLE:'save people',
+	SAVE_PEOPLE_SEARCH_TERM:'save people search term',
+
 	EVENT_HAS_IMAGE:'event has image',
 	EVENT_IMAGE:'event image',
 	BLOG_HAS_IMAGE:'blog has image',
@@ -17,6 +20,8 @@ export default {
 	BUSINESS_IMAGE:'business image',
 	SAVE_KEYWORDS:'save keywords',
 	SAVE_KEYWORDS_DATE:'save keywords date',
+
+
 
 	HAS_SAVED_BUSINESS_SEARCH:'has saved business search',
 	SAVE_BUSINESS_SEARCH_TERM:'save business search',

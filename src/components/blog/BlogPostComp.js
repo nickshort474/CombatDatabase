@@ -1,20 +1,18 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import ProcessEpoch from '../../utils/ProcessEpoch';
+import defaultLogo from '../../assets/images/default.jpg';
 
 export default class BlogPostComp extends Component{
 	
 	constructor(){
 		super();
-		var style = {
+
+		this.style = {
 			height:"100%",
 			width:"100%",
 			display:"block"
 		}
-		this.state = {
-			imageStyle:style
-		}
-		
 	}
 
 	
@@ -40,7 +38,7 @@ export default class BlogPostComp extends Component{
 							</div>
 
 							<div className="col-sm-2">
-								<img id='base64image' src={this.props.firstImage} style={this.state.imageStyle} alt="Blog Post"/>
+								<img id='base64image' src={this.props.imgData ? this.props.imgData : defaultLogo} style={this.style} alt="Blog Post"/>
 							</div>
 
 						</article>

@@ -130,12 +130,12 @@ h6 {
 .btn-primary {
 	background-color: #ae0c00;
 	background-image: linear-gradient(#ae0c00,#a81c07);
-	border-color:#C75918;
+	border-color:#7c0701;
 }
 
 .btn-primary:hover {
-	background-color: #D65E18;
-	border-color:#C75918;
+	background-color: #7c0701;
+	border-color:#7c0701;
 }
 
 
@@ -149,13 +149,13 @@ h6 {
 .btn-primarySmall {
 	background-color: #ae0c00;
 	background-image: linear-gradient(#ae0c00,#a81c07);
-	border-color:#C75918;
+	border-color:#7c0701;
 	font-size: 10px;
 }
 
 .btn-primarySmall:hover {
-	background-color: #D65E18;
-	border-color:#C75918;
+	background-color: #7c0701;
+	border-color:#7c0701;
 }
 
 
@@ -584,7 +584,7 @@ article.post .post-date-wrapper {
 
 article.post .post-date {
 	background-image: linear-gradient(#ae0c00,#a81c07);
-	border:1px solid #C75918;
+	border:1px solid #7c0701;
 	color:#FFFFFF;
 	text-align:center;
 	padding:2px 7px 7px;

@@ -122,7 +122,7 @@ class SignInFormBase extends Component{
 		this.props.firebase.doSignInWithGoogle().then((authUser) => {
 			
 			let userUID = authUser.user.uid;
-
+			
 			this._handleFirstSignIn(userUID);
 
 			//save reference to user in localStoarge to match google auth state
@@ -140,7 +140,7 @@ class SignInFormBase extends Component{
 		
 	}
 
-	_handleFirstSignIn(userUID){
+	_handleFirstSignIn(userUID,username){
 		let ref = firebase.firestore().collection("Users").doc(userUID);
 
 
@@ -150,7 +150,9 @@ class SignInFormBase extends Component{
 				console.log("user already exists")
 			}else{
 				//else is new user so create a reference in Users collection with empty profile ref;
-				ref.set({profileCreated:false})
+				ref.set({
+					profileCreated:false
+				})
 			}
 		})
 

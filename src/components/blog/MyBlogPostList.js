@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import {firebase} from '@firebase/app';
 /*import SideBarAdvert from '../../Components/SideBarAdvert';*/
 
-import MyBlogPostComp from './MyBlogPostComp';
+import BlogPostComp from './BlogPostComp';
 
 import store from '../../redux/store';
 import constants from '../../redux/constants';
@@ -63,7 +63,7 @@ export default class MyBlogPostList extends Component{
 
 		let content = this.state.postArray.map((blog,index)=>{
 			
-			return <MyBlogPostComp postName={blog.postName} descr={blog.postIntro} blogName={this.props.match.params.BlogName} owner={this.props.match.params.BlogUser} imgData={blog.firstImage} date={blog.date} key={index} />
+			return <BlogPostComp postName={blog.postName} descr={blog.postIntro} blogName={this.props.match.params.BlogName} owner={this.props.match.params.BlogUser} imgData={blog.firstImage} date={blog.date} key={index} />
 		})
 
 

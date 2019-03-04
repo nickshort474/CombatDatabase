@@ -25,7 +25,7 @@ export default class PersonComp extends Component{
 					
 				</section>
 				<section className="col-xs-4">
-					
+					{this.props.haveReplied ? <p>Your have mail!</p> : null}
 					<Link to={`/Messages/${this.props.userName}/${this.props.uid}`}><button className="btn-primary">See messages {this.props.userName}</button></Link>
 						
 				</section>

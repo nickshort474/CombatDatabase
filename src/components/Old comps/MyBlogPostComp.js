@@ -7,14 +7,11 @@ export default class MyBlogPostComp extends Component{
 	
 	constructor(){
 		super();
-		var style = {
+
+		this.style = {
 			height:"100%",
 			width:"100%",
-			display:"block",
-			
-		}
-		this.state = {
-			imageStyle:style
+			display:"block"
 		}
 	}
 
@@ -26,7 +23,7 @@ export default class MyBlogPostComp extends Component{
 			<div className="well">
 
 				<div className="row">
-					<Link to={"/MySingleBlogPost/" + this.props.owner + "/" + this.props.blogName + "/" + this.props.postName }>
+					<Link to={"/SingleBlogPost/" + this.props.owner + "/" + this.props.blogName + "/" + this.props.postName }>
 						
 						<article className="post">
 							<div className="col-sm-2 compTextStyle">
@@ -39,7 +36,7 @@ export default class MyBlogPostComp extends Component{
 							</div>
 
 							<div className="col-sm-3">
-								<img id='base64image' src={this.props.imgData ? this.props.imgData : defaultLogo} style={this.state.imageStyle} alt="Post" />
+								<img id='base64image' src={this.props.imgData ? this.props.imgData : defaultLogo} style={this.style} alt="Post" />
 							</div>
 						</article>
 
