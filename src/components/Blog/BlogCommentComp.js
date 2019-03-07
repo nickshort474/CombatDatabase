@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import ProcessEpoch from '../../utils/ProcessEpoch';
+import ProcessDaysAgo from '../../utils/ProcessDaysAgo';
 import {firebase} from '@firebase/app';
 import LocalStorage from '../../utils/LocalStorage';
 import BlogCommentReplyComp from './BlogCommentReplyComp';
+
 
 export default class BlogCommentComp extends Component{
 	
@@ -21,11 +22,21 @@ export default class BlogCommentComp extends Component{
 		this.userUID = LocalStorage.loadState("user");
 
 		//get users username ready for comments or replies
-		let usernameRef = this.firestore.collection("Users").doc(this.userUID);
-		usernameRef.get().then((snapshot)=>{
-			this.username = snapshot.data().userName;
-			this._getCommentReplies()
-		})
+		if(this.userUID){
+			let usernameRef = this.firestore.collection("Users").doc(this.userUID);
+			usernameRef.get().then((snapshot)=>{
+				this.username = snapshot.data().userName;
+			})
+		}
+		
+		this._getCommentReplies();
+	}
+
+	componentWillUnmount(){
+
+		//detach onSnapshot listener
+		this.snapshot();
+		
 	}
 
 	_getCommentReplies(){
@@ -35,7 +46,7 @@ export default class BlogCommentComp extends Component{
 		let ref = this.firestore.collection("BlogComments").doc(this.props.userUID).collection(this.props.blogName).doc(this.props.postKey).collection("Comments").doc(this.props.commentKey).collection("Replies");
 		let query = ref.orderBy("timePosted", "asc");
 		
-		query.onSnapshot((snapshot)=>{
+		this.snapshot = query.onSnapshot((snapshot)=>{
 			
 			let replyNum = 0;
 			let replyArray = [];
@@ -94,26 +105,16 @@ export default class BlogCommentComp extends Component{
 	_cancelReply(e){
 		
 		let id = String(e.target.id).slice(11);
-		console.log(id)
+		
 		this._hideReplyElements(id);
 
-		/*//show reply button
-		document.getElementById(id).hidden = false;
-
-		//hide buttons and input
-		let cancelReply = document.getElementById(`cancelReply${id}`);
-		cancelReply.hidden = true;
-		let sendReply = document.getElementById(`sendReply${id}`);
-		sendReply.hidden = true;
-		let replyText = document.getElementById(`replyText${id}`);
-		replyText.hidden = true;*/
 	}
 
 
 	_onCommentReply(e){
-		console.log(e.target.id)
+		
 		let id = String(e.target.id).slice(9);
-		console.log(id)
+		
 
 		let replyText = document.getElementById(`replyText${id}`).value;
 				
@@ -127,15 +128,13 @@ export default class BlogCommentComp extends Component{
 			timePosted:now
 		}
 
-		ref.add(obj).then(()=>{
-			
-			console.log("replied");
-		})	
+		ref.add(obj);
 		this._hideReplyElements(id);
+
 		this.setState({
 			showHideText:"Hide",
 			showHideLet:"Show",
-				
+			replyText:""	
 		})
 	}
 
@@ -150,25 +149,6 @@ export default class BlogCommentComp extends Component{
 				
 			})
 
-			/*let replyNum = 0;
-			let ref = this.firestore.collection("BlogComments").doc(this.props.userUID).collection(this.props.blogName).doc(this.props.postKey).collection("Comments").doc(this.props.commentKey).collection("Replies");
-			let query = ref.orderBy("timePosted", "asc");
-			
-
-			query.onSnapshot((snapshot)=>{
-				replyNum = 0;
-				let replyArray = [];
-				snapshot.forEach((snap)=>{
-					replyNum++;
-					replyArray.push(snap.data())
-				})
-				this.setState({
-					replyArray:replyArray,
-					showHideText:"Hide",
-					showHideLet:"Show",
-					replyNum:replyNum
-				})
-			})*/
 		}else{
 			this.setState({
 				showHideText:"Show",
@@ -187,13 +167,13 @@ export default class BlogCommentComp extends Component{
 		replies = this.state.replyArray.map((reply, index)=>{
 			
 			return <BlogCommentReplyComp text={reply.text} time={reply.timePosted} username={reply.username} index={index} key={index} />
-			//<div className="text-center" key={index}><p>{reply.text}</p><p className="text-10">By: {reply.username}</p><br /></div>
+			
 		})
 
 		return(
 			<div className="well" id={`well${this.props.index}`}>
 						
-				<div style={{"fontWeight":"bold"}} className="text-10">{this.props.username} - <ProcessEpoch date={this.props.timePosted} hoursWanted={false} /></div>
+				<div style={{"fontWeight":"bold"}} className="text-10">{this.props.username} - <ProcessDaysAgo date={this.props.timePosted}  /></div>
 				
 				<p>{this.props.text}</p>
 				

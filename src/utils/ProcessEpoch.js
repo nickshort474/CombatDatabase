@@ -43,7 +43,6 @@ export default class ProcessEpoch extends Component{
 		if(this.minutes.toString().length === 1){
 			
 			let paddedMinutes = this.minutes.toString().padStart(2, '0')
-			console.log(paddedMinutes);
 			this.minutes = paddedMinutes
 		}
 

@@ -35,12 +35,25 @@ export default class SingleBlogPost extends Component{
 		window.scrollTo(0, 0);
 		
 		//get users username ready for comments or replies
-		let usernameRef = this.firestore.collection("Users").doc(this.userUID);
-		usernameRef.get().then((snapshot)=>{
-			this.username = snapshot.data().userName;
-			this._getBlogInfo();
-			this._getComments();
-		})
+		if(this.userUID){
+			let usernameRef = this.firestore.collection("Users").doc(this.userUID);
+			usernameRef.get().then((snapshot)=>{
+				this.username = snapshot.data().userName;
+			})
+			this.signedIn = true
+		}else{
+			this.signedIn = false
+		}
+		
+		this._getBlogInfo();
+		this._getComments();
+	}
+
+	componentWillUnmount(){
+
+		//detach onSnapshot listener
+		this.snapshot();
+		
 	}
 
 	_getBlogInfo(){
@@ -67,7 +80,7 @@ export default class SingleBlogPost extends Component{
 		
 		let ref = this.firestore.collection("BlogComments").doc(this.props.match.params.BlogUser).collection(this.props.match.params.BlogName).doc(this.props.match.params.PostKey).collection("Comments");
 		let query = ref.orderBy("timePosted", "asc")
-		query.onSnapshot((snapshot)=>{
+		this.snapshot = query.onSnapshot((snapshot)=>{
 			let commentArray = [];
 			let commentKeyArray = [];
 
@@ -101,7 +114,7 @@ export default class SingleBlogPost extends Component{
 			commentText:""
 		});
 
-		if(commentText.length > 3){
+		if(commentText.length >= 4){
 				
 			let now = Date.now();
 			let ref = this.firestore.collection("BlogComments").doc(this.props.match.params.BlogUser).collection(this.props.match.params.BlogName).doc(this.props.match.params.PostKey).collection("Comments");
@@ -116,69 +129,14 @@ export default class SingleBlogPost extends Component{
 			
 			
 		}else{
-			alert("There is a three character minimum for comments")
+			alert("There is a four character minimum for comments")
 			
 		}	
 
 		
 	}
 
-	
-/*	_replyToComment(e){
 
-		//grab id from button using its index value
-		let id = e.target.id;
-
-		//remove reply button
-		document.getElementById(id).remove();
-
-		//get reference to comment well
-		let commentWell = document.getElementById(`well${id}`)
-		
-
-		
-
-		//create input box and submit button for reply
-		var replyInput = document.createElement("INPUT");
-		var replyButton = document.createElement("BUTTON");
-		
-		//set replyID
-		let replyID = `reply${id}`
-
-		replyInput.setAttribute("id", replyID);
-
-		replyButton.setAttribute("id", id);
-		replyButton.innerHTML = "Reply to comment"
-		replyButton.addEventListener("click", this._onCommentReply.bind(this));
-		
-		//add input and submit button
-		commentWell.appendChild(replyInput);
-		commentWell.appendChild(replyButton);
-				
-	}
- 
-	_onCommentReply(e){
-		
-		let replyText = document.getElementById(`reply${e.target.id}`).value;
-		console.log(replyText);
-		let key = this.state.commentKeys[e.target.id];
-		
-		let ref = this.firestore.collection("BlogComments").doc(this.props.match.params.BlogUser).collection(this.props.match.params.BlogName).doc(this.props.match.params.PostKey).collection("Comments").doc(key).collection("Replies");
-		let now = Date.now();		
-		
-		let obj = {
-			text:replyText,
-			user:this.userUID,
-			username:this.username,
-			timePosted:now
-		}
-
-		ref.add(obj).then(()=>{
-
-		})
-		
-		
-	}*/
 
 	render(){
 
@@ -232,7 +190,7 @@ export default class SingleBlogPost extends Component{
 						<div className="col-sm-12">
 							<div className="box form-group">
 								<label htmlFor="commentText">Leave a comment</label>
-								<textarea id="commentText" value={this.state.commentText} onChange={this._commentText.bind(this)} className="form-control" style={{"height":"50%"}}/>
+								<textarea id="commentText" value={this.state.commentText} onChange={this._commentText.bind(this)} placeholder="post a comment" className="form-control" style={{"height":"50%"}}/>
 								<div className="text-center"><button className="btn btn-primarySmall" onClick={this._postComment.bind(this)}>Comment</button></div>
 							</div>
 						</div>

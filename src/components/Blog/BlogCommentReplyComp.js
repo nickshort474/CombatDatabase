@@ -1,32 +1,7 @@
 import React, {Component} from 'react';
-import ProcessEpoch from '../../utils/ProcessEpoch';
-//import {firebase} from '@firebase/app';
-//import LocalStorage from '../../utils/LocalStorage';
-
+import ProcessDaysAgo from '../../utils/ProcessDaysAgo';
 
 export default class BlogCommentReplyComp extends Component{
-	
-/*	constructor(props){
-		super(props);
-
-		this.state = {
-			replyArray:[],
-			showHideText:"Show replies"
-		}
-
-		this.firestore = firebase.firestore();
-		this.userUID = LocalStorage.loadState("user");
-
-		//get users username ready for comments or replies
-		let usernameRef = this.firestore.collection("Users").doc(this.userUID);
-		usernameRef.get().then((snapshot)=>{
-			this.username = snapshot.data().userName;
-			//this._getCommentReplies()
-		})
-	}
-*/
-
-
 	
 
 	render(){
@@ -44,7 +19,8 @@ export default class BlogCommentReplyComp extends Component{
 							{this.props.username}
 						</div>
 						<div className="col-xs-8">
-							<ProcessEpoch date={this.props.time} hoursWanted={false} />
+							
+							<ProcessDaysAgo date={this.props.time} />
 						</div>
 					</div>
 					<div className="row">
