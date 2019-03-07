@@ -36,7 +36,7 @@ export default class SingleEventComp extends Component{
 									</div>
 									<div className="row">
 										<div className="col-sm-12  msgCompStyle">
-											<ProcessEpoch date={this.props.date} />
+											<ProcessEpoch date={this.props.date} hoursWanted={true} />
 										</div>
 										
 										

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 
-export default class ProcessEpoch extends Component{
+export default class ProcessDaysAgo extends Component{
 
 	
 
@@ -10,14 +10,14 @@ export default class ProcessEpoch extends Component{
 		this.setState({
 			date:this.props.date
 		},()=>{
-			this._processEpoch();
+			this._processDays();
 		})
 		
 		
 	}
 	
 	
-	_processEpoch(){
+	_processDays(){
 		
 		
 		let currentDate = new Date(this.state.date);

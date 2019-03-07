@@ -18,7 +18,7 @@ export default class ViewBlogs extends Component{
 	constructor(){
 		super();
 
-		store.dispatch({type:constants.SAVE_PAGE, page:"ViewBlogs"});
+		store.dispatch({type:constants.SAVE_PAGE, page:"/ViewBlogs"});
 		
 		this.userUID = LocalStorage.loadState("user");
 		this.state = {
@@ -42,7 +42,7 @@ export default class ViewBlogs extends Component{
 			let followingArray = [];
 			let blogArray = [];
 
-			let ref = this.firestore.collection("userUIDs").doc(this.userUID).collection("BlogFollowing");
+			let ref = this.firestore.collection("Users").doc(this.userUID).collection("BlogFollowing");
 			ref.get().then((snapshot)=>{
 				snapshot.forEach((snap)=>{
 					followingArray.push(snap.data().BlogName);
@@ -138,7 +138,7 @@ export default class ViewBlogs extends Component{
 		})
 
 		if(this.counter === this.showLimit){
-			moreButton = <button className="btn-primary" onClick={this._handleMoreButton.bind(this)}>Show more blogs</button>
+			moreButton = <button className="btn btn-primary" onClick={this._handleMoreButton.bind(this)}>Show more blogs</button>
 		}
 
 		return(
@@ -147,10 +147,10 @@ export default class ViewBlogs extends Component{
 			 	<section className="content-wrapper">
 					<div className="row">
 
-						<div className="col-sm-3 textCenterMobile">
+						<div className="col-sm-3 text-center">
 							
-							<Link to="/FindBlog"><button type="button" className="btn btn-primary extraMargin">Find A Blog</button></Link><br />
-							<Link to="/MyBlogList"><button type="button" className="btn btn-primary extraMargin">My Blogs</button></Link><br />
+							<Link to="/FindBlog"><button type="button" className="btn btn-primarySmall extraMargin">Find a blog</button></Link><br />
+							<Link to="/MyBlogList"><button type="button" className="btn btn-primarySmall extraMargin">Show my blogs</button></Link><br />
 							
 							
 						</div>

@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import ProcessEpoch from '../../utils/ProcessEpoch';
 import defaultLogo from '../../assets/images/default.jpg';
 
+
 export default class BlogPostComp extends Component{
 	
 	constructor(){
@@ -13,9 +14,11 @@ export default class BlogPostComp extends Component{
 			width:"100%",
 			display:"block"
 		}
+		
+		
 	}
 
-	
+
 
 
 	render(){

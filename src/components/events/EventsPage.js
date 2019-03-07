@@ -14,8 +14,11 @@ export default class EventsPage extends Component{
 	constructor(){
 		super();
 		
-		store.dispatch({type:constants.SAVE_PAGE, page:"Events"});
-		
+		//save event page to store ready for rapge reloads
+		store.dispatch({type:constants.SAVE_PAGE, page:"/Events"});
+
+		//save event page as previous page for routing back to after either search or newly listed.
+		store.dispatch({type:constants.SAVE_PREV_PAGE, prevPage:"/Events"});
 
 
 		this.state = {
@@ -79,36 +82,10 @@ export default class EventsPage extends Component{
 		}
 	}
 
-	/*_handleMoreButton(){
-		this.counter = 0;
-
-		let ref = this.firestore.collection("Events").orderBy("creationDate", "desc").startAfter(this.lastVisible).limit(this.showLimit);
-		
-		ref.get().then((snapshot)=>{
-			this.lastVisible = snapshot.docs[snapshot.docs.length - 1];
-			
-			snapshot.forEach((element)=> {
-				this.items.push(element.data())
-				this.counter++;
-			});
-			this.setState({
-	    		items:this.items
-	    	});
-	    	console.log(this.items)
-		})
-
-	}
-*/
 
 	render(){
 
-		/*let moreButton;
 
-		if(this.counter === this.showLimit){
-			console.log(this.counter)
-			moreButton = <button className="btn-primary" onClick={this._handleMoreButton.bind(this)}>Show more events</button>
-		}
-*/
 
 		let events = this.state.items.map((event)=>{
 			
@@ -121,11 +98,11 @@ export default class EventsPage extends Component{
 			        <section className="content-wrapper">
 			        	<div className="row">
 			            
-			                <div className="col-sm-3 textCenterMobile">
+			                <div className="col-sm-3 text-center">
 
 				                
-									<Link to="FindEvents"><button type="button" className="btn btn-primary extraMargin">Find an event</button></Link>
-									<button type="button" className="btn btn-primary extraMargin" onClick={this._addEvent.bind(this)}>Add Event</button>
+									<Link to="FindEvents"><button type="button" className="btn btn-primarySmall extraMargin">Find an event</button></Link>
+									<button type="button" className="btn btn-primarySmall extraMargin" onClick={this._addEvent.bind(this)}>Add an event</button>
 
 				                
 				                
@@ -137,9 +114,7 @@ export default class EventsPage extends Component{
 			                		{events}
 			                		
 			                	</div>
-			                	{/*<div className="text-center">
-									<p>{moreButton}</p>
-								</div>*/}
+			                	
 			                </div>
 
 			                

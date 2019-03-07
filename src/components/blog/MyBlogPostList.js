@@ -24,7 +24,7 @@ export default class MyBlogPostList extends Component{
 	
 	componentWillMount() {
 		window.scrollTo(0, 0);
-		store.dispatch({type:constants.SAVE_PAGE, page:`MyBlogPostList/${this.props.match.params.BlogUser}/${this.props.match.params.BlogName}`});
+		store.dispatch({type:constants.SAVE_PREV_PAGE, prevPage:`/MyBlogPostList/${this.props.match.params.BlogUser}/${this.props.match.params.BlogName}`});
 		this._getBlogInfo();
 		    
 	}
@@ -63,7 +63,7 @@ export default class MyBlogPostList extends Component{
 
 		let content = this.state.postArray.map((blog,index)=>{
 			
-			return <BlogPostComp postName={blog.postName} descr={blog.postIntro} blogName={this.props.match.params.BlogName} owner={this.props.match.params.BlogUser} imgData={blog.firstImage} date={blog.date} key={index} />
+			return <BlogPostComp postName={blog.postName} descr={blog.postIntro} blogName={this.props.match.params.BlogName} blogUser={this.props.match.params.BlogUser} imgData={blog.firstImage} date={blog.date} key={index} />
 		})
 
 
@@ -71,34 +71,31 @@ export default class MyBlogPostList extends Component{
 			<div className="container">
 				
 				<section className="content-wrapper">
-					<div className="row">
-						<div className="col-sm-12 ">
-							<div className="box">
-						   		<Link to="/MyBlogList">&#60; Back to blog listing</Link>
-						    </div>
-					    </div>
+					<div className="row box">
+						
+							
+				   		<div className="col-xs-6">
+				   			<Link to="/MyBlogList">&#60; Back</Link>
+				   		</div>
+				   		<div className="col-xs-6 text-right">
+				   			<Link to={"/AddBlogPost/" + this.props.match.params.BlogName}><button type="button" className="btn btn-primarySmall">New Post</button></Link> 
+				   		</div>
+						    
+					   
 					</div>
 
-					<div className="row">    
+					<div className="row box">    
 					    
 							
-						<div className="col-sm-9">
-							<div className="box">
-								<h2 className="text-center"> {this.props.match.params.BlogName} posts</h2>
+						<div className="col-xs-12">
+							
+								<h2 className="text-center"> {this.props.match.params.BlogName}</h2>
 								<div>
 									{content}
 								</div>
-							</div>
-						</div>
-						<div className="col-sm-3">
-							
-							<div className="box sidebar-box">
-								<Link to={"/AddBlogPost/" + this.props.match.params.BlogName}><button type="button" className="btn btn-primary">New Post</button></Link><br /> 
-							</div>
-
-							
 							
 						</div>
+					
 					</div>
 					
 				</section>

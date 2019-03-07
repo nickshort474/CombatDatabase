@@ -24,43 +24,41 @@ import $ from 'jquery';
 			firstPara:"",
 			firstImage:"",
 		}
-		this.imageNum = 0;
+		this.contentNum = 0;
 		this.contentLog = [];
 		this.imgArray = [];
 		this.paraArray = [];
 		this.imageUploadCounter = 0;
 		this.paraUploadCounter = 0;
 		this.firestore = firebase.firestore();
-		
+		this.userUID = LocalStorage.loadState("user");
 	}
 
 	componentWillMount(){
 		window.scrollTo(0, 0);
-		store.dispatch({type:constants.SAVE_PAGE, page:`AddBlogPost/${this.props.match.params.BlogName}`});
+		store.dispatch({type:constants.SAVE_PAGE, page:`/AddBlogPost/${this.props.match.params.BlogName}`});
 		
 		this.hasImage = false;
 	    this._addPara();
 	    
-	   	this.userUID = LocalStorage.loadState("user");
+	   	
 	}
 
 
 
 	_addPara(){
 
-		this.imageNum++
-		
-		let currentVal = `par${this.imageNum}`;
-		
+		this.contentNum++
+		let currentVal = `par${this.contentNum}`;
+		this.removeParaId = currentVal;
 
 		this.contentLog.push(currentVal);
 		this.paraArray.push(currentVal);
 
-
 		let newblogContent = this.state.blogContent;
-		//<div key={currentVal}></div>
 		
-		newblogContent.push(<TextArea  rows="1" id={currentVal} key={currentVal} />);
+		
+		newblogContent.push(<div key={currentVal}><TextArea rows="3" id={currentVal} key={currentVal}  /></div>);
 		
 		this.setState({
 			blogContent:newblogContent,
@@ -73,7 +71,28 @@ import $ from 'jquery';
 	
 	}
 
-	
+	_removePara(e){
+
+		let id = e.target.id;
+		//let currentVal = `par${id}`;
+
+		let existingBlogContent = this.state.blogContent;
+
+		let index = existingBlogContent.indexOf(<div key={id}><TextArea  rows="3" id={id}  /></div>)
+		existingBlogContent.splice(index,1);
+		
+
+		let index2 = this.contentLog.indexOf(id);
+		this.contentLog.splice(index2,1);
+
+		let index3 = this.paraArray.indexOf(id);
+		this.paraArray.splice(index3,1);
+		
+		
+		this.setState({
+			blogContent:existingBlogContent
+		})
+	}
 
 	_handleBrowseClick(){
 	   
@@ -89,9 +108,9 @@ import $ from 'jquery';
 		
 		reader.onload = (e) => {
 			
-			this.imageNum++;
+			this.contentNum++;
 		
-			let currentVal = `img${this.imageNum}`;
+			let currentVal = `img${this.contentNum}`;
 			this.contentLog.push(currentVal);
 
 			_compressImage(e.target.result,400,(result)=>{
@@ -118,7 +137,7 @@ import $ from 'jquery';
 	_handleSubmit(){
 		
 		_disable();
-
+		this._validate()
 		
 		this.isFirstPara = true;
 		this.isFirstImage = true;
@@ -220,6 +239,9 @@ import $ from 'jquery';
 		this._addFollowersReference();
 	}
 
+	_validate(){
+
+	}
 
 	_addImageToStorage(imgRef,img,callback){
 		
@@ -356,36 +378,38 @@ import $ from 'jquery';
 			<div>
 				<div className="container">
 			        <section className="content-wrapper">
-			        	<div className="row">
+			        	<div className="row box">
 			        		<div className="col-sm-12">
-			        		<div className="box">
+			        		
 			        			<Link to={`/MyBlogPostList/${this.state.user}/${this.props.match.params.BlogName}`}>&lt; Go back</Link>
-			        			</div>
+			        		
 			        		</div>
 			        	</div>
-			        	<div className="row text-center">
+			        	<div className="row box text-center">
 				        	<div className="col-sm-12">
 				        		
-				        		<div className="box">
+				        		<div className="">
 				        			
 				        			
-				        			Post name:<input type="text" id="postNameBox" style={style} rows="1" placeholder="Name your post"  onChange={this._handlePostName.bind(this)} /><br /><br />
+				        			<input type="text" id="postNameBox" style={style} rows="1" placeholder="Post name"  onChange={this._handlePostName.bind(this)} /><br /><br />
 				        			{/*this.state.blogContent.map((content)=><div key={content}>{content}</div>)*/}
 				        			{blogContent}
-									<button className="btn-primary" onClick={this._addPara.bind(this)}>Add Paragraph</button>
+									<button className="btn btn-primarySmall" onClick={this._addPara.bind(this)}>Add paragraph</button>
+									<button className="btn btn-primarySmall" id={this.removeParaId} onClick={this._removePara.bind(this)}>Remove last paragraph</button>
+
 									<input type="file" id="browse" name="fileupload" style={{display:"none"}} onChange={this._handleImageChange.bind(this)} />
-									<input type="button" className="btn-primary" value="Add Image" id="fakeBrowse" onClick={this._handleBrowseClick.bind(this)} /><br />
+									<input type="button" className="btn btn-primarySmall" value="Add Image" id="fakeBrowse" onClick={this._handleBrowseClick.bind(this)} /><br />
 				        		</div>
 				    		</div>
 				        </div>
 				      
-						<div className="row">	
-							<div className="form-group col-sm-12">
-								<div className="box text-center">
-									<input type="button" className="btn-primary" value="Save blog post" id="save" onClick={this._handleSubmit.bind(this)} />
+						<div className="row text-center">	
+							
+								
+							<input type="button" className="btn btn-primarySmall" value="Save blog post" id="save" onClick={this._handleSubmit.bind(this)} />
 													
-								</div>
-							</div> 
+								
+							 
 
 						</div>
 						

@@ -134,8 +134,8 @@ class Business extends Component{
 					<div className="row">
 						<div className="col-sm-3 text-center">
 							
-								<Link to="FindBusiness"><button type="button" className="btn btn-primary extraMargin">Find Business</button></Link>
-								<button type="button" className="btn btn-primary extraMargin" onClick={this._addBusiness.bind(this)}>Add Business</button>
+								<Link to="FindBusiness"><button type="button" className="btn btn-primarySmall extraMargin">Find a business</button></Link>
+								<button type="button" className="btn btn-primarySmall extraMargin" onClick={this._addBusiness.bind(this)}>Add a business</button>
 
 																
 						</div>

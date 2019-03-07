@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {firebase} from '@firebase/app';
 import LocalStorage from '../../utils/LocalStorage';
-
+import store from '../../redux/store';
 import BlogCommentComp from './BlogCommentComp';
 
 /*import ProcessEpoch from '../../utils/ProcessEpoch';*/
@@ -27,7 +27,7 @@ export default class SingleBlogPost extends Component{
 		}
 		this.firestore = firebase.firestore();
 		this.userUID = LocalStorage.loadState("user");
-		
+		this.prevPage = store.getState().prevPage;
 		
 	}
 	
@@ -80,7 +80,7 @@ export default class SingleBlogPost extends Component{
 				comments:commentArray,
 				commentKeys:commentKeyArray
 			})
-			//this._getCommentReplies();
+			
 		})
 
 	}
@@ -191,7 +191,13 @@ export default class SingleBlogPost extends Component{
 			if(con.type === "img"){
 				return <div key={con.data} ><img style={this.style}  id='base64image' src={con.data} alt="" /><br /></div>
 			}else{
-				return <div key={con.data}>{con.data}<br /><br /></div>
+				
+				//test for empty paragraph content and if empty return nothing
+				if(con.data !== ""){
+					return <div key={con.data}>{con.data}<br /><br /></div>
+				}else{
+					return null
+				}	
 			}
 			
 		})
@@ -200,14 +206,6 @@ export default class SingleBlogPost extends Component{
 			
 			return <BlogCommentComp commentKey={this.state.commentKeys[index]} index={index} text={comment.text}  userUID={this.props.match.params.BlogUser} blogName={this.props.match.params.BlogName} postKey={this.props.match.params.PostKey} username={comment.username} timePosted={comment.timePosted} key={index} />
 
-			/*return 	<div className="well" id={`well${index}`} key={index}>
-						
-						<p>{comment.text}</p>
-						<p>by:{comment.username}</p>
-						<ProcessEpoch date={comment.timePosted} hoursWanted={true} />
-						<button id={index} onClick={this._replyToComment.bind(this)}>Reply</button>
-						
-					</div>*/
 		})
 
 		return(
@@ -217,7 +215,7 @@ export default class SingleBlogPost extends Component{
 					<div className="row">
 						<div className="col-sm-12 ">
 							<div className="box">
-						   		<Link to={"/BlogPostList/" + this.props.match.params.BlogUser + "/" + this.props.match.params.BlogName}>&#60; Back</Link>
+						   		<Link to={this.prevPage}>&#60; Back</Link>
 						    </div>
 					    </div>
 

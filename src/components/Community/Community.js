@@ -14,12 +14,35 @@ const CommunitySignedIn = () => (
 	
 	<AuthUserContext.Consumer>
 		{authUser =>
-			(authUser) ? <Community propName={authUser} /> : <p>Please sign in to see your community</p>
+			(authUser) ? <Community propName={authUser} /> : <SignIn />
 		}
 	</AuthUserContext.Consumer>
 
 )
+
+class SignIn extends Component{
+
+	constructor(){
+		super();
+
+		//store reference to page for rediret after signin
+		store.dispatch({type:constants.SAVE_PAGE, page:"/Community"});
+	}
+		
+	render(){
+		return(
+			<div className="container">
+				<div className="content-wrapper">
+					<div className="box text-center">
+						<p>Please <Link to="/Signin">sign in</Link> to see your community</p>
+					</div>
+				</div>
+			</div>
+		)
+	}
 	
+	
+}	
 
 class Community extends Component{
 
@@ -173,7 +196,7 @@ class Community extends Component{
 
 		let requests = this.state.requestList.map((request,index)=>{
 			
-			return <div className="box" key={index}> {request.requestUserName} would like to be your friend<br />
+			return <div className="box" key={index}> {request.requestUserName} would like to make contact<br />
 						<p>{request.content}</p>
 						<button id={request.requestUserUID} value={request.requestUserName} onClick={this._handleRequestYes.bind(this)}>Yes</button>
 						<button id={request.requestUserUID} onClick={this._handleRequestNo.bind(this)}>No</button>
@@ -185,21 +208,24 @@ class Community extends Component{
 
 		    <div className="container">
 				<div className="content-wrapper">
-					<div className="row box text-center">
-						<div className="row">
-							
-							<div>{this.userUID ? <Link to="/SearchForPeople"><button type="button" className="btn btn-primary extraMargin">Find people</button></Link> : signInMessage} </div>
-							
-							
-						</div>
-					</div>
-					<p>Your Community:</p>				
-					{requests}
+					<div className="row text-center">
+						
+							<div>{this.userUID ? <Link to="/SearchForPeople"><button type="button" className="btn btn-primary">Find people</button></Link> : signInMessage} </div>
+						
+					</div><br />
+									
+					
 						
 						
 					
 					<div className="row box text-center">
-						<div className="col-xs-9">	
+						
+						<h4>Your Community</h4>
+						<div>
+							{requests}
+						</div>
+						<hr />
+						<div>	
 							{contactList}
 						</div>
 

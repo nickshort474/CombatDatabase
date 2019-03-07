@@ -31,7 +31,7 @@ export default class SingleEventPage extends Component{
 		this._getEventInfo();
 
 		this.setState({
-			eventTime:1,
+			/*eventTime:1,*/
 			owner:false,
 			previousPage:previousPage,
 		})
@@ -69,7 +69,7 @@ export default class SingleEventPage extends Component{
 			},function(){
 				this.child._updateMap(snapshot.data().lng, snapshot.data().lat, "SingleEventPage","10",items);
 			})
-			
+			console.log(this.state.eventTime)
 			
 			
 		})
@@ -78,12 +78,13 @@ export default class SingleEventPage extends Component{
 
 	render(){
 
+		console.log("rendering");
 		let EditEvent, EditImage;
 		
 
 		let epoch = () =>{
 			if(this.state.eventTime !== 1){
-				return <ProcessEpoch date={this.state.eventTime} key={this.state.eventTime} />
+				return <ProcessEpoch date={this.state.eventTime} hoursWanted={true} key={this.state.eventTime} />
 			}else{
 				
 			}
@@ -102,10 +103,10 @@ export default class SingleEventPage extends Component{
 				<section className="content-wrapper">
 					
 					<div className="row">
-						<div className="col-sm-12 ">
+						<div className="col-sm-12">
 							<div className="box">
 						   		
-						   		<Link to={'/' + this.state.previousPage}>&#60; Back</Link>
+						   		<Link to={this.state.previousPage}>&#60; Back</Link>
 						    </div>
 					    </div>
 					</div>
@@ -170,14 +171,13 @@ export default class SingleEventPage extends Component{
 							</div>
 
 						</div> 
+
 						<div className="col-sm-3">
 
-							<div className="row">
-								<div className="box">
+							<div className="row box">
 								
-									{epoch()}
+								{epoch()}
 								
-								</div>
 							</div>
 
 							<div className="row">

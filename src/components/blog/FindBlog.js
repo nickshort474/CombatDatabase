@@ -93,7 +93,7 @@ class FindBlog extends Component{
 			        <section className="content-wrapper">
 
 			        	<div className="box">
-					   		<Link to="ViewBlogs">&#60; Back to blogs</Link>
+					   		<Link to="/ViewBlogs">&#60; Back</Link>
 					    </div>
 
 		               	<div className="row">

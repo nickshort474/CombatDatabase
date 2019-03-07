@@ -193,7 +193,7 @@ export default class FindBusiness extends Component{
 			        <section className="content-wrapper">
 
 			        	<div className="box">
-					   		<Link to="/Business">&#60; Back to business listings</Link>
+					   		<Link to="/Business">&#60; Back</Link>
 					    </div>
 
 		               	<div className="row">

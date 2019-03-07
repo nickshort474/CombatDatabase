@@ -189,7 +189,7 @@ export default class FindEvents extends Component{
 			        <section className="content-wrapper">
 
 			        	<div className="box">
-					   		<Link to="Events">&#60; Back to events</Link>
+					   		<Link to="Events">&#60; Back</Link>
 					    </div>
 
 		               	<div className="row">

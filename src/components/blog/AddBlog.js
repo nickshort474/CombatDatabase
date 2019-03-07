@@ -330,7 +330,7 @@ class AddBlog extends Component{
 			        <section className="content-wrapper">
 
 			        	<div className="box">
-					   		<Link to="MyBlogList">&#60; Back to blogs</Link>
+					   		<Link to="/MyBlogList">&#60; Back</Link>
 					    </div>
 
 		               	<div className="row">

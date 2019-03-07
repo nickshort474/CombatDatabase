@@ -109,7 +109,7 @@ class PersonProfile extends Component{
 				clubs:snapshot.data().clubs,
 				styles:snapshot.data().styles,
 				age:snapshot.data().age,
-				location:snapshot.data().address,
+				location:snapshot.data().generalLoc,
 				
 				
 				
@@ -201,27 +201,15 @@ class PersonProfile extends Component{
 									</div>
 								</div>
 								<hr />
+								
+								
 								<div className="row">
-									<p className="col-sm-2">Clubs</p>
-									<div className="col-sm-10">
-										<p>{this.state.clubs}</p>
-									</div>
-								</div>
-								<hr />
-								<div className="row">
-									<p className="col-sm-2">Location</p>
+									<p className="col-sm-2">General Location</p>
 									<div className="col-sm-10">
 										<p>{this.state.location}</p>
 									</div>
 								</div>
-								<hr />
-								<div className="row">
-									<p className="col-sm-2">Contactable by</p>
-									<div className="col-sm-8">
-										<p>{this.state.contact}</p>
-									</div>
-									
-								</div>
+								
 							</div>
 						</div> 
 					: 

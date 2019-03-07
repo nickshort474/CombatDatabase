@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {firebase} from '@firebase/app';
-/*import SideBarAdvert from '../../Components/SideBarAdvert';*/
+
+import {_disable,_enable} from '../../utils/DisableGreyOut';
+
 import BlogPostComp from './BlogPostComp';
+import constants from '../../redux/constants';
 import store from '../../redux/store';
 import LocalStorage from '../../utils/LocalStorage';
 		
@@ -21,19 +24,25 @@ export default class BlogPostList extends Component{
 		}
 
 		let storeState = store.getState();
-
+		this.prevPage =  storeState.page;
 		this.firestore = firebase.firestore();
-		
-		this.prevPage = "/" + storeState.page;
+				
 		this.userUID = LocalStorage.loadState("user");
 	}
 	
 	componentWillMount() {
 		window.scrollTo(0, 0);
+		store.dispatch({type:constants.SAVE_PREV_PAGE, prevPage:`/BlogPostList/${this.props.match.params.BlogUser}/${this.props.match.params.BlogName}`});
 		this._getBlogInfo();
 		
+		//check if signed in
 		if(this.userUID){
-			this._checkIfFollowing();
+			//check if blog being viewed is not  own blog.
+			if(!this.userUID === this.props.match.params.BlogUser){
+				//if not own blog check whether user is already following blog
+				this._checkIfFollowing();
+			}
+			
 		}else{
 			this.setState({
 				showFollow:"signIn"
@@ -67,68 +76,67 @@ export default class BlogPostList extends Component{
 	}
 
 	_checkIfFollowing(){
-		this.showFollow = "show";	
+		
+		//
+		let showFollow = "show";	
 			
-		let ref = this.firestore.collection("userUIDs").doc(this.userUID).collection("BlogFollowing");
+		let ref = this.firestore.collection("Users").doc(this.userUID).collection("BlogFollowing");
 		
 		ref.get().then((snapshot)=>{
 		
 			snapshot.forEach((snap)=>{
-				console.log(snap.data().BlogName)
-				console.log(this.props.match.params.BlogName);
 				
+				//if one of the blog names in BlogFollowed list matches this blog name, already following				
 				if(snap.data().BlogName === this.props.match.params.BlogName){
-					this.showFollow = "hide";						
+					// set local let to hide
+					showFollow = "hide";						
 				}
 			})
+
+			//assign value of local let to state
 			this.setState({
-				showFollow:this.showFollow
+				showFollow:showFollow
 			})
 		})
-
-			
 		
 	}
 
 	_followBlog(){
 
-		this._disable()
+
+		_disable();
 
 
 		// follow blog
-		let ref = this.firestore.collection("userUIDs").doc(this.userUID).collection("BlogFollowing");
+		let ref = this.firestore.collection("Users").doc(this.userUID).collection("BlogFollowing");
 		
+		let now = Date.now();
+
 		let blogObj = {
-			BlogName:this.props.match.params.BlogName
+			blogName:this.props.match.params.BlogName,
+			dateFollowed:now
 		}
 
 		ref.add(blogObj).then(()=>{
-			console.log("new collection");
+			
 			let newRef = this.firestore.collection("BlogNames").doc(this.props.match.params.BlogName).collection("Followers");
 			
 			let blogRef = {
-				BlogUser:this.userUID
+				blogUser:this.userUID,
+				dateFollowed:now
 			}
 
 			newRef.add(blogRef).then(()=>{
 				this.setState({
 					showFollow:"hide"
 				})
+				_enable();
 			})
 		})
 		
 	}
 
-	_disable(){
-		let elem = document.getElementsByClassName("content-wrapper")[0];
-		elem.style.opacity = "0.5"
 
-				
-		//disabled submit button
-		this.setState({
-			isEnabled:false
-		})
-	}
 
 
 	render(){
@@ -156,7 +164,7 @@ export default class BlogPostList extends Component{
 					<div className="row">
 						<div className="col-sm-12 ">
 							<div className="box">
-						   		<Link to={this.prevPage}>&#60; Back to blog listing</Link>
+						   		<Link to={this.prevPage}>&#60; Back</Link>
 						    </div>
 					    </div>
 					</div>
@@ -166,21 +174,23 @@ export default class BlogPostList extends Component{
 					
 						<div className="col-sm-12">
 							<div className="box">
-								<h2 className="text-center">{this.props.match.params.BlogName} Posts</h2>
+								<h2 className="text-center">{this.props.match.params.BlogName} </h2>
+								{showFollowButton}
 								<div>
 									{content}
 								</div>
+								
 							</div>
 						</div>
 												
 					</div>
-					<div className="row">
+					{/*<div className="row">
 						<div className="col-sm-12">
 							<div className="box text-center">
-								{showFollowButton}
+								
 							</div>
 						</div>
-					</div>
+					</div>*/}
 				</section>
 
 			</div>

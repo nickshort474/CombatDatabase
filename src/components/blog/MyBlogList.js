@@ -111,8 +111,8 @@ export default class MyBlogList extends Component{
 						
 						<div className="col-sm-3 text-center">
 							
-							{this.user ? <Link to="/AddBlog"><button type="button" className="btn btn-primary extraMargin">New Blog</button></Link> : null}
-							<Link to="/ViewBlogs"><button type="button" className="btn btn-primary extraMargin">Other Blogs</button></Link>							
+							{this.user ? <Link to="/AddBlog"><button type="button" className="btn btn-primarySmall extraMargin">Start new blog</button></Link> : null}
+							<Link to="/ViewBlogs"><button type="button" className="btn btn-primarySmall extraMargin">Show other blogs</button></Link>							
 						</div>
 						<div className="col-sm-9">
 							<div className="box">
