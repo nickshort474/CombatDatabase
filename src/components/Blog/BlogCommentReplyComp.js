@@ -14,20 +14,17 @@ export default class BlogCommentReplyComp extends Component{
 				
 				<div className="col-xs-11">
 					
-					<div className="row">
-						<div className="col-xs-2 text-10">
-							{this.props.username}
-						</div>
-						<div className="col-xs-8">
-							
-							<ProcessDaysAgo date={this.props.time} />
-						</div>
+					<div className="row text-10">
+						
+						{this.props.username} - <ProcessDaysAgo date={this.props.time} />
+
+						
 					</div>
 					<div className="row">
 						{this.props.text}
 					</div>
+					<br />
 					
-					<hr />
 				</div>
 			</div>
 			

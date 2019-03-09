@@ -88,13 +88,16 @@ class DeleteAccount extends Component {
         ref.add({"uid":uid})
 
         //delete firebase storage
-        this.firestore.ref.collection("Users").doc(uid).delete();
-        this.firestore.ref.collection("People").doc(uid).delete();
-        this.firestore.ref.collection("PeopleImages").doc(uid).delete();
-        this.firestore.ref.collection("Messages").doc(uid).delete();
+        this.firestore.collection("Users").doc(uid).delete();
+        this.firestore.collection("People").doc(uid).delete();
+        this.firestore.collection("PeopleImages").doc(uid).delete();
+        this.firestore.collection("Messages").doc(uid).delete();
 
-
-
+        //find user in username section and delete
+        let ref2 = this.firestore.collection("Usernames");
+        let query = ref2.where("uid", "==", uid);
+        query.delete();
+        
         this.props.history.push('/Home');
     }
 

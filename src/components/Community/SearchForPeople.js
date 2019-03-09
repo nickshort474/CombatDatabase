@@ -46,14 +46,14 @@ export default class SearchForPeople extends Component{
 		ref.get().then((snapshot)=>{
 			
 			snapshot.forEach((snap)=>{
-				console.log(snap.id)
+				
 				usernameList.push(snap.id)
 			})
 			
 			this.setState({
 				usernameList:usernameList
 			})
-			console.log(this.state.usernameList);
+			
 						
 		})
 	}
@@ -68,9 +68,6 @@ export default class SearchForPeople extends Component{
 		}else{
 			this._gatherCoords();
 		}
-
-		
-		//this.child._updateMap(this.state.lng, this.state.lat, "FindPeople",this.radius);
 		
 	}
 
@@ -132,7 +129,6 @@ export default class SearchForPeople extends Component{
     		this._gatherCoords()
 		}
     	
-    	//this.child._updateMap(this.lng,this.lat, "FindPeople","25");
   	}
 
   
@@ -142,11 +138,9 @@ export default class SearchForPeople extends Component{
 	_submitNameForm(e){
 		e.preventDefault();
 
-
 		let storeState = store.getState();
 		let searchTerm = storeState.peopleSearchTerm;	
 		
-
 		// if searchTerm !exist then???
 		if(searchTerm === undefined){
 			console.log("no match ")
@@ -154,8 +148,6 @@ export default class SearchForPeople extends Component{
 			
 		}else{
 
-			//let value = searchTerm.trim().toLowerCase();
-			
 			let ref = this.firestore.collection("Usernames").doc(searchTerm);
 			ref.get().then((snapshot)=>{
 				console.log(snapshot.data().uid);
@@ -168,7 +160,7 @@ export default class SearchForPeople extends Component{
 
 	render(){
 
-		console.log(this.state.usernameList);
+		
 
 		return(
 			<div>

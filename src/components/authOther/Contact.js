@@ -22,7 +22,7 @@ class Contact extends Component{
 		let form = document.getElementById("form");
 		form.addEventListener("submit",(e) => {
 
-			this.props.router.push('/Response');
+			this.props.history.push('/Response');
 
 		});
 	}
@@ -60,6 +60,7 @@ class Contact extends Component{
 							<button className="button-success pure-button button-xlarge">
 								<i className="fa fa-paper-plane"></i>&nbsp;Send
 							</button>
+							
 						</form>
 						
 					</div>

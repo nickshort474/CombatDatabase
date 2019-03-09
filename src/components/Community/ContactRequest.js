@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {withFirebase} from '../Firebase';
 
+import {firebase} from '@firebase/app';
 import {_handleDisable,_handleEnable} from '../../utils/HandleDisable';
 
 import LocalStorage from '../../utils/LocalStorage';
@@ -16,7 +16,7 @@ class ContactRequest extends Component{
 
 		
 		this.userUID = LocalStorage.loadState("user");
-		this.firestore = this.props.firebase.mainRef();
+		this.firestore = firebase.firestore();
 	}
 
 	_handleInput(e){
@@ -48,7 +48,7 @@ class ContactRequest extends Component{
 				console.log("obj created");
 				ref.add(obj).then(()=>{
 					console.log("added");
-					this.props.history.push(`/Person/${this.props.match.params.PersonKey}`)
+					this.props.history.push(`/PersonProfile/${this.props.match.params.PersonKey}`)
 				})
 			})
 			
@@ -83,4 +83,4 @@ class ContactRequest extends Component{
 	}
 }
 
-export default(withFirebase(ContactRequest))
+export default ContactRequest

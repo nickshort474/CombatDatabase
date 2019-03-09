@@ -27,6 +27,9 @@ export default class BlogCommentComp extends Component{
 			usernameRef.get().then((snapshot)=>{
 				this.username = snapshot.data().userName;
 			})
+			this.signedIn = true;
+		}else{
+			this.signedIn = false;
 		}
 		
 		this._getCommentReplies();
@@ -178,7 +181,7 @@ export default class BlogCommentComp extends Component{
 				<p>{this.props.text}</p>
 				
 
-				<p style={{"cursor":"pointer","fontWeight":"bold"}} id={this.props.index} onClick={this._replyToComment.bind(this)}>	Reply 	</p>
+				{this.signedIn ? <p style={{"cursor":"pointer","fontWeight":"bold"}} id={this.props.index} onClick={this._replyToComment.bind(this)}>	Reply 	</p> : null }
 
 				<input  id={`replyText${this.props.index}`} type="text" placeholder="Reply to comment" hidden={true} value={this.state.replyText} onChange={this._handleReplytext.bind(this)} />
 				<button id={`cancelReply${this.props.index}`} hidden={true} onClick={this._cancelReply.bind(this)}>	   Cancel 	</button>

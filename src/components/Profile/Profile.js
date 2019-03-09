@@ -112,8 +112,12 @@ export default class Profile extends Component{
 					
 	    			})
 	    		}else{
-	    			//Leave fields blank for first input
-	    			console.log(snapshot.data().profileCreated)
+	    			//Leave fields blank for first input apart from username if exists
+	    			let username = snapshot.data().userName ? snapshot.data().userName : "";
+
+	    			this.setState({
+	    				userName:username
+	    			})
 	    			this.profileCreated = false;
 	    		}
 			});
@@ -241,7 +245,7 @@ export default class Profile extends Component{
 							<div className="col-sm-12">
 								<div className="box">
 									
-									<h3 className="text-center">Profile:</h3>
+									<h2 className="text-center">Profile</h2>
 
 
 									<form action="">

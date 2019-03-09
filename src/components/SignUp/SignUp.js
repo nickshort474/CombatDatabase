@@ -7,8 +7,10 @@ import $ from 'jquery';
 
 import {_disable,_enable} from '../../utils/DisableGreyOut';
 
-import store from '../../redux/store';
-import constants from '../../redux/constants';
+/*import store from '../../redux/store';
+import constants from '../../redux/constants';*/
+import LocalStorage from '../../utils/LocalStorage';
+
 
 const SignUpPage = () => (
 	<div>
@@ -90,7 +92,7 @@ class SignUpFormBase extends Component{
 			
 			_enable();
 		}else{
-			console.log("can be submitted");
+			
 			// check database for existing usernames...
 			this._checkForExistingUsername();
 		}
@@ -103,14 +105,15 @@ class SignUpFormBase extends Component{
 	_checkForExistingUsername(){
 		
 		
-		let ref = this.firestore.collection('userUIDs');
+		let ref = this.firestore.collection('Users');
 		let query = ref.where("userName", "==",this.state.regUsername);
 		
 		let match = false;
 
 		query.get().then((snapshot)=>{
-			
+			console.log(snapshot);
 			snapshot.forEach((snap)=>{
+				console.log(snap.data())
 				if(snap){
 					alert(snap.data().userName + " already exists please try another user name");
 					match = true;
@@ -118,10 +121,13 @@ class SignUpFormBase extends Component{
 				}
 			})
 		}).then(()=>{
+			console.log(match);
 			if(!match){
 
 				//else save username to redux for use in initial account setup
-				store.dispatch({type:constants.SAVE_USERNAME, userName:this.state.regUsername})
+				
+				//store.dispatch({type:constants.SAVE_USERNAME, userName:this.state.regUsername})
+				console.log("about to create user");
 				this._createUser();
 				
 			}
@@ -129,17 +135,20 @@ class SignUpFormBase extends Component{
 	}
 
 	_createUser(){
-		const { regEmail, regPassword1 } = this.state;
-
-		this.firestore.doCreateUserWithEmailAndPassword(regEmail,regPassword1).then((authUser)=>{
-			this.setState({
-				...INITIAL_STATE
-			})
+		
+		console.log("trying to created user with email");
+		
+		this.props.firebase.doCreateUserWithEmailAndPassword(this.state.regEmail,this.state.regPassword1).then((authUser)=>{
+			
+			console.log("have created user with email");
+			
+			
 			let userUID = authUser.user.uid;
-			store.dispatch({type:constants.SAVE_USER, userName:userUID})
+			LocalStorage.saveState("user",userUID);
+			//store.dispatch({type:constants.SAVE_USER, userName:userUID})
 			
 
-			this._createUserInFirebase(userUID,this.state.regUsername,regEmail);
+			this._createUserInFirebase(userUID);
 
 
 			
@@ -151,16 +160,30 @@ class SignUpFormBase extends Component{
 		
 	}
 
-	_createUserInFirebase(userUID, username, email){
+	_createUserInFirebase(userUID){
+		console.log("trying to create user in firestore");
 		
+
 		let ref = this.firestore.collection("Users").doc(userUID);
+		
 		let obj = {
-			userName:username,
-			userEmail:email,
+			userName:this.state.regUsername,
+			userEmail: this.state.regEmail,
 			profileCreated:false
 		}
 		ref.set(obj).then(()=>{
-			this.props.history.push('/Home');
+
+			//create reference to username in usernames section for esy people search functionality  
+			let ref2 = this.firestore.collection("Usernames").doc(this.state.regUsername);
+			let obj2 = {uid:userUID};
+			ref2.set(obj2).then(()=>{
+				//clear state and form
+				this.setState({
+					...INITIAL_STATE
+				})
+				this.props.history.push('/Home');
+			})
+			
 		})
 	}
 

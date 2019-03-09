@@ -135,29 +135,20 @@ export default class ProfilePic extends Component{
 			<div className="container">
 				<div className="content-wrapper">
 					<div className="box">
-						<Link to="/Profile">&lt; Back to profile page</Link>
+						<Link to="/Profile">&lt; Back</Link>
 					</div>
 						
-					<div className="box">		
-						<h1>Add profile pic</h1>
+					<div className="box text-center">		
+						<h2>Profile pic</h2>
+						
 						<div className="row">
-							<div className="col-sm-6">
-								<label>Profile Picture</label>
-							</div>
+							<input type="file" id="browse" name="fileupload" style={{display:"none"}} onChange={this._handleProfilePic.bind(this)} />
+							<input type="button" value="Get image" className="btn btn-primary" id="fakeBrowse" onClick={this._handleBrowseClick.bind(this)} /><br /><br />
+							<img src={this.state.profilePicUrl ? this.state.profilePicUrl : defaultLogo} width='50%' height='50%' id="profilePic"  alt="" />
+						</div><br />
 
-							
-
-							<div className="col-sm-6">
-								
-								<input type="file" id="browse" name="fileupload" style={{display:"none"}} onChange={this._handleProfilePic.bind(this)} />
-								<input type="button" value="Add Profile Pic" id="fakeBrowse" onClick={this._handleBrowseClick.bind(this)} />
-
-								<img src={this.state.profilePicUrl ? this.state.profilePicUrl : defaultLogo} width='50%' height='50%' id="profilePic"  alt="" />
-							</div>
-
-						</div>
 						<div className="row">
-							<input type="submit" value="Update profile pic" onClick={this._submitForm.bind(this)}/>
+							<input type="submit" value="Update profile pic" className="btn btn-primary" onClick={this._submitForm.bind(this)}/>
 						</div>
 					</div>
 				</div>

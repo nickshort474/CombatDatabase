@@ -186,15 +186,28 @@ export default class SingleBlogPost extends Component{
 							</div>
 						</div>
 					</div>
+					
 					<div className="row">
 						<div className="col-sm-12">
+							
+							{this.signedIn ? 
+
 							<div className="box form-group">
 								<label htmlFor="commentText">Leave a comment</label>
 								<textarea id="commentText" value={this.state.commentText} onChange={this._commentText.bind(this)} placeholder="post a comment" className="form-control" style={{"height":"50%"}}/>
 								<div className="text-center"><button className="btn btn-primarySmall" onClick={this._postComment.bind(this)}>Comment</button></div>
 							</div>
+
+							: 
+
+							<div className="box text-center">
+								Please <Link to="/Signin">sign in</Link> to comment, or reply to comments
+							</div>
+
+							}
 						</div>
 					</div>
+					
 					<div className="row">
 						<div className="col-sm-12">
 							<div className="box msgCompStyle">
