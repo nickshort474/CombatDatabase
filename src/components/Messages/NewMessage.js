@@ -94,12 +94,18 @@ class NewMessage extends Component{
 					messageUser:this.user,
 					
 				}
-				//add message data to Messages section in firestore
+
+				//change have replied variable ready for displaying of new messages
 				ref2.set(obj2).then(()=>{
 					let ref3 = this.firestore.collection("People").doc(this.user).collection("ContactList").doc(this.props.msgUser);
 					ref3.update({haveReplied:false});
 					let ref4 = this.firestore.collection("People").doc(this.props.msgUser).collection("ContactList").doc(this.user);
-					ref4.update({haveReplied:true});					
+					ref4.update({haveReplied:true});
+
+					//clear content
+					this.setState({
+						content:""
+					})					
 				})
 			})
 		}else{
@@ -115,10 +121,10 @@ class NewMessage extends Component{
 			<form onSubmit={this._handlePost.bind(this)} action="">	
 				<div className="row box text-center">
 					<div className="col-sm-9">
-							<textarea id="content" value={this.state.content} placeholder="content" onChange={this._handleInput.bind(this)} />
-						</div>
+						<textarea id="content" value={this.state.content} placeholder="content" className="form-control" style={{"height":"50%"}}onChange={this._handleInput.bind(this)} />
+					</div>
 
-						<button type="submit" value="Post message" className="btn btn-primary extraMargin">Submit</button>
+					<button type="submit" value="Post message" className="btn btn-primary extraMargin">Send <i className="fa fa-paper-plane"></i> </button>
 				</div>
 			</form>	
 		)

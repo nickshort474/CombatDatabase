@@ -57,7 +57,7 @@ class Contact extends Component{
 							    <input type="email" className="form-control" id="email" name="email" placeholder="name@example.com" />
 							</div>
 							
-							<button className="button-success pure-button button-xlarge">
+							<button className="btn btn-primary">
 								<i className="fa fa-paper-plane"></i>&nbsp;Send
 							</button>
 							

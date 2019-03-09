@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import ProcessEpoch from '../../utils/ProcessEpoch';
+import ProcessDaysAgo from '../../utils/ProcessDaysAgo';
 
 
 export default class MessageComp extends Component{
@@ -11,31 +11,31 @@ export default class MessageComp extends Component{
 		let comp;
 
 		if(this.props.ownMsg){
-			comp =  <div className="row text-right">
-						<section className="col-xs-6">
+			comp =  <div className="row text-left contactMessages">
+						<section className="col-xs-3">
 							
 						</section>
-						<section className="well msgWell col-xs-6" style={{"backgroundColor":"#32CD32"}} >
+						<section className="well msgRightWell col-xs-9" style={{"backgroundColor":"#81ea81"}} >
 							<div className="row msgCompStyle">
 								<p>{this.props.contents}</p>
 							</div>
-							<div className="row">
-								<small className="text-muted"><ProcessEpoch date={this.props.date} /></small>
+							<div className="row text-right">
+								<small className="text-muted"><ProcessDaysAgo date={this.props.date} /></small>
 							</div>
 						</section>
 					</div>
 		}else{
-			comp =  <div className="row text-left">
+			comp =  <div className="row text-left contactMessages">
 				
-						<section className="well msgWell col-xs-6" style={{"backgroundColor":"#DEDEDE"}} >
+						<section className="well msgLeftWell col-xs-9" style={{"backgroundColor":"#DEDEDE"}} >
 							<div className="row msgCompStyle">
 								<p>{this.props.contents}</p>
 							</div>
-							<div className="row">
-								<small className="text-muted"><ProcessEpoch date={this.props.date} /></small>
+							<div className="row text-right">
+								<small className="text-muted"><ProcessDaysAgo date={this.props.date} /></small>
 							</div>
 						</section>
-						<section className="col-xs-6">
+						<section className="col-xs-3">
 							
 						</section>
 					</div>

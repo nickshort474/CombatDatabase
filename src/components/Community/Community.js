@@ -56,7 +56,7 @@ class Community extends Component{
 		this.firestore = firebase.firestore();
 		
 
-		this.userUID = this.props.propName.uid;
+		
 		
 
 		this.state = {
@@ -64,14 +64,19 @@ class Community extends Component{
 			requestList:[]
 		}
 
+		
+		
+	}
+
+	componentDidMount(){
+		this.userUID = this.props.propName.uid;
+		console.log(this.userUID);
 		if(this.userUID){
 			this._getPeople();
 			this._getContactRequests();
 		}
-		
+
 	}
-
-
 	_getPeople(){
 		
 		
@@ -98,13 +103,14 @@ class Community extends Component{
 
 
 	_getContactRequests(){
-		
+		console.log("get contact requests");
 		let ref = this.firestore.collection("People").doc(this.userUID).collection("ContactRequests");
 
 		let requestList = [];
 
 		ref.get().then((snapshot)=>{
-			if(snapshot.exists){
+			
+			if(snapshot){
 				console.log("contact requests yay")
 				snapshot.forEach((snap)=>{
 					console.log(snap.data());
@@ -196,9 +202,9 @@ class Community extends Component{
 
 		let requests = this.state.requestList.map((request,index)=>{
 			
-			return <div className="box" key={index}> {request.requestUserName} would like to make contact<br />
-						<p>{request.content}</p>
-						<button id={request.requestUserUID} value={request.requestUserName} onClick={this._handleRequestYes.bind(this)}>Yes</button>
+			return <div className="well msgCompStyle" key={index}><b>{request.requestUserName}</b> would like to make contact<br />
+						<p><i>"{request.content}"</i></p>
+						Add contact?<button id={request.requestUserUID} value={request.requestUserName} onClick={this._handleRequestYes.bind(this)}>Yes</button>
 						<button id={request.requestUserUID} onClick={this._handleRequestNo.bind(this)}>No</button>
 					</div>
 		})
@@ -218,14 +224,14 @@ class Community extends Component{
 						
 						
 					
-					<div className="row box text-center">
+					<div className=" box text-center">
 						
 						<h4>Your Community</h4>
 						<div>
 							{requests}
 						</div>
 						<hr />
-						<div>	
+						<div className="text-center">	
 							{contactList}
 						</div>
 

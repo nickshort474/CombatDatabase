@@ -94,13 +94,13 @@ class Messages extends Component{
 
 					<div className="row box text-center">
 						<h2>Last 10 messages</h2>
-						{messages}
+						{messages.length > 0 ? messages : <p>No messages yet</p>}
 					</div>
 					<NewMessage msgUser={this.props.match.params.PersonKey} />
 
 					<div className="row box">
 						
-						<Link to="/Community">&lt; Back to contact list</Link>
+						<Link to="/Community">&lt; Back</Link>
 						
 					</div>
 					

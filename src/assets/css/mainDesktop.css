@@ -1750,9 +1750,7 @@ select{
 	height:100%;
 }
 
-.msgWell{
-	margin-bottom: 0px;
-}
+
 
 .replyWell{
 	margin-top: 0px;
@@ -1770,6 +1768,35 @@ select{
 	color:#ae0c00;
 	cursor:pointer;
 }
+
+
+
+
+.msgLeftWell{
+	margin:0px;
+	border-radius: 0px 20px 0px 20px; 
+
+}
+
+.msgRightWell{
+	margin:0px;
+	border-radius: 20px 0px 20px 0px; 
+}
+
+.contactMessages{
+	margin:5px;
+	font-family:"Arial", "Helvetica", sans-serif;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 

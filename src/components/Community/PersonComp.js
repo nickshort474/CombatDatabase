@@ -8,8 +8,8 @@ export default class PersonComp extends Component{
 	render(){
 		
 		return(
-			<div className="row text-center">
-				<section className="well col-xs-8">
+			<div className="row">
+				<section style={{"marginLeft":"15px"}} className="well col-xs-7 text-center">
 					
 						
 						<Link to={`/PersonProfile/${this.props.uid}/${this.props.userName}`}>
@@ -24,11 +24,19 @@ export default class PersonComp extends Component{
 												
 					
 				</section>
-				<section className="col-xs-4">
+
+				<section style={{"marginRight":"15px"}} className="col-xs-4">
 					{this.props.haveReplied ? <p>Your have mail!</p> : null}
-					<Link to={`/Messages/${this.props.userName}/${this.props.uid}`}><button className="btn-primary">See messages {this.props.userName}</button></Link>
+
+					<Link to={`/Messages/${this.props.userName}/${this.props.uid}`}>
+						<p className="btn btn-primary">
+							See messages
+						</p>
+
+					</Link>
 						
 				</section>
+
 			</div>
 
 		)
