@@ -46,13 +46,16 @@ import Report from '../Styles/Report';
 // Blog files 
 import MyBlogList from '../Blog/MyBlogList';
 import MyBlogPostList from '../Blog/MyBlogPostList';
-/*import MySingleBlogPost from '../Blog/MySingleBlogPost';*/
+
 import ViewBlogs from '../Blog/ViewBlogs';
 import BlogPostList from '../Blog/BlogPostList';
+
 import SingleBlogPost from '../Blog/SingleBlogPost';
-import FindBlog from '../Blog/FindBlog';
+
 import AddBlog from '../Blog/AddBlog';
 import AddBlogPost from '../Blog/AddBlogPost';
+
+import FindBlog from '../Blog/FindBlog';
 import SearchedBlogs from '../Blog/SearchedBlogs';
 
 

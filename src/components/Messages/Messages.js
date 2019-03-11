@@ -36,17 +36,16 @@ class Messages extends Component{
 	}
 	
 
-
+	componentWillUnmount(){
+		this.snapshotListener();
+	}
 
 	_gatherMessages(){
 		
-		
-		
-
 		let ref = this.firestore.collection("Messages").doc(this.userUID).collection(this.props.match.params.PersonKey);
 		let query = ref.orderBy("messageDate","asc");
 		
-		query.onSnapshot((snapshot)=>{
+		this.snapshotListener = query.onSnapshot((snapshot)=>{
 			let items = [];
 
 			snapshot.forEach((snap)=>{

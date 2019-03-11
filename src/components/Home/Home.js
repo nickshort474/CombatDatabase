@@ -14,13 +14,7 @@ export default class Home extends Component{
 		super();
 		store.dispatch({type:constants.SAVE_PAGE, page:"Home"});
 		
-		this.nameStyle = {
-			color:'red'
-		}
-		this.linkStyle = {
-			color:'white'
-		}
-
+		
 		this.userUID = LocalStorage.loadState("user");
 		console.log(this.userUID);
 	}
@@ -48,7 +42,7 @@ export default class Home extends Component{
 			        	<div className="row">
 			        		<div className="col-xs-12 col-sm-8">
 			        			<div className="box">	
-				        			<p><span className="text-18"><span style={this.nameStyle}>Combat</span>DB</span> is aiming to be the number one resource for martial artists, self defence practitioners and fitness enthusiasts all over the world.</p>
+				        			<p><span className="text-18"><span style={{"color":"red"}}>Combat</span>DB</span> is aiming to be the number one resource for martial artists, self defence practitioners and fitness enthusiasts all over the world.</p>
 				        			<p>Our mission to build a community driven resource with a range a growing features.</p> 
 				        			
 			        			</div>
@@ -60,34 +54,34 @@ export default class Home extends Component{
 
 			        		<div className="col-xs-12 col-sm-4">
 			        			<div className="box">
-	        						<div style={this.linkStyle}>
+	        						<div className="txtCompStyle">
 										<Link to="/Community">Community</Link><p className="text-10">Make connections, send messages, build your community</p> 
 			        				</div>
-			        				<div style={this.linkStyle}>
+			        				<div className="txtCompStyle">
 										<Link to="/Business">Business Listings</Link><p className="text-10">Clubs, shops and other businesses</p> 
 			        				</div>
-			        				<div style={this.linkStyle}>
+			        				<div className="txtCompStyle">
 			        					<Link to="/Events">Events</Link><p className="text-10">Event listings</p> 
 			        				</div>
-			        				<div style={this.linkStyle}>
+			        				<div className="txtCompStyle">
 										<Link to="/Styles">Styles</Link><p className="text-10">Database of styles</p> 	
 			        				</div>
-			        				<div style={this.linkStyle}>
+			        				<div className="txtCompStyle">
 										<Link to="/ViewBlogs">Blogs</Link><p className="text-10">Share your views, opinions and thoughts</p> 
 			        				</div>
-			        				<div style={this.linkStyle}>
+			        				<div className="txtCompStyle">
 			        					<Link to="/Profile">Profile</Link><p className="text-10">Check your profile, update and add more details</p> 
 			        				</div>
-			        				<div style={this.linkStyle}>
+			        				<div className="txtCompStyle">
 			        					<Link to="/Contact">Contact</Link><p className="text-10">Get in contact, problems, issues or suggestions</p> 
 			        				</div>
-			        				<div style={this.linkStyle}>
+			        				<div className="txtCompStyle">
 			        					<Link to="/AboutUs">About Us</Link><p className="text-10">Our team</p> 
 			        				</div>
-			        				<div style={this.linkStyle}>
+			        				<div className="txtCompStyle">
 			        					<Link to="/Privacy">Privacy Policy</Link><p className="text-10">Your rights</p> 
 			        				</div>
-			        				<div style={this.linkStyle}>
+			        				<div className="txtCompStyle">
 			        					<Link to="/Terms">Terms and conditions</Link><p className="text-10">Out terms</p> 
 			        				</div>
 		        				</div>

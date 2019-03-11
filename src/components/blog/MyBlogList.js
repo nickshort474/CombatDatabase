@@ -48,7 +48,7 @@ export default class MyBlogList extends Component{
 
 			// if not signed in redirect to sign in  
 			this.setState({
-				signInMessage:<div className="text-center">Please <Link to='signIn'>sign in</Link> to see your blogs</div>
+				signInMessage:<div className="text-center">Please <Link to='/Signin'>sign in</Link> to see your blogs</div>
 			})
 
 		}
@@ -99,7 +99,7 @@ export default class MyBlogList extends Component{
 		let posts = this.state.items.map((blog) =>{
 			let blogName = this.state.blogNames[num];
 			num++;
-			return <MyBlogComp name={blogName} description={blog.description}  logo={blog.blogLogo} owner={this.state.user} key={blogName} />
+			return <MyBlogComp name={blogName} description={blog.description} logo={blog.blogLogo} owner={this.state.user} key={blogName} />
 		})
 
 		return(
@@ -128,8 +128,7 @@ export default class MyBlogList extends Component{
 
 						
 					</div>
-				</section>
-			</div>
+				</section>			</div>
 		)
 	}
 

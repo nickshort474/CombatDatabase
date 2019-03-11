@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {firebase} from '@firebase/app';
 import LocalStorage from '../../utils/LocalStorage';
-import store from '../../redux/store';
+
 import BlogCommentComp from './BlogCommentComp';
 
 /*import ProcessEpoch from '../../utils/ProcessEpoch';*/
@@ -25,9 +25,10 @@ export default class SingleBlogPost extends Component{
 			commentText:"",
 
 		}
+		
 		this.firestore = firebase.firestore();
 		this.userUID = LocalStorage.loadState("user");
-		this.prevPage = store.getState().prevPage;
+		
 		
 	}
 	
@@ -173,7 +174,7 @@ export default class SingleBlogPost extends Component{
 					<div className="row">
 						<div className="col-sm-12 ">
 							<div className="box">
-						   		<Link to={this.prevPage}>&#60; Back</Link>
+						   		<Link to={`/BlogPostList/${this.props.match.params.BlogUser}/${this.props.match.params.BlogName}`}>&#60; Back</Link>
 						    </div>
 					    </div>
 

@@ -24,7 +24,7 @@ export default class BlogPostList extends Component{
 		}
 
 		let storeState = store.getState();
-		this.prevPage =  storeState.page;
+		this.prevPage =  storeState.prevPage;
 		this.firestore = firebase.firestore();
 				
 		this.userUID = LocalStorage.loadState("user");
@@ -32,7 +32,8 @@ export default class BlogPostList extends Component{
 	
 	componentWillMount() {
 		window.scrollTo(0, 0);
-		store.dispatch({type:constants.SAVE_PREV_PAGE, prevPage:`/BlogPostList/${this.props.match.params.BlogUser}/${this.props.match.params.BlogName}`});
+		
+		store.dispatch({type:constants.SAVE_PAGE, page:`/BlogPostList/${this.props.match.params.BlogUser}/${this.props.match.params.BlogName}`});
 		this._getBlogInfo();
 		
 		//check if signed in
@@ -152,7 +153,7 @@ export default class BlogPostList extends Component{
 		if(this.state.showFollow === "show"){
 			showFollowButton = <button type="button" className="btn btn-primary" disabled={this.state.isEnabled} onClick={this._followBlog.bind(this)}>Follow this Blog</button>
 		}else if(this.state.showFollow === "signIn"){
-			showFollowButton = <div>Please sign in to follow this blog</div>
+			showFollowButton = <div className="text-center">Please <Link to="/Signin">sign in</Link> to follow this blog</div>
 		}else if(this.state.showFollow === "hide"){
 			showFollowButton = <p></p>
 		}

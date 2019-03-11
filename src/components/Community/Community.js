@@ -26,7 +26,7 @@ class SignIn extends Component{
 		super();
 
 		//store reference to page for rediret after signin
-		store.dispatch({type:constants.SAVE_PAGE, page:"/Community"});
+		store.dispatch({type:constants.SAVE_PAGE, page:"Community"});
 	}
 		
 	render(){
@@ -77,6 +77,11 @@ class Community extends Component{
 		}
 
 	}
+
+	componentWillUnmount(){
+		this.snapshotListener();
+	}
+
 	_getPeople(){
 		
 		
@@ -84,7 +89,7 @@ class Community extends Component{
 	
 		let items = [];
 			
-		ref.get().then((snapshot)=>{
+		this.snapshotListener = ref.onSnapshot((snapshot)=>{
 		
 			snapshot.forEach( (snap)=> {
 				//items.push(element.data());
@@ -224,7 +229,7 @@ class Community extends Component{
 						
 						
 					
-					<div className=" box text-center">
+					<div className="box text-center">
 						
 						<h4>Your Community</h4>
 						<div>

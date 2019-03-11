@@ -24,8 +24,8 @@ export default class Searchedlogs extends Component{
 	componentWillMount() {
 		window.scrollTo(0, 0);
 
-		let pageToSave = "SearchedBlogs/" + this.props.match.params.SearchTerm;
-		store.dispatch({type:constants.SAVE_PAGE, page:pageToSave});
+		let pageToSave = "/SearchedBlogs/" + this.props.match.params.SearchTerm;
+		store.dispatch({type:constants.SAVE_PREV_PAGE, prevPage:pageToSave});
 		
 		let storeState = store.getState();
 		let blogs = storeState.blogObj;
@@ -70,7 +70,7 @@ export default class Searchedlogs extends Component{
 			<div className="container">
 			 	<section className="content-wrapper">
 					<div className="box">
-					   		<Link to="/FindBlog">&#60; Back to find blogs</Link>
+					   		<Link to="/FindBlog">&#60; Back</Link>
 					    </div>
 
 					<div className="row">
@@ -78,8 +78,8 @@ export default class Searchedlogs extends Component{
 						
 						<div className="col-xs-12">
 							<div className="box">
-								<h1 className="text-center">Search Results:</h1>
-								<p>For {this.state.value}</p>
+								<h2 className="text-center">Search Results for {this.state.value}:</h2>
+								
 								<div>
 									
 									{blogs}

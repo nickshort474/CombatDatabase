@@ -19,13 +19,14 @@ export default class ViewBlogs extends Component{
 		super();
 
 		store.dispatch({type:constants.SAVE_PAGE, page:"/ViewBlogs"});
-		
+		store.dispatch({type:constants.SAVE_PREV_PAGE, prevPage:"/ViewBlogs"});
+
 		this.userUID = LocalStorage.loadState("user");
 		this.state = {
 			latestBlogs:[],
 			followedBlogs:[]
 		}
-		this.showLimit = 2;
+		this.showLimit = 5;
 		this.firestore = firebase.firestore();
 		this.signInMessage = <p></p>;
 	}
@@ -68,7 +69,7 @@ export default class ViewBlogs extends Component{
 				})
 			})
 		}else{
-			this.signInMessage = <p className="text-center">Please sign in to see your followed blogs</p>
+			this.signInMessage = <p className="text-center">Please <Link to="/Signin">sign in</Link> to see your followed blogs</p>
 		}
 		/*//*/
 
@@ -128,8 +129,11 @@ export default class ViewBlogs extends Component{
 		let moreButton;
 
 		let latestBlogs = this.state.latestBlogs.map((blog,index)=>{
-			
-			return <BlogComp blogName={blog.name} type={blog.type} logo={blog.blogLogo} description={blog.description} blogUser={blog.user} key={index} />
+			if(blog.user === this.userUID){
+				return null
+			}else{
+				return <BlogComp blogName={blog.name} type={blog.type} logo={blog.blogLogo} description={blog.description} blogUser={blog.user} key={index} />
+			}
 		})
 
 		let followedBlogs = this.state.followedBlogs.map((blog,index)=>{

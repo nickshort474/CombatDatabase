@@ -163,7 +163,7 @@ class PersonProfile extends Component{
 					<div className="row box">
 						<div className="">
 							<div className="col-sm-8">
-								<Link to={"/" + this.prevPage}>&lt; Back </Link>
+								<Link to={this.prevPage}>&lt; Back </Link>
 							</div>
 							<div className="col-sm-4">
 								<div>{buttonToShow}</div>

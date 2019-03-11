@@ -7,8 +7,7 @@ export default class BlogComp extends Component{
 	
 	componentWillMount(){
 		this.userUID = LocalStorage.loadState("user");
-		console.log(this.userUID);
-		console.log(this.props.blogUser);
+		
 		
 	}
 
@@ -23,7 +22,7 @@ export default class BlogComp extends Component{
 						<div className="col-sm-8 compTextStyle">
 							<h2>{this.props.blogName}</h2>
 							<p>{this.props.description}</p>
-							{this.userUID === this.props.blogUser ? <h3>YOUR BLOG!</h3> : <p>not your blog</p>}
+							{this.userUID === this.props.blogUser ? <h4>Your blog</h4> : null}
 						</div>
 						<div className="col-sm-4">
 							<img src={this.props.logo ? this.props.logo : defaultLogo} className="thumbnail" alt="Blog logo" width="100%" />
