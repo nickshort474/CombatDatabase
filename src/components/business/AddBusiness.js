@@ -96,8 +96,7 @@ class AddBusiness extends Component{
 			_compressImage(e.target.result, 200, (result)=>{
 								
 				this.businessThumbnail = result;
-				
-				
+								
 			})
 			$('#previewImage').attr("src", e.target.result);
 		}
@@ -171,7 +170,7 @@ class AddBusiness extends Component{
 
 				this._addBusinessToUserProfile(docId.id, () =>{
 					
-					this.props.history.push('/BusinessPage');
+					this.props.history.push('/ThankYouForListing');
 				})
 				
 			});

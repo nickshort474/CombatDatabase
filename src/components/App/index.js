@@ -58,6 +58,8 @@ import AddBlogPost from '../Blog/AddBlogPost';
 import FindBlog from '../Blog/FindBlog';
 import SearchedBlogs from '../Blog/SearchedBlogs';
 
+import ThankYouForListing from '../ThankYou/ThankYouForListing';
+
 
 //authorisation, profile, contact, other
 import Contact from '../AuthOther/Contact';
@@ -107,7 +109,8 @@ class App extends Component{
 						<Route path="/AddBusinessImages/:BusinessKey" component={AddBusinessImages} />
 						<Route path="/EditBusinessLogo/:BusinessKey" component={EditBusinessLogo} />
 
-						
+						<Route path="/ThankYouForListing" component={ThankYouForListing} />
+
 						<Route path="/Community" component={Community} />
 						<Route path="/Messages/:PersonUsername/:PersonKey" component={Messages} />
 						<Route path="/PersonProfile/:PersonKey" component={PersonProfile} />

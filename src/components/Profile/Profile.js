@@ -66,6 +66,64 @@ export default class Profile extends Component{
 		//Check if user is signed in.
 	    if (this.userUID) {
 	    	
+	    	
+	    	//connect to People section
+	    	let userRef = this.firestore.collection("People").doc(this.userUID);	
+
+					
+
+ 			//gather user data to display
+	    	userRef.get().then((snapshot) => {
+	    				
+				//assign username (set at user sign up)
+				let userName = snapshot.data().userName;
+
+				//get user details or assign to empty string if no profile info in firestore
+				let firstName = snapshot.data().firstName ? snapshot.data().firstName : "";
+				let lastName = snapshot.data().lastName ? snapshot.data().lastName : "";
+				let age = snapshot.data().age ? snapshot.data().age : "";
+				let styles = snapshot.data().styles ? snapshot.data().styles : "";
+				let bio = snapshot.data().bio ? snapshot.data().bio : "";
+				let generalLoc = snapshot.data().generalLoc ? snapshot.data().generalLoc : ""
+				let lat = snapshot.data().lat ? snapshot.data().lat : "";
+				let lng = snapshot.data().lng ? snapshot.data().lng : "";
+
+
+				this.setState({
+					firstName:firstName,
+					lastName:lastName,
+					userName:userName,
+					age:age,
+					styles:styles,
+					bio:bio,
+					generalLoc:generalLoc,
+					lat:lat,
+					lng:lng
+				});
+					
+	    	})
+	    	
+			
+
+			let picRef = this.firestore.collection("PeopleImages").doc(this.userUID);
+			picRef.get().then((snapshot)=>{
+				
+				this.setState({
+					profilePicUrl:snapshot.data().profilePicUrl
+				})
+			})
+	    	
+	    }else{
+	    	// No user is signed in. prompt to sign in.
+	    	alert("Please sign in to see your profile")
+	    }	
+	}
+
+	/*componentDidMount(){
+
+		//Check if user is signed in.
+	    if (this.userUID) {
+	    	
 	    	// connect to userUIDs db section
 			let ref = this.firestore.collection('Users').doc(this.userUID);
 
@@ -135,7 +193,7 @@ export default class Profile extends Component{
 	    	alert("Please sign in to see your profile")
 	    }	
 	}
-
+*/
 
 
 	//handle input fields
@@ -159,8 +217,6 @@ export default class Profile extends Component{
 		    //create profile
 			let profileRef = this.firestore.collection('People').doc(this.userUID);
 		    
-
-
 			let userObj = {
 
 				firstName:this.state.firstName,
@@ -168,35 +224,16 @@ export default class Profile extends Component{
 				styles:this.state.styles,
 				bio:this.state.bio,
 				age:this.state.age,
-				userName:this.state.userName,
 				generalLoc:this.state.generalLoc,
 				lat:this.state.lat,
 				lng:this.state.lng,
 				uid:this.userUID
 				
 			}
-			if(this.profileCreated === true){
-				console.log(this.profileCreated);
-				console.log("updating profile");
-				profileRef.update(userObj)
-
-			}else{
-				console.log(this.profileCreated)
-				console.log("creating profile");
-				let now = Date.now();
-				userObj["profileCreated"] = now;
-				console.log(userObj);
-				profileRef.set(userObj);
-				this.profileCreated = true;
-			}
 			
-
-			let userUIDRef = this.firestore.collection("Users").doc(this.userUID);
-			    			
-			userUIDRef.update({
-				profileCreated:true,
-			})
-			alert("Profile Updated")
+			profileRef.update(userObj)
+			
+			
 			    
 		}else{
 		    // No user is signed in.

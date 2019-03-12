@@ -16,6 +16,8 @@ import {_disable, _enable} from '../../utils/DisableGreyOut';
 import store from '../../redux/store';
 import LocalStorage from '../../utils/LocalStorage';
 
+import UsernameGenerator from 'username-generator';
+
 const SignInPage = () => (
   	<div>
    
@@ -128,7 +130,7 @@ class SignInFormBase extends Component{
 			//save reference to user in localStoarge to match google auth state
 			LocalStorage.saveState("user",userUID);
 			LocalStorage.saveState("token",authUser.credential.accessToken)
-	        //store.dispatch({type:constants.SAVE_USER,userUID:userUID})
+	        
 	        this.props.history.push(this.prevPage);
 
 	    }).catch(error => {
@@ -140,7 +142,7 @@ class SignInFormBase extends Component{
 		
 	}
 
-	_handleFirstSignIn(userUID,username){
+	_handleFirstSignIn(userUID){
 		let ref = firebase.firestore().collection("Users").doc(userUID);
 
 
@@ -148,15 +150,30 @@ class SignInFormBase extends Component{
 			// if user exists no need to do anything
 			if(snapshot.exists){
 				console.log("user already exists")
+				this.props.history.push(this.prevPage);
 			}else{
-				//else is new user so create a reference in Users collection with empty profile ref;
+				//else is new user so create a reference in Users collection with random username to start off;
+				let username = UsernameGenerator.generateUsername('-');
+				let now = Date.now();
+
 				ref.set({
-					profileCreated:false
+					userName:username
+				})
+				//create reference to username in usernames section for esy people search functionality  
+				let ref2 = this.firestore.collection("Usernames").doc(username);
+				let obj2 = {uid:userUID};
+				ref2.set(obj2);
+
+				let ref3 = this.firestore.collection("People").doc(userUID);
+				ref3.set({userName:username,uid:userUID,profileCreated:now}).then(()=>{
+					this.props.history.push(this.prevPage);
 				})
 			}
 		})
 
 	}
+
+
 
 
 	_hoverGoogleButton(){

@@ -26,11 +26,12 @@ export default class Username extends Component{
 	}
 
 	componentWillMount(){
+		
 		//get existing username
 		let ref = this.firestore.collection('Users').doc(this.userUID);
 		ref.get().then((snapshot)=>{
 			
-			let username = snapshot.data().userName ? snapshot.data().userName : "";
+			let username = snapshot.data().userName;
 
 			this.setState({
 				userName:username,
@@ -48,7 +49,7 @@ export default class Username extends Component{
 
 
 
-	_submitForm(){
+	/*_submitForm(){
 		// check for matching usernames first
 		let ref = this.firestore.collection('Users');
 		let query = ref.where("userName", "==", this.state.userName);
@@ -108,18 +109,41 @@ export default class Username extends Component{
 				
 			}
 		})
-	}
+	}*/
+
+	_submitForm(){
+
+		// check for matching usernames first
+		let ref = this.firestore.collection('Usernames').doc(this.state.userName);
+		let match = false;
+
 		
 
-	_updateUsernameSection(){
-		//username section for SearchForPeople (autosuggest box)
-		console.log("trying to update username section")
-		//delete doc of old username 
-		this.firestore.collection('Usernames').doc(this.state.oldUsername).delete();
-		console.log("nothing to delete!")
-		//add new doc with new username
-		this.firestore.collection('Usernames').doc(this.state.userName).add({uid:this.userUID});
-	}
+		ref.get().then((snapshot)=>{
+			
+			if(snapshot.exists){
+				alert(this.state.userName + " already exists please try another user name");
+				match = true;
+			}else{
+				match = false;
+			}
+			
+		}).then(()=>{
+			if(!match){
+				
+				this.firestore.collection('Users').doc(this.userUID).update({userName:this.state.userName});
+				//delete doc of old username 
+				this.firestore.collection('Usernames').doc(this.state.oldUsername).delete();
+				//add new doc with new username
+				this.firestore.collection('Usernames').doc(this.state.userName).set({uid:this.userUID});
+
+				this.props.history.push("/Profile");
+
+				
+			}
+		})
+	}	
+
 
 	render(){
 		return(

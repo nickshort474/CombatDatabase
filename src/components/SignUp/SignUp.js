@@ -169,19 +169,28 @@ class SignUpFormBase extends Component{
 		let obj = {
 			userName:this.state.regUsername,
 			userEmail: this.state.regEmail,
-			profileCreated:false
+			
 		}
 		ref.set(obj).then(()=>{
 
 			//create reference to username in usernames section for esy people search functionality  
 			let ref2 = this.firestore.collection("Usernames").doc(this.state.regUsername);
+			
 			let obj2 = {uid:userUID};
 			ref2.set(obj2).then(()=>{
 				//clear state and form
 				this.setState({
 					...INITIAL_STATE
 				})
-				this.props.history.push('/Home');
+				
+				let ref3 = this.firestore.collection("People").doc(userUID);
+				let now = Date.now();
+
+				ref3.set({userName:this.state.regUsername, uid:userUID, profileCreated:now}).then(()=>{
+					this.props.history.push('/Home');
+				});
+
+				
 			})
 			
 		})
