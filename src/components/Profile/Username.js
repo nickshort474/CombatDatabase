@@ -137,6 +137,10 @@ export default class Username extends Component{
 				//add new doc with new username
 				this.firestore.collection('Usernames').doc(this.state.userName).set({uid:this.userUID});
 
+				//update username in People section
+				this.firestore.collection("People").doc(this.userUID).update({userName:this.state.userName})
+
+				//redirect
 				this.props.history.push("/Profile");
 
 				

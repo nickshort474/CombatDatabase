@@ -59,7 +59,6 @@ class FindBlog extends Component{
 
 		// if searchTerm !exist then???
 		if(searchTerm === undefined){
-			console.log("no match ")
 			alert("please select a keyword from the search list")
 			
 		}else{

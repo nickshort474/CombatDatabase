@@ -49,7 +49,6 @@ export default class EditBusinessLogo extends Component{
 		
 		//set variables
 		let img  = store.getState().businessImg;
-		console.log(img);	
 			
 		let messageImageFileLocation = `businessLogos/${this.props.match.params.BusinessKey}.jpg`;
 		let uploadTask = storageRef.child(messageImageFileLocation).put(img);
@@ -62,30 +61,24 @@ export default class EditBusinessLogo extends Component{
 		    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
 		    this.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 
-		    console.log('Upload is ' + this.progress + '% done');
 		    switch (snapshot.state) {
 
 		    	case firebase.storage.TaskState.PAUSED: // or 'paused'
-		        	console.log('Upload is paused');
 		        	break;
 
 		    		case firebase.storage.TaskState.RUNNING: // or 'running'
-		        	console.log('Upload is running');
 		       	 break;
 		       	 default:
-		       	 	console.log("defaulting");
 
 		    }
 
 		}, (error)=> {
 		    // Handle unsuccessful uploads
-		    console.log(error);
 		    // eslint-disable-next-line
 		}, () => {
 		    // Handle successful uploads on complete
 		    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
 		    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL)=>{
-				console.log(downloadURL);
 				this._uploadRefToFirestore(downloadURL);		
 		    });
 		})
@@ -109,7 +102,6 @@ export default class EditBusinessLogo extends Component{
 		ref.update(obj).then(()=>{
 			_enable();
 			this.props.history.push(`/Business/${this.props.match.params.BusinessKey}`)
-			console.log("commited");
 		});
 		
 		

@@ -232,7 +232,7 @@ export default class Profile extends Component{
 			}
 			
 			profileRef.update(userObj)
-			
+			alert("Thank you for updating your profile!")
 			
 			    
 		}else{

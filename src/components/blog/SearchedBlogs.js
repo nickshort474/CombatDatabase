@@ -61,7 +61,6 @@ export default class Searchedlogs extends Component{
 	render(){
 
 		let blogs = this.state.items.map((blog)=>{
-			console.log(blog);
 			return <BlogComp  type={blog.type} blogName={blog.name} description={blog.description} blogUser={blog.user} key={blog.name} />
 		})
 

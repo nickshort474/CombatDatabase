@@ -52,8 +52,6 @@ export default class FindBusiness extends Component{
 		
 		//if true load state and apply
 		if(hasSavedSearch){
-			console.log("has saved search");
-			console.log(hasSavedSearch)
 			let businessSearchValues = storeState.businessSearchValues;
 
 			this.lat = businessSearchValues.lat;
@@ -139,13 +137,7 @@ export default class FindBusiness extends Component{
 	    
 	    let businessReference = this.firestore.collection("Business");
 	    let query = businessReference.where("lat","<=" , upperLat).where("lat", ">=", lowerLat);
-	    try{
-			
-	    }catch(e){
-	    	console.log(e);
-	    }
-	    
-
+	   
 		let items = [];
 
 	    query.get().then((snapshot)=>{

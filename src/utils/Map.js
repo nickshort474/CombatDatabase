@@ -185,7 +185,7 @@ export default class Map extends Component {
           for(obj of this.items){
              
               let eventLink = "<a class='compTextStyle' href='/#/SingleEvent/" + obj.eventID +"'>Visit event page</a>"
-              let contentString = "<div class='InfoWindow'><h2>" + obj.eventName + "</h2><br /><p>" + obj.eventType + "</p></p>" + eventLink + "</p></div>"
+              let contentString = "<div class='InfoWindow'><h2>" + obj.eventName + "</h2><br />" + eventLink + "</p></div>"
               
               //let contentString = "Hello";
 

@@ -10,6 +10,8 @@ import {_disable,_enable} from '../../utils/DisableGreyOut';
 
 import LocalStorage from '../../utils/LocalStorage';
 		
+import ReactLoading from 'react-loading';
+
 
 class AddBlog extends Component{
 
@@ -31,6 +33,8 @@ class AddBlog extends Component{
 		this.user = LocalStorage.loadState("user");
 		//this.keyWordArray = [];
 		this.blogKeywordObj = {};
+		
+
 	}
 	
 	componentWillMount() {
@@ -38,7 +42,6 @@ class AddBlog extends Component{
    		
 	}
 
-	
 
 	_handleSearchChoice(e){
 		
@@ -69,6 +72,13 @@ class AddBlog extends Component{
 		e.preventDefault();
 		
 		_disable();
+		
+    	this.setState({
+    		loading:true
+    	});
+
+
+
 
 		let errorMsgs = this._validate(this.state.blogName,this.state.blogDescription,this.state.keyWord1,this.state.keyWord2);
 		
@@ -154,6 +164,11 @@ class AddBlog extends Component{
 
 			if(nameMatch === true){
 				alert("Blog name already exists please try another");
+				
+				this.setState({
+    				loading:false
+    			});
+
 				_enable();
 			}else{
 				callback();
@@ -169,7 +184,12 @@ class AddBlog extends Component{
 
 		let BlogRef = this.firestore.collection("Blogs").doc(this.user).collection(this.state.blogName);
 		BlogRef.add({"empty":true});
+		
+		this.setState({
+    		loading:false
+    	});
 		_enable();
+
 		this.props.history.push('/MyBlogList');
 	}
 
@@ -182,7 +202,6 @@ class AddBlog extends Component{
 
 		for(let val in this.blogKeywordObj){
 			
-			console.log(this.blogKeywordObj[val]);
 
 			let ref = this.firestore.collection("KeyWords").doc(this.blogKeywordObj[val]).collection("blogs").doc();
 			let obj = {
@@ -243,7 +262,6 @@ class AddBlog extends Component{
 	}
 
 	_addBlogImage(key, funcToCallBack){
-		console.log("adding image")
 		let storageRef = firebase.storage().ref();
 		/*let files = document.getElementById("browse").files;
 		let file;*/
@@ -253,7 +271,6 @@ class AddBlog extends Component{
 		// get image from redux
 		let file = store.getState().blogImg;
 
-		console.log(file);
 		let blogImageFileLocation = `blogLogo/${key}.jpg`;
 		let uploadTask = storageRef.child(blogImageFileLocation).put(file);
 		
@@ -266,30 +283,24 @@ class AddBlog extends Component{
 		    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
 		    this.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 
-		    console.log('Upload is ' + this.progress + '% done');
 		    switch (snapshot.state) {
 
 		    	case firebase.storage.TaskState.PAUSED: // or 'paused'
-		        	console.log('Upload is paused');
 		        	break;
 
 		    		case firebase.storage.TaskState.RUNNING: // or 'running'
-		        	console.log('Upload is running');
 		       	 break;
 		       	 default:
-		       	 	console.log("defaulting");
 
 		    }
 
 		}, (error)=> {
 		    // Handle unsuccessful uploads
-		    console.log(error);
 		}, () => {
 		    // Handle successful uploads on complete
 		    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
 		  
 		  	uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-			    console.log('File available at', downloadURL);
 			    funcToCallBack(downloadURL);
 			 });
 
@@ -326,6 +337,16 @@ class AddBlog extends Component{
 	}
 
 	render(){
+
+		let loadingCircle;
+
+		if(this.state.loading){
+			loadingCircle = <ReactLoading  id="loadingCircle" type="spin" color="#00ff00" height={25} width={25} />
+		}else{
+			loadingCircle = <p></p>
+		}
+		
+
 		return(
 			<div>
 				<div className="container">
@@ -358,27 +379,32 @@ class AddBlog extends Component{
 				                        	<label htmlFor="blogDescription">Blog Description</label>
 				                        	<input type="text" id="blogDescription" className="form-control"  value={this.state.blogDescription} placeholder="Describe your blog" onChange={this._handleInput.bind(this)} />
 				                        </div>
-				                        
+				                        <br />
 				                        <div className="form-group">
-				                        	<p>Please provide some keywords or phrases to help people find your blog:</p>
-				                            <label htmlFor="BlogKeyword1">Keyword 1</label>
-				                            <input type="text" id="keyWord1" value={this.state.keyWord1} onChange={this._handleKeywordInput.bind(this)} placeholder="Keyword 1" /><br />
+				                        	<h4>Please provide some keywords to help people find your blog:</h4>
+				                            <label htmlFor="Keyword1">Keyword 1</label>
+				                            <input type="text" id="keyWord1" value={this.state.keyWord1} className="form-control" onChange={this._handleKeywordInput.bind(this)} placeholder="Keyword 1" /><br />
 
-				                            <label htmlFor="BlogKeyword2">Keyword 2</label>
-				                            <input type="text" id="keyWord2" value={this.state.keyWord2}onChange={this._handleKeywordInput.bind(this)} placeholder="Keyword 2" /><br />
+				                            <label htmlFor="Keyword2">Keyword 2</label>
+				                            <input type="text" id="keyWord2" value={this.state.keyWord2}  className="form-control" onChange={this._handleKeywordInput.bind(this)} placeholder="Keyword 2" /><br />
 
-				                            <label htmlFor="BlogKeyword3">Keyword 3</label>
-				                            <input type="text" id="keyWord3" value={this.state.keyWord3} onChange={this._handleKeywordInput.bind(this)} placeholder="Keyword 3" /><br />
+				                            <label htmlFor="Keyword3">Keyword 3</label>
+				                            <input type="text" id="keyWord3" value={this.state.keyWord3} className="form-control"  onChange={this._handleKeywordInput.bind(this)} placeholder="Keyword 3" /><br />
 
-				                            <label htmlFor="BlogKeyword4">Keyword 4</label>
-				                            <input type="text" id="keyWord4" value={this.state.keyWord4} onChange={this._handleKeywordInput.bind(this)} placeholder="Keyword 4" /><br />
+				                            <label htmlFor="Keyword4">Keyword 4</label>
+				                            <input type="text" id="keyWord4" value={this.state.keyWord4} className="form-control"  onChange={this._handleKeywordInput.bind(this)} placeholder="Keyword 4" /><br />
 
-				                            <label htmlFor="BlogKeyword5">Keyword 5</label>
-				                            <input type="text" id="keyWord5" value={this.state.keyWord5} onChange={this._handleKeywordInput.bind(this)} placeholder="Keyword 5" /><br />								
+				                            <label htmlFor="Keyword5">Keyword 5</label>
+				                            <input type="text" id="keyWord5" value={this.state.keyWord5} className="form-control"  onChange={this._handleKeywordInput.bind(this)} placeholder="Keyword 5" /><br />								
 				                        </div>
-				                        <GetImage prompt="Image for blog listing display" comp="AddBlog" />
-				                       {this.state.errors}
-				                        <button type="submit" className="btn btn-primary">Submit</button>
+				                        <GetImage prompt="Add image for blog display" comp="AddBlog" />
+				                       	<div className="text-center">
+					                       	{this.state.errors}
+					                        <button type="submit" className="btn btn-primary">Submit</button>
+				                        </div>
+				                        <div>
+				                        	{loadingCircle}
+				                        </div>
 				                    </form>
 				                </div>
 				            </div>

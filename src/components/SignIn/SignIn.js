@@ -48,6 +48,7 @@ class SignInFormBase extends Component{
     	}else{
     		this.prevPage = "/Home";
     	}
+    	this.firestore = firebase.firestore()
     	
   	}
 	
@@ -143,7 +144,7 @@ class SignInFormBase extends Component{
 	}
 
 	_handleFirstSignIn(userUID){
-		let ref = firebase.firestore().collection("Users").doc(userUID);
+		let ref = this.firestore.collection("Users").doc(userUID);
 
 
 		ref.get().then((snapshot)=>{
@@ -159,11 +160,12 @@ class SignInFormBase extends Component{
 				ref.set({
 					userName:username
 				})
+				console.log("adding to usernames");
 				//create reference to username in usernames section for esy people search functionality  
 				let ref2 = this.firestore.collection("Usernames").doc(username);
 				let obj2 = {uid:userUID};
 				ref2.set(obj2);
-
+				console.log("adding to people section")
 				let ref3 = this.firestore.collection("People").doc(userUID);
 				ref3.set({userName:username,uid:userUID,profileCreated:now}).then(()=>{
 					this.props.history.push(this.prevPage);

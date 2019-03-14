@@ -25,7 +25,6 @@ export default class AddBusinessImages extends Component{
 		let ref = this.firestore.collection("Business").doc(this.props.match.params.BusinessKey).collection("businessThumbnailImages");
 
 		ref.get().then((snapshot)=>{
-			console.log(snapshot);
 			
 			snapshot.forEach((snap)=>{
 				
@@ -43,7 +42,6 @@ export default class AddBusinessImages extends Component{
 		ref2.get().then((snapshot)=>{
 			
 			snapshot.forEach((snap)=>{
-				console.log(snap.data().url)
 				this.imageArray.push(snap.data().url);
 				
 			})
@@ -115,24 +113,19 @@ export default class AddBusinessImages extends Component{
 		    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
 		    this.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 
-		    console.log('Upload is ' + this.progress + '% done');
 		    switch (snapshot.state) {
 
 		    	case firebase.storage.TaskState.PAUSED: // or 'paused'
-		        	console.log('Upload is paused');
 		        	break;
 
 		    		case firebase.storage.TaskState.RUNNING: // or 'running'
-		        	console.log('Upload is running');
 		       	 break;
 		       	 default:
-		       	 	console.log("defaulting");
 
 		    }
 
 		}, (error)=> {
 		    // Handle unsuccessful uploads
-		    console.log(error);
 		    // eslint-disable-next-line
 		}, () => {
 		    // Handle successful uploads on complete
@@ -166,24 +159,19 @@ export default class AddBusinessImages extends Component{
 		    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
 		    this.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 
-		    console.log('Upload is ' + this.progress + '% done');
 		    switch (snapshot.state) {
 
 		    	case firebase.storage.TaskState.PAUSED: // or 'paused'
-		        	console.log('Upload is paused');
 		        	break;
 
 		    		case firebase.storage.TaskState.RUNNING: // or 'running'
-		        	console.log('Upload is running');
 		       	 break;
 		       	 default:
-		       	 	console.log("defaulting");
 
 		    }
 
 		}, (error)=> {
 		    // Handle unsuccessful uploads
-		    console.log(error);
 		    // eslint-disable-next-line
 		}, () => {
 		    // Handle successful uploads on complete

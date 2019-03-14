@@ -51,7 +51,6 @@ class Business extends Component{
 				this.items.push(element.data());
 				this.counter++;
 			})
-			console.log(this.counter);
 			
 			if(this.mounted){
 				this.setState({
@@ -113,14 +112,7 @@ class Business extends Component{
 
 	render(){
 
-		/*let moreButton;
-
-		if(this.counter === this.showLimit){
-			console.log(this.counter)
-			moreButton = <button className="btn-primary" onClick={this._handleMoreButton.bind(this)}>Show more businesses</button>
-		}*/
-
-
+		
 		let business = this.state.items.map((business) =>{
 			
 			return <BusinessComp businessName={business.businessName} summary={business.summary} businessKey={business.key} location={business.location} businessLogo={business.businessLogo} key={business.key} />

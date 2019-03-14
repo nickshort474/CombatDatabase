@@ -28,6 +28,7 @@
     "react-geosuggest": "^2.8.0",
     "react-google-maps": "^9.4.5",
     "react-images": "^0.5.19",
+    "react-loading": "^2.0.3",
     "react-router-dom": "^4.3.1",
     "react-scripts": "^2.1.8",
     "redux": "^4.0.0",

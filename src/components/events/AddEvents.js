@@ -32,6 +32,7 @@ class AddEvents extends Component{
 			eventDescription:"",
 			eventPhone:"",
 			eventEmail:"",
+			eventWebPage:"",
 			eventTime:"",
 			eventTimeFormat:false
 			
@@ -161,6 +162,7 @@ class AddEvents extends Component{
 					eventDescription:this.state.eventDescription,
 					eventPhone:this.state.eventPhone,
 					eventEmail:this.state.eventEmail,
+					eventWebPage:this.state.eventWebPage,
 					eventTime:this.state.eventTime,
 					lat:this.state.lat,
 					lng:this.state.lng,
@@ -381,10 +383,13 @@ class AddEvents extends Component{
 				                            <input type="text" id="eventPhone" value={this.state.eventPhone} className="form-control"   onChange={this._handleInput.bind(this)} />
 				                        </div>
 				                        <div className="form-group">
-				                            <label htmlFor="eventEmail">Email address</label><br />
+				                            <label htmlFor="eventEmail">Contact Email address</label><br />
 				                            <input type="text" id="eventEmail" value={this.state.eventEmail} className="form-control"   onChange={this._handleInput.bind(this)} />
 				                        </div>
-
+				                        <div className="form-group">
+				                            <label htmlFor="eventWebPage">Event Webpage</label><br />
+				                            <input type="text" id="eventWebPage" value={this.state.eventWebPage} className="form-control"   onChange={this._handleInput.bind(this)} />
+				                        </div>
 				                        <GetImage prompt="Please provide an image for your Event" comp="AddEvents" />
 
 				                        <div className="text-center">

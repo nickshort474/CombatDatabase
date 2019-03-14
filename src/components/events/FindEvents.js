@@ -17,8 +17,8 @@ export default class FindEvents extends Component{
 	constructor(){
 		super();
 
-		store.dispatch({type:constants.SAVE_PAGE, page:"FindEvents"});
-		store.dispatch({type:constants.SAVE_PREV_PAGE, prevPage:"FindEvents"});
+		store.dispatch({type:constants.SAVE_PAGE, page:"/FindEvents"});
+		store.dispatch({type:constants.SAVE_PREV_PAGE, prevPage:"/FindEvents"});
 		
 		this.first = false;
   		this.firestore = firebase.firestore();	

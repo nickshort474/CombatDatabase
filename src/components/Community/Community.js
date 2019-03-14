@@ -70,7 +70,6 @@ class Community extends Component{
 
 	componentDidMount(){
 		this.userUID = this.props.propName.uid;
-		console.log(this.userUID);
 		if(this.userUID){
 			this._getPeople();
 			this._getContactRequests();
@@ -108,7 +107,6 @@ class Community extends Component{
 
 
 	_getContactRequests(){
-		console.log("get contact requests");
 		let ref = this.firestore.collection("People").doc(this.userUID).collection("ContactRequests");
 
 		let requestList = [];
@@ -116,16 +114,13 @@ class Community extends Component{
 		ref.get().then((snapshot)=>{
 			
 			if(snapshot){
-				console.log("contact requests yay")
 				snapshot.forEach((snap)=>{
-					console.log(snap.data());
 					requestList.push(snap.data())
 				})
 				this.setState({
 					requestList:requestList
 				})
 			}else{
-				console.log(" no one wants to be my friend");
 			}
 		})
 		
@@ -173,7 +168,6 @@ class Community extends Component{
 	}
 
 	_handleRequestNo(e){
-		console.log(e.target.id)
 		this._deleteRequest(e.target.id);
 	}
 

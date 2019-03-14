@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import {firebase} from '@firebase/app';
 
 import Map from '../../utils/Map';
-import ProcessEpoch from '../../utils/ProcessEpoch';
+import ProcessEpochDisplay from '../../utils/ProcessEpochDisplay';
 
 import store from '../../redux/store';
 import constants from '../../redux/constants';
@@ -20,7 +20,7 @@ export default class SingleEventPage extends Component{
 		window.scrollTo(0, 0);
 
 		// save current page ref to redux
-		let pageString = `SingleEvent/${this.props.match.params.EventKey}`
+		let pageString = `/SingleEvent/${this.props.match.params.EventKey}`
 		store.dispatch({type:constants.SAVE_PAGE, page:pageString});
 	
 		let storeState = store.getState();
@@ -31,7 +31,7 @@ export default class SingleEventPage extends Component{
 		this._getEventInfo();
 
 		this.setState({
-			/*eventTime:1,*/
+			
 			owner:false,
 			previousPage:previousPage,
 		})
@@ -60,6 +60,7 @@ export default class SingleEventPage extends Component{
 				eventDescription:snapshot.data().eventDescription,
 				eventTime:snapshot.data().eventTime,
 				eventEmail:snapshot.data().eventEmail,
+				eventWebPage:snapshot.data().eventWebPage,
 				eventType:snapshot.data().eventType,
 				eventLocation:snapshot.data().eventLocation,
 				eventPhone:snapshot.data().eventPhone,
@@ -78,19 +79,9 @@ export default class SingleEventPage extends Component{
 
 	render(){
 
-		console.log("rendering");
+		
 		let EditEvent, EditImage;
-		
-
-		let epoch = () =>{
-			if(this.state.eventTime !== 1){
-				return <ProcessEpoch date={this.state.eventTime} hoursWanted={true} key={this.state.eventTime} />
-			}else{
-				
-			}
-
-		}
-		
+			
 		
 		if(this.state.owner === true){
 			EditEvent = <Link to={`/EditEvent/${this.props.match.params.EventKey}`}>Edit event information</Link>
@@ -148,7 +139,7 @@ export default class SingleEventPage extends Component{
 							<div className="row">
 								<div className="col-sm-12">
 									<div className="box">
-										<p>{this.state.eventPhone !== "" ? this.state.eventPhone : "No contact number"}</p>
+										<p>{this.state.eventPhone  ? this.state.eventPhone : "No contact number"}</p>
 									</div>
 								</div>
 							</div>
@@ -156,11 +147,18 @@ export default class SingleEventPage extends Component{
 							<div className="row">
 								<div className="col-sm-12">
 									<div className="box">
-										<p>{this.state.eventEmail !== "" ? this.state.eventEmail : "No email address"}</p>
+										<p>{this.state.eventEmail ? this.state.eventEmail : "No email address"}</p>
 									</div>
 								</div>
 							</div>
-
+							
+							<div className="row">
+								<div className="col-sm-12">
+									<div className="box">
+										<p>{this.state.eventWebPage ? this.state.eventWebPage : "No web page"}</p>
+									</div>
+								</div>
+							</div>
 						
 							<div className="row">
 								<div className="col-sm-12">
@@ -174,10 +172,9 @@ export default class SingleEventPage extends Component{
 
 						<div className="col-sm-3">
 
-							<div className="row box">
+							<div className="row box styledDate">
 								
-								{epoch()}
-								
+								<ProcessEpochDisplay date={this.state.eventTime} hoursWanted={true} key={this.state.eventTime} />
 							</div>
 
 							<div className="row">

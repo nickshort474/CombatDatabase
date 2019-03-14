@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 
 
-import ProcessEpoch from '../../utils/ProcessEpoch';
+import ProcessEpochDisplay from '../../utils/ProcessEpochDisplay';
 import defaultLogo from '../../assets/images/default.jpg';
 
 export default class SingleEventComp extends Component{
@@ -17,10 +17,17 @@ export default class SingleEventComp extends Component{
 						
 
 							<article className="post">
-								
+							
 
 								<div className="col-sm-8 msgCompStyle">
-									<h2>{this.props.name}</h2>
+									<div className="row">
+										<div className="col-xs-7">
+											<h2>{this.props.name}</h2>
+										</div>
+										<div className="col-xs-5">
+											<ProcessEpochDisplay date={this.props.date} hoursWanted={true} />
+										</div>
+									</div>
 									<p>{this.props.description}</p>
 									<p>{this.props.location}</p>
 
@@ -34,13 +41,7 @@ export default class SingleEventComp extends Component{
 										
 										
 									</div>
-									<div className="row">
-										<div className="col-sm-12  msgCompStyle">
-											<ProcessEpoch date={this.props.date} hoursWanted={true} />
-										</div>
-										
-										
-									</div>
+							
 									
 								</div>
 

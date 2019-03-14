@@ -91,7 +91,6 @@ export default class ViewBlogs extends Component{
 		ref.get().then((snapshot)=>{
 			this.lastVisible = snapshot.docs[snapshot.docs.length - 1];
 
-  			//console.log("last", lastVisible);
 
 			snapshot.forEach((element)=> {
 				this.items.push(element.data())
@@ -119,7 +118,6 @@ export default class ViewBlogs extends Component{
 			this.setState({
 	    		latestBlogs:this.items
 	    	});
-	    	console.log(this.counter)
 		})
 
 	}

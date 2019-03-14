@@ -41,7 +41,6 @@ export default class AddBusinessImages extends Component{
 				
 				let str = String(snap.id)
 				let num = str.substr(5,1);
-				console.log(num)
 				this.setState({
 					[`caption${num}`]:snap.data().caption,
 					[`businessPic${num}`]:snap.data().url
@@ -142,7 +141,6 @@ export default class AddBusinessImages extends Component{
 			
 			if(typeof this.imageArray[i] !== "string"){
 				//upload images
-				console.log(typeof this.imageArray[i]);
 				
 				let num = i + 1;
 					// get image from image array
@@ -163,24 +161,19 @@ export default class AddBusinessImages extends Component{
 					    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
 					    this.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 
-					    console.log('Upload is ' + this.progress + '% done');
 					    switch (snapshot.state) {
 
 					    	case firebase.storage.TaskState.PAUSED: // or 'paused'
-					        	console.log('Upload is paused');
 					        	break;
 
 					    		case firebase.storage.TaskState.RUNNING: // or 'running'
-					        	console.log('Upload is running');
 					       	 break;
 					       	 default:
-					       	 	console.log("defaulting");
 
 					    }
 
 					}, (error)=> {
 					    // Handle unsuccessful uploads
-					    console.log(error);
 					    // eslint-disable-next-line
 					}, () => {
 					    // Handle successful uploads on complete
@@ -248,24 +241,19 @@ export default class AddBusinessImages extends Component{
 					    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
 					    this.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 
-					    console.log('Upload is ' + this.progress + '% done');
 					    switch (snapshot.state) {
 
 					    	case firebase.storage.TaskState.PAUSED: // or 'paused'
-					        	console.log('Upload is paused');
 					        	break;
 
 					    		case firebase.storage.TaskState.RUNNING: // or 'running'
-					        	console.log('Upload is running');
 					       	 break;
 					       	 default:
-					       	 	console.log("defaulting");
 
 					    }
 
 					}, (error)=> {
 					    // Handle unsuccessful uploads
-					    console.log(error);
 					    // eslint-disable-next-line
 					}, () => {
 					    // Handle successful uploads on complete
@@ -287,7 +275,6 @@ export default class AddBusinessImages extends Component{
 					    });
 					})
 			}else{
-				console.log(typeof this.thumbnailArray[i])
 				thumbnailDownloadArray.push(this.thumbnailArray[i])
 				uploadCounter++;
 				if(uploadCounter === this.thumbnailDownloadArray.length){
@@ -307,7 +294,6 @@ export default class AddBusinessImages extends Component{
 		let firestore = firebase.firestore();
 		let batch = firestore.batch();
 
-		console.log(this.captionObj);
 
 		if(type === "thumbnails"){
 			for(let i = 1; i < downloadArray.length; i++){
@@ -332,7 +318,6 @@ export default class AddBusinessImages extends Component{
 			for(let i = 1; i < downloadArray.length; i++){
 			
 				//let num = i + 1;
-				console.log(this.captionObj[i] + " i")
 				
 				//create ref for each downloadURl / image
 				let ref = firestore.collection("Business").doc(this.props.match.params.BusinessKey).collection("businessImages").doc(`image${i}`);
@@ -350,7 +335,6 @@ export default class AddBusinessImages extends Component{
 		// commit batch write
 		batch.commit().then(()=>{
 			//this.props.history.push(`/Business/${this.props.match.params.BusinessKey}`)
-			console.log("commited");
 			callback()
 		});
 		
