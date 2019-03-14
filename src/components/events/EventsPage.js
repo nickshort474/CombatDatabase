@@ -47,7 +47,7 @@ export default class EventsPage extends Component{
 				this.items.push(element.data());
 				this.counter++;
 			})
-			console.log(this.counter);
+			
 			if(this.mounted){
 				this.setState({
 					items:this.items

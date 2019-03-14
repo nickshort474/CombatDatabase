@@ -178,7 +178,7 @@ export default class FindEvents extends Component{
 
 		eventComps = this.state.eventComps.map((event,index)=>{
 
-			return <SingleEventComp name={event.eventName} description={event.eventDescription} location={event.eventLocation}  logo={event.eventLogo} date={event.creationDate} id={event.eventID} key={index}/>		
+			return <SingleEventComp name={event.eventName} description={event.eventDescription} location={event.eventLocation}  logo={event.eventLogo} date={event.eventTime} id={event.eventID} key={index}/>		
 		})
 
 

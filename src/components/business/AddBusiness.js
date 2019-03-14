@@ -73,6 +73,12 @@ class AddBusiness extends Component{
 		$(`#${e.target.id}`).removeClass('formError');
 	}
 
+	_handleBrowseClick(){
+	   
+	    var fileinput = $("#browse");
+	    fileinput.click();
+	}
+
 	_onSuggestSelect(suggest) {
 		
 		if(suggest){
@@ -343,35 +349,39 @@ class AddBusiness extends Component{
 			                        </div>
 									<div className="form-group">
 			                            <label htmlFor="businessSummary">Please give a quick Summary of your business:<span>*</span></label><br />
-			                            <textarea  id="businessSummary" value={this.state.businessSummary} onChange={this._handleInput.bind(this)}></textarea>
+			                            <textarea  id="businessSummary" value={this.state.businessSummary} className="form-control" onChange={this._handleInput.bind(this)}></textarea>
 			                        </div>
 
 			                       
 
 			                        <div className="form-group">
 			                            <label htmlFor="businessDescription">Please provide a full description here:<span>*</span></label><br />
-			                            <textarea id="businessDescription" value={this.state.businessDescription} onChange={this._handleInput.bind(this)}></textarea>
+			                            <textarea id="businessDescription" value={this.state.businessDescription} className="form-control" onChange={this._handleInput.bind(this)}></textarea>
 			                        </div>
 
 			                        <div className="form-group">
 			                            <label htmlFor="businessPhone">Please provide contact number:</label><br />
 			                            
-			                            <input type="text" id="businessPhone" value={this.state.businessPhone} onChange={this._handleInput.bind(this)}/>
+			                            <input type="text" id="businessPhone" value={this.state.businessPhone} className="form-control" onChange={this._handleInput.bind(this)}/>
 			                        </div>
 
 			                        <div className="form-group">
 			                            <label htmlFor="businessEmail">Please provide contact email:</label><br />
 			                            
-			                            <input type="email" id="businessEmail" value={this.state.businessEmail} onChange={this._handleInput.bind(this)}/>
+			                            <input type="email" id="businessEmail" value={this.state.businessEmail} className="form-control" onChange={this._handleInput.bind(this)}/>
 			                        </div>
 			                        
-			                        <div className="form-group">
-										Add a business logo or image:<input type="file" id="fileUpload" name="pic" onChange={this._previewImage.bind(this)} accept="image/*" />
+			                        <div className="form-group text-center">
+										<p>Add a business logo:</p>
+										<input type="file" id="fileUpload" style={{display:"none"}} name="pic" onChange={this._previewImage.bind(this)} accept="image/*" />
+										<input type="button" className="btn btn-primary"   value="Add Image" id="fakeBrowse" onClick={this._handleBrowseClick.bind(this)} /><br />
 										<img src={defaultLogo} id="previewImage" className="img-thumbnail" width="200px" height="200px" alt="Preview" />
 										
 									</div>  
-									{this.state.errors}
-			                        <button type="submit" className="btn btn-primary">Submit</button>
+									<div className="text-center">
+										{this.state.errors}
+			                       		<button type="submit" className="btn btn-primary">Submit</button>
+			                        </div>
 			                 		 
 			                    </form>
 			                     

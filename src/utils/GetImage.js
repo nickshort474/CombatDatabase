@@ -137,11 +137,11 @@ export default class GetImage extends Component{
 	render(){
 		return(
 					
-			<div className="form-group">
+			<div className="form-group text-center">
 				
 				<p>{this.state.prompt}</p>
 				<input type="file"  id="browse" style={{display:"none"}} name="fileupload" onChange={this._previewImage.bind(this)} accept="image/*" />
-				<input type="button" className="btn-primary"   value="Add Image" id="fakeBrowse" onClick={this._handleBrowseClick.bind(this)} /><br />
+				<input type="button" className="btn btn-primary"   value="Add Image" id="fakeBrowse" onClick={this._handleBrowseClick.bind(this)} /><br />
 				<img src={this.state.src} id="previewImage" className="img-thumbnail" width="200px" height="200px" alt="Preview" />
 								
 			</div>

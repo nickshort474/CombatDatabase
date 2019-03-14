@@ -106,9 +106,9 @@ class AddEvents extends Component{
 	_handleDateTimeChange(dateObject){
 		if(typeof dateObject === 'object'){
 			
-			
-			let unix = moment().date(dateObject.date()).valueOf();
-							
+			let unix = moment(dateObject).unix() * 1000;
+			console.log(unix);
+				
 			this.setState({
 				eventTime:unix,
 				eventTimeFormat:true
@@ -175,7 +175,7 @@ class AddEvents extends Component{
 			//test for matching event names
 			this._testForName(()=>{
 				
-				console.log("no name match");
+				
 
 				let ref = this.firestore.collection("Events").doc();
 				let docRef = ref.id;
@@ -192,7 +192,7 @@ class AddEvents extends Component{
 					eventTime:this.state.eventTime,
 					lat:this.state.lat,
 					lng:this.state.lng,
-					creator:this.user,
+					creator:this.userUID,
 					hasLogo:this.hasImage,
 					eventID:docRef,
 					creationDate:now
@@ -200,7 +200,7 @@ class AddEvents extends Component{
 
 				if(this.hasImage){
 					this._addEventImage(docRef,(url)=>{
-						console.log("has image");
+						
 						eventObj["eventLogo"] = url;
 						
 						ref.set(eventObj).then(()=>{
@@ -209,11 +209,11 @@ class AddEvents extends Component{
 						})
 					})
 				}else{
-					console.log("no image");
+					
 					eventObj["eventLogo"] = false;
-					console.log(eventObj);
+					
 					ref.set(eventObj).then(()=>{
-						console.log("pushing");
+						
 						this.props.history.push('/Events');
 					})
 				}
@@ -400,12 +400,12 @@ class AddEvents extends Component{
 
 										<div className="form-group">
 				                            <label htmlFor="eventDescription">Description<span>*</span></label><br />
-				                            <textarea  id="eventDescription"  value={this.state.eventDescription}   onChange={this._handleInput.bind(this)}></textarea>
+				                            <textarea  id="eventDescription"  value={this.state.eventDescription} className="form-control"   onChange={this._handleInput.bind(this)}></textarea>
 				                        </div>
 
 				                        <div className="form-group">
 				                            <label htmlFor="eventType">Event type:</label><br />
-				                           	<select id="eventType" onChange={this._handleEventType.bind(this)}>
+				                           	<select id="eventType" className="form-control" onChange={this._handleEventType.bind(this)}>
 											    	<option value="Tournament">Tournament</option>
 											    	<option value="Challenge">Challenge</option>
 											    	<option value="Display">Display</option>
@@ -417,11 +417,11 @@ class AddEvents extends Component{
 
 				                        <div className="form-group">
 				                            <label htmlFor="eventPhone">Phone number</label><br />
-				                            <input tpye="text" id="eventPhone" value={this.state.eventPhone}   onChange={this._handleInput.bind(this)} />
+				                            <input type="text" id="eventPhone" value={this.state.eventPhone} className="form-control"   onChange={this._handleInput.bind(this)} />
 				                        </div>
 				                        <div className="form-group">
 				                            <label htmlFor="eventEmail">Email address</label><br />
-				                            <input type="text" id="eventEmail" value={this.state.eventEmail}   onChange={this._handleInput.bind(this)} />
+				                            <input type="text" id="eventEmail" value={this.state.eventEmail} className="form-control"   onChange={this._handleInput.bind(this)} />
 				                        </div>
 
 				                        <GetImage prompt="Please provide an image for your Event" comp="AddEvents" />
