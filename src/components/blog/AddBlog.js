@@ -114,8 +114,9 @@ class AddBlog extends Component{
 	    				obj["blogLogo"] = url;
 
 	    				ref.set(obj).then((result)=>{
+	    					this._createKeywordReferences();
 	    					this._sendFinalReferences();
-	    					this._createKeywordReferences()
+	    					
 	    				})
 					})
 
@@ -123,8 +124,9 @@ class AddBlog extends Component{
 	    			obj["blogLogo"] = false;
 
 	    			ref.set(obj).then((result)=>{
+						this._createKeywordReferences();
 						this._sendFinalReferences();
-						this._createKeywordReferences()
+						
 	    			})
 	    		}
 			})
@@ -167,7 +169,7 @@ class AddBlog extends Component{
 
 		let BlogRef = this.firestore.collection("Blogs").doc(this.user).collection(this.state.blogName);
 		BlogRef.add({"empty":true});
-
+		_enable();
 		this.props.history.push('/MyBlogList');
 	}
 

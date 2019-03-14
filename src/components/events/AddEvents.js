@@ -32,7 +32,6 @@ class AddEvents extends Component{
 			eventDescription:"",
 			eventPhone:"",
 			eventEmail:"",
-			eventType:"",
 			eventTime:"",
 			eventTimeFormat:false
 			
@@ -47,14 +46,8 @@ class AddEvents extends Component{
 		
 		//firestore ref
 		this.firestore = firebase.firestore();
-
-		this.textAreaStyle = {
-			width:"100%",
-			height:"100%"
-		}
-
 		this.hasImage = false;
-		this.eventType = <div></div>;
+		
 
 		// prevent enter key from submiting data too early
 		$(document).on("keypress", ":input:not(textarea):not([type=submit])", function(event) {
@@ -129,26 +122,6 @@ class AddEvents extends Component{
 		
 	
 
-	_handleEventType(e){
-		if(e.target.value === "Other"){
-			this.reasonChoice = <div><input type="text" id="eventType" placeholder="Enter event type"  onChange={this._handleInput.bind(this)} /></div>
-
-			this.setState({
-				update:true
-			});
-
-			
-		}else{
-			this.reasonChoice = <div></div>;
-			this.setState({
-				eventType:e.target.value,
-				update:true
-			})
-		}
-		
-	}
-
-
 	_onSubmit(e){
 		e.preventDefault();
 		_disable();
@@ -185,7 +158,6 @@ class AddEvents extends Component{
 				let eventObj = {
 					eventName:this.state.eventName,
 					eventLocation:this.state.eventLocation, 
-					eventType:this.state.eventType,
 					eventDescription:this.state.eventDescription,
 					eventPhone:this.state.eventPhone,
 					eventEmail:this.state.eventEmail,
@@ -403,17 +375,6 @@ class AddEvents extends Component{
 				                            <textarea  id="eventDescription"  value={this.state.eventDescription} className="form-control"   onChange={this._handleInput.bind(this)}></textarea>
 				                        </div>
 
-				                        <div className="form-group">
-				                            <label htmlFor="eventType">Event type:</label><br />
-				                           	<select id="eventType" className="form-control" onChange={this._handleEventType.bind(this)}>
-											    	<option value="Tournament">Tournament</option>
-											    	<option value="Challenge">Challenge</option>
-											    	<option value="Display">Display</option>
-											    	<option value="Other">Other</option>
-											</select> 
-											{this.reasonChoice}
-				                        </div>
-				                        
 
 				                        <div className="form-group">
 				                            <label htmlFor="eventPhone">Phone number</label><br />
