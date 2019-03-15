@@ -59,7 +59,7 @@ export default class ReviewComp extends Component{
 
 			<div className="row">
 				<div className="col-xs-12">
-					<div className="box">
+					<div className="box greyedContent">
 						<h2>{this.props.title}</h2>
 						<p>{this.props.body}</p>
 						

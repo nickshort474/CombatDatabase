@@ -44,19 +44,22 @@ import Report from '../Styles/Report';
 
 
 // Blog files 
-import MyBlogList from '../Blog/MyBlogList';
+import MyBlogs from '../Blog/MyBlogs';
 import MyBlogPostList from '../Blog/MyBlogPostList';
 
 import ViewBlogs from '../Blog/ViewBlogs';
 import BlogPostList from '../Blog/BlogPostList';
+
+import FindBlog from '../Blog/FindBlog';
+import SearchedBlogs from '../Blog/SearchedBlogs';
+import SearchedBlogPostList from '../Blog/SearchedBlogPostList';
 
 import SingleBlogPost from '../Blog/SingleBlogPost';
 
 import AddBlog from '../Blog/AddBlog';
 import AddBlogPost from '../Blog/AddBlogPost';
 
-import FindBlog from '../Blog/FindBlog';
-import SearchedBlogs from '../Blog/SearchedBlogs';
+
 
 import ThankYouForListing from '../ThankYou/ThankYouForListing';
 
@@ -142,16 +145,21 @@ class App extends Component{
 						<Route path="AddThreadPage" component={AddThreadPage} />
 						*/}
 
-						<Route path="/MyBlogList" component={MyBlogList} />
+						<Route path="/MyBlogs" component={MyBlogs} />
 						<Route path="/MyBlogPostList/:BlogUser/:BlogName" component={MyBlogPostList} />
-						{/*<Route path="/MySingleBlogPost/:BlogUser/:BlogName/:PostKey" component={MySingleBlogPost} />*/}
+						
 						<Route path="/ViewBlogs" component={ViewBlogs} />
 						<Route path="/BlogPostList/:BlogUser/:BlogName" component={BlogPostList} />
-						<Route path="/SingleBlogPost/:BlogUser/:BlogName/:PostKey" component={SingleBlogPost} />
-						<Route path="/AddBlogPost/:BlogName" component={AddBlogPost} />
+
 						<Route path="/FindBlog" component={FindBlog} />
-						<Route path="/AddBlog" component={AddBlog} />
 						<Route path="/SearchedBlogs/:SearchTerm" component={SearchedBlogs} />
+						<Route path="/SearchedBlogPostList/:BlogUser/:BlogName/:SearchTerm" component={SearchedBlogPostList} />
+
+						<Route path="/SingleBlogPost/:BlogUser/:BlogName/:PostKey" component={SingleBlogPost} />
+
+						<Route path="/AddBlog" component={AddBlog} />
+						<Route path="/AddBlogPost/:BlogName" component={AddBlogPost} />
+						
 
 						<Route path="/Contact" component={Contact} />
 						<Route path="/Response" component={Response} />

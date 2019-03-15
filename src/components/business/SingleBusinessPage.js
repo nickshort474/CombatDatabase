@@ -131,11 +131,11 @@ export default class SingleBusinessPage extends Component{
 		let leaveReview;
 
 		if(this.user && !this.state.owner){
-			leaveReview = <div className="row"><div className="box"><Link to={`/Review/${this.props.match.params.BusinessKey}`}><p>Leave a review for this business</p></Link></div></div>
+			leaveReview = <div className="row"><div className="box greyedContent"><Link to={`/Review/${this.props.match.params.BusinessKey}`}><p>Leave a review for this business</p></Link></div></div>
 		}else if(this.state.owner){
 			leaveReview = null
 		}else{
-			leaveReview = <div className="row"><div className="box">Please sign in to leave a review of this business</div></div>
+			leaveReview = <div className="row"><div className="box greyedContent">Please sign in to leave a review of this business</div></div>
 		}
 
 		return(
@@ -155,40 +155,37 @@ export default class SingleBusinessPage extends Component{
 							<div className="row">
 								
 								<div className="text-center">
-									<h2 className="box">{this.state.businessName}</h2>
+									<h2 className="box greyedContent">{this.state.businessName}</h2>
 								</div>
 								
 							</div>
 
 							<div className="row">
 								
-								<p className="box text-center">{this.state.summary}</p>
+								<p className="box text-center greyedContent">{this.state.summary}</p>
 								
 							</div>
 
-							<div className="row box">
+							<div className="row box greyedContent">
 								<Map initialCenter={this.state.initialCenter} data={this.state.items} onRef={ref =>(this.child = ref)}/>
 								<p className="text-center">{this.state.location}</p>
 							</div>
 
+							
 							<div className="row">
-								
-								
-								
-							</div>
-							<div className="row">
-								
-								<ul className="box">
+								<div className="box  greyedContent">
+								<ul className="contactInfo">
 									{this.state.email !== "" ? <li>{this.state.email}</li> : null}
 									{this.state.phone !== "" ? <li>{this.state.phone}</li> : null}
 									{this.state.webpage !== "" ? <li>{this.state.webpage}</li> : null}
 								</ul>
+								</div>
 								
 							</div>
 							
 							<div className="row">
 								
-								<p className="box">{this.state.fullDescription}</p>
+								<p className="box greyedContent">{this.state.fullDescription}</p>
 								
 							</div>
 								
@@ -197,8 +194,8 @@ export default class SingleBusinessPage extends Component{
 							<div>
 								{reviews}
 							</div>
-
-							{leaveReview}
+							
+								{leaveReview}
 							
 							<div className="row">
 								<div className="box">

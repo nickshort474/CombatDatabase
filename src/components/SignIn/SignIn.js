@@ -150,7 +150,7 @@ class SignInFormBase extends Component{
 		ref.get().then((snapshot)=>{
 			// if user exists no need to do anything
 			if(snapshot.exists){
-				console.log("user already exists")
+				
 				this.props.history.push(this.prevPage);
 			}else{
 				//else is new user so create a reference in Users collection with random username to start off;
@@ -160,12 +160,12 @@ class SignInFormBase extends Component{
 				ref.set({
 					userName:username
 				})
-				console.log("adding to usernames");
+				
 				//create reference to username in usernames section for esy people search functionality  
 				let ref2 = this.firestore.collection("Usernames").doc(username);
 				let obj2 = {uid:userUID};
 				ref2.set(obj2);
-				console.log("adding to people section")
+				
 				let ref3 = this.firestore.collection("People").doc(userUID);
 				ref3.set({userName:username,uid:userUID,profileCreated:now}).then(()=>{
 					this.props.history.push(this.prevPage);

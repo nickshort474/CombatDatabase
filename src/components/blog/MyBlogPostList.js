@@ -75,7 +75,7 @@ export default class MyBlogPostList extends Component{
 						
 							
 				   		<div className="col-xs-6">
-				   			<Link to="/MyBlogList">&#60; Back</Link>
+				   			<Link to="/MyBlogs">&#60; Back</Link>
 				   		</div>
 				   		<div className="col-xs-6 text-right">
 				   			<Link to={"/AddBlogPost/" + this.props.match.params.BlogName}><button type="button" className="btn btn-primarySmall">New Post</button></Link> 

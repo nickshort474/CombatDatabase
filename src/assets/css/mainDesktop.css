@@ -1510,10 +1510,14 @@ select{
 }
 
 
+.contactInfo{
+	padding-left: 35px
+}
 
 
-
-
+.greyedContent{
+	background-color:#181818
+}
 
 
 /* React-datetime */

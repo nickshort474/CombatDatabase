@@ -2,15 +2,15 @@ import React, {Component} from 'react';
 import store from '../../redux/store';
 import constants from '../../redux/constants';
 import {withRouter} from 'react-router';
-import LocalStorage from '../../utils/LocalStorage';
 
-class Contact extends Component{
+
+class Report extends Component{
 	
 	constructor(){
 		super();
 
-		store.dispatch({type:constants.SAVE_PAGE, page:"Contact"});
-		this.userUID = LocalStorage.loadState('user');
+		store.dispatch({type:constants.SAVE_PAGE, page:"/Report"});
+
 	}
 	componentWillMount(){
 		window.scrollTo(0, 0);
@@ -37,7 +37,7 @@ class Contact extends Component{
 						<h2>Contact Us</h2>
 						
 						<div>
-							<p>Please complete this enquiry form</p>
+							<p>Please complete this enquiry form and we will aim to respond to you within three working days.</p>
 							<p>All the fields marked with an asterisk (*) are mandatory.</p>
 						</div>
 					
@@ -49,12 +49,8 @@ class Contact extends Component{
 							      <input type="text" className="form-control" id="name" name="name" />
 							</div>
 							<div className="form-group">
-							    <label htmlFor="message">* Enquiry/Complaint:</label>
+							    <label htmlFor="message">* Enquiry:</label>
 							    <textarea className="form-control" id="message" name="message" rows="3"></textarea>
-							</div>
-							<div className="form-group">
-								<label htmlFor="message2">If this is a complaint please provide more details of the offensive material:</label>
-							    <textarea className="form-control" id="message2" name="message2" rows="3"></textarea>
 							</div>
 							<div className="form-group">
 							    <label htmlFor="email">* Email address:</label>

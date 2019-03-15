@@ -3,12 +3,12 @@ import {Link} from 'react-router-dom';
 import {firebase} from '@firebase/app';
 import LocalStorage from '../../utils/LocalStorage';
 
-import {_getUsername} from '../../utils/GetUserNameFromUID';
+
 
 import BlogCommentComp from './BlogCommentComp';
 
 import store from '../../redux/store';
-import constants from '../../redux/constants';
+
 /*import ProcessEpoch from '../../utils/ProcessEpoch';*/
 
 export default class SingleBlogPost extends Component{
@@ -40,8 +40,15 @@ export default class SingleBlogPost extends Component{
 		window.scrollTo(0, 0);
 		
 		//get this blog users username
-		this.blogUsername = _getUsername(this.props.match.params.BlogUser)
-		
+		let firestore = firebase.firestore();
+		let ref = firestore.collection("Users").doc(this.userUID);
+		ref.get().then((snapshot)=>{
+			
+			this.setState({
+				blogUsername:snapshot.data().userName
+			})
+		})
+
 		//get users username ready for comments or replies
 		if(this.userUID){
 			let usernameRef = this.firestore.collection("Users").doc(this.userUID);
@@ -179,18 +186,25 @@ export default class SingleBlogPost extends Component{
 				
 				<section className="content-wrapper">
 					
-					<div className="box">
-						<div className="row">
+					<div className="box greyedContent">
+						
 						   		{/*<span className="col-xs-6"><Link to={`/BlogPostList/${this.props.match.params.BlogUser}/${this.props.match.params.BlogName}`}>&#60; Back</Link></span>*/}
-						   		<span className="col-xs-6"><Link to={this.prevPage}>&#60; Back</Link></span>
-						   		<span className="col-xs-6 text-right">{this.blogUsername}</span>
-						 </div>
+						<Link to={this.prevPage}>&#60; Back</Link>
+						   		
+						 
 					</div>
 					
+					<div className="box greyedContent">
+						
+							<div className="row">
+								<span className="col-xs-6"><h4>{this.props.match.params.PostKey}</h4></span><span className="col-xs-6 text-right"><p className="text-10">By: {this.state.blogUsername}</p></span>
+							</div>
+						
+					</div>
 
 					<div className="row">
 						<div className="col-sm-12">
-							<div className="box">
+							<div className="box greyedContent">
 							{content}
 							</div>
 						</div>
@@ -201,7 +215,7 @@ export default class SingleBlogPost extends Component{
 							
 							{this.signedIn ? 
 
-							<div className="box form-group">
+							<div className="box form-group greyedContent">
 								<label htmlFor="commentText">Leave a comment</label>
 								<textarea id="commentText" value={this.state.commentText} onChange={this._commentText.bind(this)} placeholder="post a comment" className="form-control" style={{"height":"50%"}}/>
 								<div className="text-center"><button className="btn btn-primarySmall" onClick={this._postComment.bind(this)}>Comment</button></div>
@@ -209,7 +223,7 @@ export default class SingleBlogPost extends Component{
 
 							: 
 
-							<div className="box text-center">
+							<div className="box text-center greyedContent">
 								Please <Link to="/Signin">sign in</Link> to comment, or reply to comments
 							</div>
 
@@ -219,7 +233,7 @@ export default class SingleBlogPost extends Component{
 					
 					<div className="row">
 						<div className="col-sm-12">
-							<div className="box msgCompStyle">
+							<div className="box msgCompStyle greyedContent">
 								{comments}
 							</div>
 						</div>

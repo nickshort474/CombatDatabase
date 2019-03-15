@@ -19,7 +19,7 @@ export default class ViewBlogs extends Component{
 		super();
 
 		store.dispatch({type:constants.SAVE_PAGE, page:"/ViewBlogs"});
-		store.dispatch({type:constants.SAVE_PREV_PAGE, prevPage:"/ViewBlogs"});
+		
 
 		this.userUID = LocalStorage.loadState("user");
 		this.state = {
@@ -152,7 +152,7 @@ export default class ViewBlogs extends Component{
 						<div className="col-sm-3 text-center">
 							
 							<Link to="/FindBlog"><button type="button" className="btn btn-primarySmall extraMargin">Find a blog</button></Link><br />
-							<Link to="/MyBlogList"><button type="button" className="btn btn-primarySmall extraMargin">Show my blogs</button></Link><br />
+							<Link to="/MyBlogs"><button type="button" className="btn btn-primarySmall extraMargin">Show my blogs</button></Link><br />
 							
 							
 						</div>

@@ -23,7 +23,10 @@ export default class Terms extends Component{
 							<li>Any reliance you place on our content and information or linked to on other websites will be at your own risk. You should consider seeking  independent advice wherever you can.</li>
 							<li>The website operators, their agents and employees, are not liable for any losses or damages arising from your use of our websites, other than in respect of death or personal injury caused by their negligence or in respect of fraud.</li>
 							<li>Any views, thoughts and opinions expressed on the site belong solely to the author and do reflect the views, thoughts and opinions of Aptly Named Media, its employees or any other individual.</li>  
-						</ul>	
+						</ul>
+						<p>The content on combatdb is user generated and is not moderated and therefore may contain information, images or language that may offend. Any opinions or views expressed on combatdb are those of the author and do not represent the opinions of Aptly Named Media and its partners</p>
+						<p>Users have the option of reporting content that they find offensive and said content will be reviewed and removed if necessary. There is a contact form linkable from both the homepage and footer that can be used to report any material.</p>
+						<p>Aptly Named Media retains the right to remove any content it deems offensive, unsolicited or inappropriate</p> 
 
   						<h4>What you should know about the other sites we may link to</h4>
 						

@@ -4,7 +4,7 @@ import firebase from '@firebase/app';
 import defaultLogo from '../../assets/images/default.jpg';
 import LocalStorage from '../../utils/LocalStorage';
 
-export default class BlogComp extends Component{
+export default class SearchedBlogComp extends Component{
 	
 	componentWillMount(){
 		this.setState({
@@ -31,7 +31,7 @@ export default class BlogComp extends Component{
 			<div className="well">
 
 				<div className="row">
-					<Link to={"/BlogPostList/" + this.props.blogUser + "/" + this.props.blogName}>
+					<Link to={"/SearchedBlogPostList/" + this.props.blogUser + "/" + this.props.blogName + "/" + this.props.searchTerm}>
 						<div className="col-sm-8 compTextStyle">
 							<h3>{this.props.blogName}</h3>
 							<p>{this.props.description}</p>

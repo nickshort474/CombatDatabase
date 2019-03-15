@@ -4,7 +4,7 @@ import {firebase} from '@firebase/app';
 
 import store from '../../redux/store';
 import LocalStorage from '../../utils/LocalStorage';
-
+import DefaultLogo from '../../assets/images/default.jpg';
 
 class PersonProfile extends Component{
 	
@@ -183,7 +183,7 @@ class PersonProfile extends Component{
 										
 									</div>
 									<div className="col-sm-4">
-										<img src={this.state.profilePic} style={{"width":"100%"}} alt="placeholder" />
+										<img src={this.state.profilePic ? this.state.profilePic : DefaultLogo} style={{"width":"100%"}} alt="placeholder" />
 									</div>
 								</div>
 								<hr />

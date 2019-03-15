@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {firebase} from '@firebase/app';
 import {Link} from 'react-router-dom';
-import BlogComp from './BlogComp';
+import SearchedBlogComp from './SearchedBlogComp';
 
 /*import SideBarAdvert from '../../Components/SideBarAdvert';*/
 import store from '../../redux/store';
@@ -25,7 +25,7 @@ export default class Searchedlogs extends Component{
 		window.scrollTo(0, 0);
 
 		let pageToSave = "/SearchedBlogs/" + this.props.match.params.SearchTerm;
-		store.dispatch({type:constants.SAVE_PREV_PAGE, prevPage:pageToSave});
+		store.dispatch({type:constants.SAVE_PAGE, page:pageToSave});
 		
 		let storeState = store.getState();
 		let blogs = storeState.blogObj;
@@ -61,7 +61,7 @@ export default class Searchedlogs extends Component{
 	render(){
 
 		let blogs = this.state.items.map((blog)=>{
-			return <BlogComp  type={blog.type} blogName={blog.name} description={blog.description} blogUser={blog.user} key={blog.name} />
+			return <SearchedBlogComp  type={blog.type} blogName={blog.name} description={blog.description} blogUser={blog.user} searchTerm={this.props.match.params.SearchTerm} key={blog.name} />
 		})
 
 		return(

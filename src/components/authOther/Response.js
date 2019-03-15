@@ -10,9 +10,8 @@ class Response extends Component{
 					<h2>Thank you</h2>
 					
 					<div>
-						<p>Thank you for your enquiry, we will aim to respond to you within three working days</p>
-						<p>Until then heres a puppy!</p>
-						<img src="../../assets/images/puppy.jpg" style={{"width":"100%"}} alt="a puppy" />
+						<p>Thank you for your enquiry/complaint, we will aim to respond as soon as possible</p>
+						
 					</div>
 				
 					
