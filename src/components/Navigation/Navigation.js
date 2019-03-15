@@ -87,7 +87,7 @@ class HeaderNavigation extends Component{
 			    <div className="container hidden-xs container-less-padding">
 					<div className="header-title">
 						<div className="pull-left">
-							<h2><Link to="Home"><span className="text-primary">Combat</span>DB</Link></h2>
+							<h1><b><Link to="Home"><span className="text-primary">Combat</span>DB</Link></b></h1>
 			   				<p>The number 1 self defence, martial arts and combat resource</p>
 						</div>
 					</div>

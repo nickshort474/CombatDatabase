@@ -50,7 +50,7 @@ import $ from 'jquery';
 
 		this.contentNum++
 		let currentVal = `par${this.contentNum}`;
-		this.removeParaId = currentVal;
+		this.removeContentId = currentVal;
 
 		this.contentLog.push(currentVal);
 		this.paraArray.push(currentVal);
@@ -71,22 +71,32 @@ import $ from 'jquery';
 	
 	}
 
-	_removePara(e){
+	_removeContent(e){
 
 		let id = e.target.id;
 		//let currentVal = `par${id}`;
+		
+
 
 		let existingBlogContent = this.state.blogContent;
 
-		let index = existingBlogContent.indexOf(<div key={id}><TextArea  rows="3" id={id}  /></div>)
-		existingBlogContent.splice(index,1);
-		
+		//get rid of last content from state.blogContent to update display
+		existingBlogContent.pop();
+				
+		//get rid of last content from contentLog for uploading of content
+		this.contentLog.pop();
 
-		let index2 = this.contentLog.indexOf(id);
-		this.contentLog.splice(index2,1);
+		//get content type from id
+		let contentType = id.slice(0,3);
 
-		let index3 = this.paraArray.indexOf(id);
-		this.paraArray.splice(index3,1);
+		//test whether contentType is para or img then remove from relevant array
+		if(contentType === "par"){
+			this.paraArray.pop();
+		}else{
+			this.imgArray.pop();
+		}
+
+		this.contentNum--;
 		
 		
 		this.setState({
@@ -112,6 +122,7 @@ import $ from 'jquery';
 		
 			let currentVal = `img${this.contentNum}`;
 			this.contentLog.push(currentVal);
+			this.removeContentId = currentVal;
 
 			_compressImage(e.target.result,400,(result)=>{
 				this.imgArray.push(result);
@@ -136,7 +147,7 @@ import $ from 'jquery';
 	_handleSubmit(){
 		
 		_disable();
-		this._validate()
+		
 		
 		this.isFirstPara = true;
 		this.isFirstImage = true;
@@ -236,9 +247,7 @@ import $ from 'jquery';
 		this._addFollowersReference();
 	}
 
-	_validate(){
 
-	}
 
 	_addImageToStorage(imgRef,img,callback){
 		
@@ -385,10 +394,9 @@ import $ from 'jquery';
 				        			{/*this.state.blogContent.map((content)=><div key={content}>{content}</div>)*/}
 				        			{blogContent}
 									<button className="btn btn-primarySmall" onClick={this._addPara.bind(this)}>Add paragraph</button>
-									<button className="btn btn-primarySmall" id={this.removeParaId} onClick={this._removePara.bind(this)}>Remove last paragraph</button>
-
 									<input type="file" id="browse" name="fileupload" style={{display:"none"}} onChange={this._handleImageChange.bind(this)} />
-									<input type="button" className="btn btn-primarySmall" value="Add Image" id="fakeBrowse" onClick={this._handleBrowseClick.bind(this)} /><br />
+									<input type="button" className="btn btn-primarySmall" value="Add Image" id="fakeBrowse" onClick={this._handleBrowseClick.bind(this)} />
+									<button className="btn btn-primarySmall" id={this.removeContentId} onClick={this._removeContent.bind(this)}>Remove last content</button>
 				        		</div>
 				    		</div>
 				        </div>

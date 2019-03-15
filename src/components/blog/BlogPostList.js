@@ -33,7 +33,7 @@ export default class BlogPostList extends Component{
 	componentWillMount() {
 		window.scrollTo(0, 0);
 		
-		store.dispatch({type:constants.SAVE_PAGE, page:`/BlogPostList/${this.props.match.params.BlogUser}/${this.props.match.params.BlogName}`});
+		store.dispatch({type:constants.SAVE_PREV_PAGE, prevPage:`/BlogPostList/${this.props.match.params.BlogUser}/${this.props.match.params.BlogName}`});
 		this._getBlogInfo();
 		
 		//check if signed in

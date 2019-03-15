@@ -88,15 +88,17 @@ class AddBlog extends Component{
 			})
 
 			let formattedComp = <div className="box">{msgComp}</div>
+			
 			this.setState({
-				errors:formattedComp
+				errors:formattedComp,
+				loading:false
 			})
 			
 			_enable();
 		}else{
 			
 			let storeState = store.getState();
-			this.hasImage = storeState.has_img;
+			this.hasImage = storeState.blogHasImg;
 
 			
 

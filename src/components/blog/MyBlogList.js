@@ -116,7 +116,7 @@ export default class MyBlogList extends Component{
 						</div>
 						<div className="col-sm-9">
 							<div className="box">
-								<h2 className="text-center">My Blogs</h2>
+								<h3 className="text-center">My Blogs</h3>
 								<div>
 								
 									{this.state.signInMessage}	
@@ -128,7 +128,8 @@ export default class MyBlogList extends Component{
 
 						
 					</div>
-				</section>			</div>
+				</section>			
+			</div>
 		)
 	}
 

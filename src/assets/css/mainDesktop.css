@@ -72,6 +72,7 @@ h4,
 h5, 
 h6 {
 	font-family: 'Titillium Web', sans-serif;
+	margin-top: 10px;
 }
 
 .img-rounded {
@@ -237,24 +238,7 @@ span.required {
 	background-color:rgba(0,0,0,0.3);
 }
 
-.overlay-wrapper h2 {
-	background-color:rgba(0,0,0,0.8);
-	display:inline-block;
-	font-size:20px;
-	font-weight:400;
-	color:#ae0c00;
-	position: absolute;
-	bottom:20px;
-	padding:15px 20px;
-}
 
-.overlay-wrapper h2 span {
-	color: #fff;
-	display:block;
-	font-size:13px;
-	font-weight:700;
-	margin-top:5px;
-}
 
 .overlay-wrapper:hover .overlay {
 	background-color:rgba(0,0,0,0);
@@ -392,7 +376,7 @@ header.navbar .navbar-buttons .navbar-icon {
 	text-shadow:2px 2px 1px rgba(0,0,0,0.5);
 }
 
-.header-title h2 {
+/*.header-title h2 {
 	font-size:50px;
 	font-weight:700;
 	margin:0;
@@ -400,7 +384,7 @@ header.navbar .navbar-buttons .navbar-icon {
 
 .header-title h2 a {
 	color:#fff;
-}
+}*/
 
 .header-title p {
 	margin:15px 0 30px;
@@ -541,24 +525,14 @@ footer.navbar p.copyright {
 	color:#FFF;
 }
 
-.content-wrapper h2,
+/*.content-wrapper h2,
 .content-wrapper .widget-wrapper h3 {
 	margin:0 0 10px;
 	font-size:20px;
 	font-weight:600;
-}
+}*/
 
 
-
-/*------------------------------
-	HIGHLIGHTED
-------------------------------*/
-
-.highlighted h2 {
-	text-align:center;
-	font-size:26px;
-	margin-bottom:30px;
-}
 
 /*------------------------------
 	POSTS
@@ -1006,90 +980,7 @@ article.post-single .post-body .gallery-page {
 		color:#ae0c00;
 	}
 	
-	.comments .avatar img {
-		width:40px;
-	}
-	
-	.comments .comment-body {
-		padding-left:10px;
-	}
-	
-	.comments .commentlist .children {
-		padding-left:50px;
-	}
-	
-	.comments .author {
-		margin-bottom:8px;
-	}
-	
-	.comments .author h3 {
-		font-size:20px;
-		margin-right:5px;
-	}
-	
-	.comment .message {
-		margin-bottom:10px;
-	}
-	
-	.detail-match .lineup ul li > b {
-		display: inline-block;
-		font-size: 16px;
-		position: relative;
-		top: 3px;
-	}
-	
-	.detail-match .score {
-		font-size:30px;
-	}
-	
-	.detail-match .team h3 {
-		letter-spacing:0;
-		font-size:20px;
-	}
-	
-	.tournament-detail .btn-lg {
-		padding:6px 12px;
-		font-size:14px;
-		line-height:1.42857143;
-	}
 
-	.tournament-detail img {
-		padding:0;
-	}
-	
-	.tournament-detail h2 {
-		font-size:40px;
-		margin:10px 0 10px;
-	}
-	
-	.tournament-detail .date {
-		font-size:20px;
-		margin-bottom:30px;
-	}
-	
-	.countdown div {
-		width:100px;
-	}
-		
-	.countdown div span.countdown-number {
-		font-size:65px;
-	}
-	
-	.countdown div span.countdown-title {
-		font-size:18px;
-	}
-	
-	.tournament-bracket.visible-xs .bracket-match-wrapper {
-		margin-bottom:20px;
-	}
-	
-	.match-videos .flex-video {
-		margin-bottom:30px;
-	}
-	
-	.forum-post-wrapper > .row {
-		display:block;
-	}
 	
 	.registration-form form .checkbox.remember {
 		display:block;
@@ -1101,10 +992,7 @@ article.post-single .post-body .gallery-page {
 		float:none;
 	}
 	
-	.forum-post-wrapper > .row > div:first-child {
-		border-right:0;
-		border-bottom:1px solid #DDD;
-	}
+	
 }
 
 @media (max-width:640px) {
@@ -1120,14 +1008,7 @@ article.post-single .post-body .gallery-page {
 		padding-left:20px;
 	}
 	
-	.tournament-detail h2 {
-		font-size:36px;
-	}
-	
-	.tournament-detail .date {
-		font-size:18px;
-		margin-bottom:20px;
-	}
+
 	
 	.countdown div {
 		width:80px;
@@ -1151,14 +1032,7 @@ article.post-single .post-body .gallery-page {
 		padding-left:0;
 	}
 	
-	.detail-match .score {
-		font-size:18px;
-	}
-	
-	.detail-match .team h3 {
-		font-size:16px;
-	}
-	
+
 	.error h2 {
 		font-size:40px;
 		margin:20px 0;
@@ -1172,94 +1046,8 @@ article.post-single .post-body .gallery-page {
 
 }
 
-@media (max-width:568px) {
-	.jumbotron-panel {
-		padding:10px 15px 3px;
-	}
-	
-	.jumbotron-panel .btn {
-		display:none;
-	}
-	
-	.jumbotron-brands {
-		float:none;
-		text-align:center;
-	}
-	
-	.gaming-team > .row > div {
-		width:100%;
-		float:none;
-	}
-	
-	.gaming-team h2 {
-		margin-top:30px;
-	}
-	
-	.detail-match .lineup.left img {
-		margin-right:5px;
-		width:24px;
-	}
-	
-	.detail-match .lineup.right img {
-		margin-left:5px;
-		width:24px;
-	}
-	
-	.detail-match .lineup.left p,
-	.detail-match .lineup.right p {
-		font-size:14px;
-	}
-	
-	.detail-match .match-status h2 {
-		font-size: 20px;
-	}
-	
-	.detail-match .match-status p.date {
-		font-size: 16px;
-	}
-	
-	.detail-match .lineup ul li > b {
-		font-size:14px;
-	}
-	
-	.detail-match .match-map {
-		margin-bottom:15px;
-	}
-	
-	.detail-match .match-map h4 {
-		font-size:14px;
-	}
-	
-	.detail-match .score.map-score {
-		font-size:14px;
-	}
-	
-	.tournament-detail > .row > div {
-		width:100%;
-		float:none;
-	}
-	
-	.tournament-detail img {
-		display:none;
-	}
-	
-	.tournament-detail h2 {
-		margin-top:0;
-	}
-		
-	.countdown div {
-		width:65px;
-	}
-		
-	.countdown div span.countdown-number {
-		font-size:50px;
-	}
-	
-	.countdown div span.countdown-title {
-		font-size:14px;
-		font-weight:400;
-	}
-}
+
+
 
 @media (max-width:480px) {
 	.content-wrapper {
@@ -1283,25 +1071,7 @@ article.post-single .post-body .gallery-page {
 		font-size:20px;
 		line-height:28px;
 	}
-	
-	.site-partner > .row > div,
-	.team-member > .row > div,
-	.profile-gallery .gallery-page > .row > div,
-	.gallery-post .gallery-page.row > div,
-	.post.post-single .gallery-page.row > div {
-		width:100%;
-	}
-		
-	.team-member ul li strong {
-		display: block;
-	}
-	
-	.team-member h2 small {
-		margin-left:0;
-		margin-top:5px;
-		display: block;
-	}
-	
+
 	.widget-wrapper .nav-sidebar li a {
 		padding:10px 0;
 	}
@@ -1312,36 +1082,7 @@ article.post-single .post-body .gallery-page {
 		margin-top:0;
 	}
 	
-	.gaming-team h2 {
-		font-size:24px;
-	}
-	
-	.gaming-team h2 img {
-		width:24px;
-	}
-	
-	.detail-match .row > div {
-		width:100%;
-		float:none;
-	}
-	
-	.lineup-col {
-		display:none;
-	}
-	
-	.detail-match .score {
-		margin-bottom:10px;
-	}
-	
-	.detail-match .match-maps {
-		background-color:#f0f0f0;
-		margin:15px -15px -15px;
-		padding:5px 10px;
-	}
-	
-	.countdown-info {
-		font-size:20px;
-	}
+
 	
 	.row.forum-header > div {
 		float:none;
@@ -1360,9 +1101,7 @@ article.post-single .post-body .gallery-page {
 }
 
 @media (max-width:360px) {
-	.content-wrapper h2, .content-wrapper .widget-wrapper h3 {
-		font-size:16px;
-	}
+	
 	
 	article.post.post-single .post-body .post-info .btn {
 		display:none;
@@ -1372,38 +1111,7 @@ article.post-single .post-body .gallery-page {
 		position:static;
 	}
 	
-	.gaming-team h2 img {
-		display:none;
-	}
-	
-	.detail-match .lineup.left img {
-		margin-right:4px;
-		width:20px;
-	}
-	
-	.detail-match .lineup.right img {
-		margin-left:4px;
-		width:20px;
-	}
-	
-	.detail-match .lineup.left p,
-	.detail-match .lineup.right p {
-		font-size:13px;
-		top:2px;
-	}
-	
-	.tournament-detail h2 {
-		font-size:30px;
-	}
-	
-	.tournament-detail .date {
-		font-size:16px;
-		margin-bottom:15px;
-	}
-	
-	.countdown-info {
-		font-size:18px;
-	}
+
 	
 	.error h2 {
 		font-size:30px;

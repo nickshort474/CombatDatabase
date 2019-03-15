@@ -14,7 +14,7 @@ export default class MyBlogComp extends Component{
 				<div className="row">
 					<Link to={"/MyBlogPostList/" + this.props.owner + "/" + this.props.name}>
 						<div className="col-sm-8 compTextStyle">
-							<h2>{this.props.name}</h2>
+							<h3>{this.props.name}</h3>
 							<p>{this.props.description}</p>
 						</div>
 						<div className="col-sm-4">

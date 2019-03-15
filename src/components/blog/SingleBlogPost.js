@@ -3,8 +3,12 @@ import {Link} from 'react-router-dom';
 import {firebase} from '@firebase/app';
 import LocalStorage from '../../utils/LocalStorage';
 
+import {_getUsername} from '../../utils/GetUserNameFromUID';
+
 import BlogCommentComp from './BlogCommentComp';
 
+import store from '../../redux/store';
+import constants from '../../redux/constants';
 /*import ProcessEpoch from '../../utils/ProcessEpoch';*/
 
 export default class SingleBlogPost extends Component{
@@ -28,12 +32,15 @@ export default class SingleBlogPost extends Component{
 		
 		this.firestore = firebase.firestore();
 		this.userUID = LocalStorage.loadState("user");
-		
+		this.prevPage = store.getState().prevPage;
 		
 	}
 	
 	componentWillMount() {
 		window.scrollTo(0, 0);
+		
+		//get this blog users username
+		this.blogUsername = _getUsername(this.props.match.params.BlogUser)
 		
 		//get users username ready for comments or replies
 		if(this.userUID){
@@ -171,14 +178,15 @@ export default class SingleBlogPost extends Component{
 			<div className="container">
 				
 				<section className="content-wrapper">
-					<div className="row">
-						<div className="col-sm-12 ">
-							<div className="box">
-						   		<Link to={`/BlogPostList/${this.props.match.params.BlogUser}/${this.props.match.params.BlogName}`}>&#60; Back</Link>
-						    </div>
-					    </div>
-
+					
+					<div className="box">
+						<div className="row">
+						   		{/*<span className="col-xs-6"><Link to={`/BlogPostList/${this.props.match.params.BlogUser}/${this.props.match.params.BlogName}`}>&#60; Back</Link></span>*/}
+						   		<span className="col-xs-6"><Link to={this.prevPage}>&#60; Back</Link></span>
+						   		<span className="col-xs-6 text-right">{this.blogUsername}</span>
+						 </div>
 					</div>
+					
 
 					<div className="row">
 						<div className="col-sm-12">

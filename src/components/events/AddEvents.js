@@ -329,7 +329,7 @@ class AddEvents extends Component{
 
 	                		<div className="col-sm-3 hidden-xs">
 		                		<div className="box sidebar-box">
-				                	<h2>Event registration</h2>
+				                	<h2>Register</h2>
 				                   
 				                    <ul>
 				                    	<li>Free event advertising on the site.</li>

@@ -31,6 +31,7 @@ class AddBusiness extends Component{
 			businessSummary:"",
 			businessDescription:"",
 			businessEmail:"",
+			businessWebpage:"",
 			businessPhone:"",
 			
 		}
@@ -160,6 +161,7 @@ class AddBusiness extends Component{
 					description:this.state.businessDescription,
 					phone:this.state.businessPhone,
 					email:this.state.businessEmail,
+					webpage:this.state.businessWebpage,
 					key:docId.id,
 					businessLogo:businessLogo,
 					date:Date.now(),
@@ -308,11 +310,7 @@ class AddBusiness extends Component{
 		                		<div className="box sidebar-box">
 				                	<h2>Register</h2>
 				                    <p>Register your business and get the benefits of CombatDB registration</p>
-				                    <ul>
-				                    	<li>Free advertising on the site.</li>
-				                        <li>A means to connect to other business and students.</li>
-				                        <li>A host for blogs and information related to your business.</li>
-				                    </ul>
+				                   
 			                    </div>
 			                </div>
 
@@ -341,29 +339,33 @@ class AddBusiness extends Component{
 								        </div>
 			                        </div>
 									<div className="form-group">
-			                            <label htmlFor="businessSummary">Please give a quick Summary of your business:<span>*</span></label><br />
+			                            <label htmlFor="businessSummary">Summary of your business:<span>*</span></label><br />
 			                            <textarea  id="businessSummary" value={this.state.businessSummary} className="form-control" onChange={this._handleInput.bind(this)}></textarea>
 			                        </div>
 
 			                       
 
 			                        <div className="form-group">
-			                            <label htmlFor="businessDescription">Please provide a full description here:<span>*</span></label><br />
+			                            <label htmlFor="businessDescription">Full description here:<span>*</span></label><br />
 			                            <textarea id="businessDescription" value={this.state.businessDescription} className="form-control" onChange={this._handleInput.bind(this)}></textarea>
 			                        </div>
 
 			                        <div className="form-group">
-			                            <label htmlFor="businessPhone">Please provide contact number:</label><br />
+			                            <label htmlFor="businessPhone">Contact number:</label><br />
 			                            
 			                            <input type="text" id="businessPhone" value={this.state.businessPhone} className="form-control" onChange={this._handleInput.bind(this)}/>
 			                        </div>
 
 			                        <div className="form-group">
-			                            <label htmlFor="businessEmail">Please provide contact email:</label><br />
+			                            <label htmlFor="businessEmail">Contact email:</label><br />
 			                            
 			                            <input type="email" id="businessEmail" value={this.state.businessEmail} className="form-control" onChange={this._handleInput.bind(this)}/>
 			                        </div>
-			                        
+			                        <div className="form-group">
+			                            <label htmlFor="businessWebpage">Website:</label><br />
+			                            
+			                            <input type="email" id="businessWebpage" value={this.state.businessWebpage} className="form-control" onChange={this._handleInput.bind(this)}/>
+			                        </div>
 			                        <div className="form-group text-center">
 										<p>Add a business logo:</p>
 										<input type="file" id="fileUpload" style={{display:"none"}} name="pic" onChange={this._previewImage.bind(this)} accept="image/*" />

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import ProcessEpoch from '../../utils/ProcessEpoch';
+import ProcessEpochDisplay from '../../utils/ProcessEpochDisplay';
 import defaultLogo from '../../assets/images/default.jpg';
 
 
@@ -30,12 +30,13 @@ export default class BlogPostComp extends Component{
 					<Link to={"/SingleBlogPost/" + this.props.blogUser + "/" + this.props.blogName + "/" + this.props.postName}>
 
 						<article className="post compTextStyle">
-							<div className="col-sm-3">
-			                    <ProcessEpoch date={this.props.date} />
+							<div className="col-sm-2">
+			                    <ProcessEpochDisplay date={this.props.date} />
+			                    <br />
 			                </div>
 
-							<div className="col-sm-7">
-								<h2>{this.props.postName}</h2>
+							<div className="col-sm-8">
+								<h3>{this.props.postName}</h3>
 								<p>{this.props.descr}</p>
 								
 							</div>

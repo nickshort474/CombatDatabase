@@ -71,6 +71,7 @@ export default class SingleBusinessPage extends Component{
 				fullDescription:snapshot.data().description,
 				phone:snapshot.data().phone,
 				email:snapshot.data().email,
+				webpage:snapshot.data().webpage,
 				owner:owner,
 				items:snapshot.data(),
 				images:snapshot.data().businessImages
@@ -158,33 +159,41 @@ export default class SingleBusinessPage extends Component{
 								</div>
 								
 							</div>
+
 							<div className="row">
 								
-								<div className="box">
-									<p>{this.state.location}</p>
-									<p>{this.state.phone}</p>	
-									<p>{this.state.email}</p>
-								</div>
-									
+								<p className="box text-center">{this.state.summary}</p>
 								
-							</div>	
-							<div className="row">
+							</div>
+
+							<div className="row box">
 								<Map initialCenter={this.state.initialCenter} data={this.state.items} onRef={ref =>(this.child = ref)}/>
+								<p className="text-center">{this.state.location}</p>
 							</div>
 
 							<div className="row">
 								
-								<p className="box">{this.state.summary}</p>
+								
 								
 							</div>
-							
+							<div className="row">
 								
+								<ul className="box">
+									{this.state.email !== "" ? <li>{this.state.email}</li> : null}
+									{this.state.phone !== "" ? <li>{this.state.phone}</li> : null}
+									{this.state.webpage !== "" ? <li>{this.state.webpage}</li> : null}
+								</ul>
+								
+							</div>
 							
 							<div className="row">
 								
 								<p className="box">{this.state.fullDescription}</p>
 								
 							</div>
+								
+							
+							
 							<div>
 								{reviews}
 							</div>

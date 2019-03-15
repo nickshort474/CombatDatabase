@@ -159,7 +159,7 @@ export default class ViewBlogs extends Component{
 
 						<div className="col-sm-9">
 							<div className="box">
-								<h2 className="text-center">Followed blogs</h2>
+								<h4 className="text-center">Followed blogs</h4>
 								<div>
 									
 									{followedBlogs}
@@ -169,7 +169,8 @@ export default class ViewBlogs extends Component{
 							</div>
 
 							<div className="box">
-								<h2 className="text-center">Latest blogs</h2>
+								<h4 className="text-center">Latest blogs</h4>
+								<br />
 								<div>
 									
 									{latestBlogs}
