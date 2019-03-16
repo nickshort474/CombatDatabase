@@ -354,21 +354,21 @@ class AddBlog extends Component{
 				<div className="container">
 			        <section className="content-wrapper">
 
-			        	<div className="box">
-					   		<Link to="/MyBlogList">&#60; Back</Link>
+			        	<div className="box greyedContent">
+					   		<Link to="/MyBlogs">&#60; Back</Link>
 					    </div>
 
 		               	<div className="row">
 
 	                		<div className="col-sm-3 hidden-xs">
-		                		<div className="box sidebar-box">
+		                		<div className="box sidebar-box greyedContent">
 					   
-				                	<h2>Add a blog</h2>
+				                	<h3>Add a blog</h3>
 				                    
 				                </div>
 				            </div>
 				            <div className="col-sm-9">
-				            	<div className="box">        
+				            	<div className="box greyedContent">        
 				                    <form onSubmit={this._submitForm.bind(this)}>
 				                    	<div className="form-group">
 				                            <label htmlFor="blogName">Blog name</label>

@@ -14,8 +14,8 @@ export default class Privacy extends Component{
 		return(
 			<div className="container">
 				<div className="content-wrapper">
-					<div className="box">
-						<h2 className="text-center">Our Privacy Policy</h2>
+					<div className="box greyedContent">
+						<h3 className="text-center">Our Privacy Policy</h3>
 						<br />
 						
 						<p>The policy: This privacy policy notice is served by Aptly Named Media under the website; [www.combatdatabase.co.uk]. The purpose of this policy is to explain to you how we control, process, handle and protect your personal information through the business and while you browse or use this website. If you do not agree to the following policy you may wish to cease viewing / using this website, and or refrain from submitting your personal data to us.</p>

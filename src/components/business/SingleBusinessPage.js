@@ -151,7 +151,7 @@ export default class SingleBusinessPage extends Component{
 
 					<div className="row">
 
-						<div className="col-xs-9">
+						<div className="col-xs-12">
 							<div className="row">
 								
 								<div className="text-center">
@@ -197,26 +197,31 @@ export default class SingleBusinessPage extends Component{
 							
 								{leaveReview}
 							
+							{EditPage ? 
 							<div className="row">
 								<div className="box">
 									{EditPage}
 								</div>
 							</div>
-
-						</div>
-
-						<div className="col-xs-3 text-center">
+							: null}
+							
 							<div className="text-center">
-								<img src={this.state.businessLogo ? this.state.businessLogo: defaultLogo}  width="100%"  alt="Business logo" />
+								<img src={this.state.businessLogo ? this.state.businessLogo: defaultLogo}  className="imageFit"   alt="Business logo" />
 							</div>
 							<div className="text-center">
 								{EditLogo}
 							</div>
+
 							<PhotoDisplay data={this.props.match.params.BusinessKey} page="SingleBusinessPage" />
+							
 							<div className="text-center">
 								{AddImages}
 							</div>
+
+
 						</div>
+
+						
 
 					</div>	
 					

@@ -71,7 +71,7 @@ export default class MyBlogPostList extends Component{
 			<div className="container">
 				
 				<section className="content-wrapper">
-					<div className="row box">
+					<div className="row box greyedContent">
 						
 							
 				   		<div className="col-xs-6">
@@ -84,12 +84,12 @@ export default class MyBlogPostList extends Component{
 					   
 					</div>
 
-					<div className="row box">    
+					<div className="row box greyedContent">    
 					    
 							
 						<div className="col-xs-12">
 							
-								<h2 className="text-center"> {this.props.match.params.BlogName}</h2>
+								<h3 className="text-center"> {this.props.match.params.BlogName}</h3>
 								<div>
 									{content}
 								</div>

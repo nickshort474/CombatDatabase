@@ -252,8 +252,8 @@ class SignUpFormBase extends Component{
 			                
 			               
 			                <div className="col-sm-12">
-			                	<div className="box registration-form">
-			                    	<h2 className="text-center">Registration</h2>
+			                	<div className="box registration-form greyedContent">
+			                    	<h3 className="text-center">Registration</h3>
 			                        <p>Create your new account here. Already have an account with us or Google? Then you can <Link to="SignIn">sign in</Link> with your existing username and password.</p>
 			                        
 			                        <form onSubmit={this._submitSignUp.bind(this)}>

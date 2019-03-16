@@ -8,8 +8,8 @@ export default class Terms extends Component{
 		return(
 			<div className="container">
 				<div className="content-wrapper">
-					<div className="box">
-						<h1 className="text-center">Terms and conditions</h1>
+					<div className="box greyedContent">
+						<h3 className="text-center">Terms and conditions</h3>
 						
 						<p>The following terms and conditions govern your use of our website and by continuing, you agree to them. If you do not agree to these terms please leave immediately.</p>
 						<h4>What you should know about the content and information we provide</h4>

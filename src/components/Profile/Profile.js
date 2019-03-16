@@ -280,9 +280,9 @@ export default class Profile extends Component{
 						<div className="row">
 							
 							<div className="col-sm-12">
-								<div className="box">
+								<div className="box greyedContent">
 									
-									<h2 className="text-center">Profile</h2>
+									<h3 className="text-center">Profile</h3>
 
 
 									<form action="">
@@ -425,7 +425,7 @@ export default class Profile extends Component{
 								</div>	
 
 
-								<div className="box text-center">
+								<div className="box text-center  greyedContent">
 									<div>
 										{this.userUID ? <Link to="/DeleteAccount"><button className="btn btn-primarySmall">Delete Account</button></Link> : null}
 										{this.token === "password" ? <Link to="/ChangePassword"><button className="btn btn-primarySmall">Change Password</button></Link> : null}

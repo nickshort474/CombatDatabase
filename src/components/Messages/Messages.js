@@ -97,7 +97,7 @@ class Messages extends Component{
 					</div>
 					<NewMessage msgUser={this.props.match.params.PersonKey} />
 
-					<div className="row box">
+					<div className="row box greyedContent">
 						
 						<Link to="/Community">&lt; Back</Link>
 						

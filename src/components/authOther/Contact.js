@@ -36,7 +36,8 @@ class Contact extends Component{
 			<div>
 				<div className="container"> 
 					<div className="content-wrapper">
-						<h2>Contact Us</h2>
+						<div className="box greyedContent">
+						<h3>Contact Us</h3>
 						
 						<div>
 							<p>Please complete this enquiry form</p>
@@ -67,7 +68,7 @@ class Contact extends Component{
 							</button>
 							
 						</form>
-						
+						</div>
 					</div>
 				</div>
 			</div>

@@ -233,8 +233,8 @@ class SignInFormBase extends Component{
 			       		                    
 			              
 			               
-			                	<div className="box registration-form">
-			                    	<h2 className="text-center">Sign in</h2>
+			                	<div className="box registration-form  greyedContent">
+			                    	<h3 className="text-center">Sign in</h3>
 			                        <form onSubmit={this._onSubmit.bind(this)}>
 			                        	<div className="form-group">
 			                                <label htmlFor="login_email">Email</label>
@@ -262,7 +262,7 @@ class SignInFormBase extends Component{
 			                    
 			            </div>
 			            <div className="row">
-			            	<div className="box text-center">   
+			            	<div className="box text-center greyedContent">   
 			                	<img src={GoogleButtonMain} style={this.cursorStyle} id="googleButton" onClick={this._signInGoogle.bind(this)} onMouseOver={this._hoverGoogleButton.bind(this)} onMouseOut={this._googleButtonOut.bind(this)} alt="Google sign in button"/>
 			                </div>
 			            </div>

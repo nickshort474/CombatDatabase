@@ -20,7 +20,7 @@ export default class SearchForPeople extends Component{
 
 	constructor(){
 		super();
-		store.dispatch({type:constants.SAVE_PAGE, page:"SearchForPeople"});
+		store.dispatch({type:constants.SAVE_PAGE, page:"/SearchForPeople"});
 		
 		this.state = {
 			items:[],
@@ -168,7 +168,7 @@ export default class SearchForPeople extends Component{
 			    <div className="container">
 			        <section className="content-wrapper">
 
-			        	<div className="box">
+			        	<div className="box  greyedContent">
 					   		<Link to="/Community">&lt; Back</Link>
 					    </div>
 
@@ -188,7 +188,7 @@ export default class SearchForPeople extends Component{
 				                </div>
 				            </div>
 				            <div className="col-sm-9">
-				            	<div className="box">        
+				            	<div className="box greyedContent">        
 				                    <form>
 				                    	<h3>Search by location:</h3>
 				                    	<div className="form-group">

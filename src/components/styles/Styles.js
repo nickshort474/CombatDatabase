@@ -142,7 +142,7 @@ export default class Styles extends Component{
 			        			
 			        			<div className="row">
 			        				<div className="col-sm-12">
-			        					<div className="style-box-less-padding">
+			        					<div className="style-box-less-padding  greyedContent">
 					        				<div className="text-center">
 						        				<p>Style:</p>
 							        			<select onChange={this._handleStyleClick.bind(this)} value={this.currentSelectedStyle} style={this.dropDownStyle}>
@@ -167,7 +167,7 @@ export default class Styles extends Component{
 								<div className="row">
 
 									<div className="col-sm-6">
-										<div className="box text-center">
+										<div className="box text-center greyedContent">
 											<h1><b>{this.state.styleName}</b></h1>
 											<h2>{this.state.countryOfOrigin}</h2>
 										</div>
@@ -175,7 +175,7 @@ export default class Styles extends Component{
 
 
 									<div className="col-sm-6">
-										<div className="box">
+										<div className="box greyedContent">
 											<div className="row">
 												<div className="col-xs-6">
 													<p><i><b>Date created:</b></i></p>
@@ -194,7 +194,7 @@ export default class Styles extends Component{
 								</div>
 
 
-			                    <div className="box">
+			                    <div className="box greyedContent">
 									<div className="row">
 										<div className="col-xs-6">
 											<p><i><b>Defining features:</b></i></p>
@@ -209,7 +209,7 @@ export default class Styles extends Component{
 								
 								
 								
-								<div className="box">
+								<div className="box greyedContent">
 									<div className="row">
 										<div className="col-xs-6">
 											<p><i><b>Famous practitioners:</b></i></p>
@@ -227,7 +227,7 @@ export default class Styles extends Component{
 
 								</div>
 
-								<div className="box">
+								<div className="box greyedContent">
 									<div className="row">
 										<div className="col-xs-6">
 											<p><i><b>Full description:</b></i></p>
@@ -244,7 +244,7 @@ export default class Styles extends Component{
 									<div>{this.state.fullDescription ? this.state.fullDescription : <p>Please click the edit link ( <i className='fa fa-edit' alt='edit history'></i> ) to add additional info</p>}</div>
 
 								</div>
-								<div className="box">
+								<div className="box greyedContent">
 									
 									<div className="row">
 										<div className="col-xs-6">
@@ -267,7 +267,7 @@ export default class Styles extends Component{
 			        					
 				        					<div className="col-sm-4 addStyleButton" onClick={this._addStyle.bind(this)}>
 				        						{/*<Link to="/AddStyle" className="clearFloat">*/}
-					        						<div className="box text-center">
+					        						<div className="box text-center greyedContent">
 					        							<h4>Add Style</h4><i className="fa fa-plus-circle fa-3x" alt="Add Style"></i>
 								                	</div>
 							                	{/*</Link>*/}
@@ -275,7 +275,7 @@ export default class Styles extends Component{
 
 							                <div className="col-sm-4">
 								                <Link to={"/EditHistory/" + this.state.styleName}>
-								                <div className="box text-center">	
+								                <div className="box text-center greyedContent">	
 									                <h4>Edit History</h4><i className="fa fa-history fa-3x" alt="Edit History" ></i>
 												</div>
 												</Link>
@@ -283,7 +283,7 @@ export default class Styles extends Component{
 										 	
 										 	<div className="col-sm-4">
 								                <Link to={`/Report/${this.currentSelectedStyle}`}>
-									                <div className="box text-center">	
+									                <div className="box text-center greyedContent">	
 										                <h4>Report Content</h4><i className="fa fa-flag-checkered fa-3x" alt="Report content" ></i>
 													</div>
 												</Link> 

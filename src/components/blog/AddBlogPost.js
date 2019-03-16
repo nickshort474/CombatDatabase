@@ -377,14 +377,14 @@ import $ from 'jquery';
 			<div>
 				<div className="container">
 			        <section className="content-wrapper">
-			        	<div className="row box">
+			        	<div className="row box greyedContent">
 			        		<div className="col-sm-12">
 			        		
-			        			<Link to={`/MyBlogPostList/${this.state.user}/${this.props.match.params.BlogName}`}>&lt; Go back</Link>
+			        			<Link to={`/MyBlogPostList/${this.userUID}/${this.props.match.params.BlogName}`}>&lt; Back</Link>
 			        		
 			        		</div>
 			        	</div>
-			        	<div className="row box text-center">
+			        	<div className="row box greyedContent">
 				        	<div className="col-sm-12">
 				        		
 				        		<div className="">

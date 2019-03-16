@@ -63,7 +63,7 @@ class PasswordForgetFormBase extends Component {
         return (
             <div className="container">
                 <div className="content-wrapper">
-                    <div className="box text-center">
+                    <div className="box text-center greyedContent">
                         <h2>Forgotten your password?</h2>
                         
                         <form onSubmit={this._onSubmit.bind(this)}>
@@ -83,7 +83,7 @@ class PasswordForgetFormBase extends Component {
 
 const PasswordForgetLink = () => (
      
-    <div className="box">
+    <div className="box greyedContent">
         <Link to={'/ForgotPassword'}>Forgot Password?</Link>
     </div>
                 

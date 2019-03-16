@@ -145,7 +145,7 @@ class PersonProfile extends Component{
 		let buttonToShow;
 
 		if(this.state.isFriend === false && this.state.requestSent === false && this.userUID !== this.props.match.params.PersonKey ){
-			buttonToShow = <button className="btn-primary" onClick={this._handleContactRequest.bind(this)} style={this.buttonStyle} >Contact Request </button>
+			buttonToShow = <button className="btn btn-primarySmall" onClick={this._handleContactRequest.bind(this)} style={this.buttonStyle} >Contact Request </button>
 		}else if(this.state.requestSent === true){
 			buttonToShow = <p>Contact Request Pending</p>
 		}
@@ -160,43 +160,43 @@ class PersonProfile extends Component{
 
 				<div className="content-wrapper">
 					
-					<div className="row box">
-						<div className="">
-							<div className="col-sm-8">
+					<div className="row box greyedContent">
+						
+							<div className="col-xs-6">
 								<Link to={this.prevPage}>&lt; Back </Link>
 							</div>
-							<div className="col-sm-4">
+							<div className="col-xs-6 text-right">
 								<div>{buttonToShow}</div>
 							</div>
-					    </div>
+					    
 					</div>
 
 
 					{this.userExists ? 
 
-						<div className="row box">
-							<div className="col-sm-12">
+						<div className="row box greyedContent">
+							<div className="col-xs-12">
 								<div className="row">
-									<div className="col-sm-8">
+									<div className="col-xs-8">
 										<h2>{this.state.userName}</h2>
 										<p>Also known as: {this.state.firstName + " " + this.state.lastName}</p>
 										
 									</div>
-									<div className="col-sm-4">
+									<div className="col-xs-4">
 										<img src={this.state.profilePic ? this.state.profilePic : DefaultLogo} style={{"width":"100%"}} alt="placeholder" />
 									</div>
 								</div>
 								<hr />
 								<div className="row">
-									<p className="col-sm-2">Bio</p>
-									<div className="col-sm-10">
+									<p className="col-xs-2">Bio</p>
+									<div className="col-xs-10">
 										<p>{this.state.bio}</p>
 									</div>
 								</div>
 								<hr />
 								<div className="row">
-									<p className="col-sm-2">Styles</p>
-									<div className="col-sm-10">
+									<p className="col-xs-2">Styles</p>
+									<div className="col-xs-10">
 										<p>{this.state.styles}</p>
 									</div>
 								</div>
@@ -204,8 +204,8 @@ class PersonProfile extends Component{
 								
 								
 								<div className="row">
-									<p className="col-sm-2">General Location</p>
-									<div className="col-sm-10">
+									<p className="col-xs-2">General Location</p>
+									<div className="col-xs-10">
 										<p>{this.state.location}</p>
 									</div>
 								</div>
@@ -214,8 +214,8 @@ class PersonProfile extends Component{
 						</div> 
 					: 
 						<div className="row box">
-							<div className="col-sm-12 text-center">
-								<p>Unfortunately it looks like this user has deleted their account, would you like to remove them from your contact list?</p><button className="btn btn-primarySmall" onClick={this._deleteContact.bind(this)}>Delete contact</button>
+							<div className="col-xs-12 text-center">
+								<p>Unfortunately it looks like this user has deleted their account, would you like to remove them from your contact list?</p><button className="btn btn-primaryxsall" onClick={this._deleteContact.bind(this)}>Delete contact</button>
 							</div>
 						</div>
 						

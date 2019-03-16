@@ -115,7 +115,7 @@ export default class MyBlogs extends Component{
 							<Link to="/ViewBlogs"><button type="button" className="btn btn-primarySmall extraMargin">Show other blogs</button></Link>							
 						</div>
 						<div className="col-sm-9">
-							<div className="box">
+							<div className="box greyedContent">
 								<h3 className="text-center">My Blogs</h3>
 								<div>
 								

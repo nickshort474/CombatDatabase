@@ -119,7 +119,7 @@ class NewMessage extends Component{
 	render(){
 		return(
 			<form onSubmit={this._handlePost.bind(this)} action="">	
-				<div className="row box text-center">
+				<div className="row box text-center greyedContent">
 					<div className="col-sm-9">
 						<textarea id="content" value={this.state.content} placeholder="content" className="form-control" style={{"height":"50%"}}onChange={this._handleInput.bind(this)} />
 					</div>

@@ -7,8 +7,8 @@ export default class AboutUs extends Component{
 		return(
 			<div className="container">
 				<div className="content-wrapper">
-					<div className="box">
-						<h1 className="text-center">About us</h1>
+					<div className="box greyedContent">
+						<h3 className="text-center">About us</h3>
 						<br />
 						<p>
 							Hi I'm Nick and I created CombatDB.
