@@ -1,21 +1,25 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
+import {withRouter,Link} from 'react-router-dom';
 
 
-export default class PersonComp extends Component{
+class PersonComp extends Component{
 	
+
+	_seeMail(){
+		this.props.history.push(`/Messages/${this.props.userName}/${this.props.uid}`)
+	}
 	
 	render(){
 		
 		return(
-			<div className="row">
-				<section style={{"marginLeft":"15px"}} className="well col-xs-7 text-center">
+			<div className="row text-center box personComp">
+				<section className="col-xs-6 text-center">
 					
 						
 						<Link to={`/PersonProfile/${this.props.uid}/${this.props.userName}`}>
-							<div className="text-left compTextStyle">
+							<div>
 								
-								<h2>{this.props.userName} </h2>
+								<h4>{this.props.userName} </h4>
 								
 																										
 							</div>
@@ -25,20 +29,30 @@ export default class PersonComp extends Component{
 					
 				</section>
 
-				<section style={{"marginRight":"15px"}} className="col-xs-4">
-					{this.props.haveReplied ? <p>Your have mail!</p> : null}
+				<section className="col-xs-6">
+					
+					
+					
 
-					<Link to={`/Messages/${this.props.userName}/${this.props.uid}`}>
-						<p className="btn btn-primary">
-							See messages
-						</p>
+					<div>
+						{this.props.haveReplied 
+						? 
+						<p>You have mail <button onClick={this._seeMail.bind(this)} className="btn btn-primary"><i className="fa fa-envelope"></i></button></p>
+						
+						:	
+						<p>See your conversation:<button onClick={this._seeMail.bind(this)} className="btn btn-primary"><i className="fa fa-envelope-open"></i></button></p>
+						}
+							
+						
 
-					</Link>
+					</div>
 						
 				</section>
-
+				<hr />
 			</div>
 
 		)
 	}
 }
+
+export default withRouter(PersonComp)

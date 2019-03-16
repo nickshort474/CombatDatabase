@@ -91,8 +91,8 @@ class Messages extends Component{
 				<div className="content-wrapper">
 				
 
-					<div className="row box text-center">
-						<h2>Last 10 messages</h2>
+					<div className="row box text-center greyedContent">
+						<h3>Last 10 messages</h3>
 						{messages.length > 0 ? messages : <p>No messages yet</p>}
 					</div>
 					<NewMessage msgUser={this.props.match.params.PersonKey} />

@@ -143,7 +143,7 @@ export default class SingleBusinessPage extends Component{
 				<section className="content-wrapper">
 					
 					<div className="row">
-						<div className="box">
+						<div className="box greyedContent">
 							<Link to={'/' + this.state.previousPage}>&#60; Back</Link>
 							
 						</div>
@@ -151,7 +151,7 @@ export default class SingleBusinessPage extends Component{
 
 					<div className="row">
 
-						<div className="col-sm-9">
+						<div className="col-xs-9">
 							<div className="row">
 								
 								<div className="text-center">
@@ -205,7 +205,7 @@ export default class SingleBusinessPage extends Component{
 
 						</div>
 
-						<div className="col-sm-3 text-center">
+						<div className="col-xs-3 text-center">
 							<div className="text-center">
 								<img src={this.state.businessLogo ? this.state.businessLogo: defaultLogo}  width="100%"  alt="Business logo" />
 							</div>

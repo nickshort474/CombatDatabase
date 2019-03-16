@@ -3,8 +3,6 @@ import {Link} from 'react-router-dom';
 import {firebase} from '@firebase/app';
 import LocalStorage from '../../utils/LocalStorage';
 
-
-
 import BlogCommentComp from './BlogCommentComp';
 
 import store from '../../redux/store';
@@ -41,7 +39,7 @@ export default class SingleBlogPost extends Component{
 		
 		//get this blog users username
 		let firestore = firebase.firestore();
-		let ref = firestore.collection("Users").doc(this.userUID);
+		let ref = firestore.collection("Users").doc(this.props.match.params.BlogUser);
 		ref.get().then((snapshot)=>{
 			
 			this.setState({

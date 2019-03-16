@@ -16,7 +16,7 @@ export default class Home extends Component{
 		
 		
 		this.userUID = LocalStorage.loadState("user");
-		console.log(this.userUID);
+		
 	}
 
 	componentWillMount(){
@@ -41,19 +41,19 @@ export default class Home extends Component{
 			        <section className="content-wrapper">
 			        	<div className="row">
 			        		<div className="col-xs-12 col-sm-8">
-			        			<div className="box">	
+			        			<div className="box greyedContent">	
 				        			<p><span className="text-18"><span style={{"color":"red"}}>Combat</span>DB</span> is aiming to be the number one resource for martial artists, self defence practitioners and fitness enthusiasts all over the world.</p>
 				        			<p>Our mission to build a community driven resource with a range a growing features.</p> 
 				        			
 			        			</div>
-			        			<div className="box text-center">	
+			        			<div className="box text-center greyedContent">	
 				        			<img src={imgSrc} style={{"width":"100%"}} alt="This weeks!" />
 				        			{uploadButton}
 			        			</div>
 			        		</div>
 
 			        		<div className="col-xs-12 col-sm-4">
-			        			<div className="box">
+			        			<div className="box greyedContent">
 	        						<div className="txtCompStyle">
 										<Link to="/Community">Community</Link><p className="text-10">Make connections, send messages, build your community</p> 
 			        				</div>
@@ -83,6 +83,9 @@ export default class Home extends Component{
 			        				</div>
 			        				<div className="txtCompStyle">
 			        					<Link to="/Terms">Terms and conditions</Link><p className="text-10">Out terms</p> 
+			        				</div>
+			        				<div className="txtCompStyle">
+			        					<Link to="/ReportContent">Report</Link><p className="text-10">Report offensive or inappropraite content</p> 
 			        				</div>
 		        				</div>
 			        		</div>

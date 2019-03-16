@@ -15,7 +15,7 @@ export default class BusinessComp extends Component{
 					<div className="row">
 						
 						<div className="col-sm-8 compTextStyle">
-							<h2>{this.props.businessName}</h2>
+							<h3>{this.props.businessName}</h3>
 							<p>{this.props.summary}</p>	
 							<p>{this.props.location}</p>
 														

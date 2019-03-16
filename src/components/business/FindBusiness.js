@@ -184,14 +184,14 @@ export default class FindBusiness extends Component{
 				<div className="container">
 			        <section className="content-wrapper">
 
-			        	<div className="box">
+			        	<div className="box  greyedContent">
 					   		<Link to="/Business">&#60; Back</Link>
 					    </div>
 
 		               	<div className="row">
 
 	                		<div className="col-sm-3 hidden-xs">
-		                		<div className="box sidebar-box">
+		                		<div className="box sidebar-box greyedContent">
 					   
 				                	<h2>Find A Business</h2>
 				                    <p>Find somewhere to train, shop or anything martial arts related near you.</p>
@@ -199,7 +199,7 @@ export default class FindBusiness extends Component{
 				                </div>
 				            </div>
 				            <div className="col-sm-9">
-				            	<div className="box">
+				            	<div className="box greyedContent">
 
 
 				                    <form>

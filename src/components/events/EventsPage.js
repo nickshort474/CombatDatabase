@@ -108,7 +108,7 @@ export default class EventsPage extends Component{
 				                
 			                </div>
 			            	<div className="col-sm-9">
-			                	<div className="box">
+			                	<div className="box greyedContent">
 			                		<h2 className="text-center">Newly listed Events</h2>
 			                		
 			                		{events}

@@ -95,7 +95,7 @@ export default class SingleEventPage extends Component{
 					
 					<div className="row">
 						<div className="col-sm-12">
-							<div className="box">
+							<div className="box greyedContent">
 						   		
 						   		<Link to={this.state.previousPage}>&#60; Back</Link>
 						    </div>
@@ -103,17 +103,26 @@ export default class SingleEventPage extends Component{
 					</div>
 
 					<div className="row">
-						<div className="col-sm-9">
+						<div className="col-sm-12">
 							<div className="row">
 								<div className="col-sm-12">
-									<div className="box text-center">
+									<div className="box text-center greyedContent">
 										<h2>{this.state.eventName}</h2>
 									</div>
 								</div>
 							</div>
+
+							<div className="row">
+								<div className="col-sm-12" >
+									<div className="box styledDate">
+										<ProcessEpochDisplay date={this.state.eventTime} hoursWanted={true} key={this.state.eventTime} />
+									</div>
+								</div>
+							</div>
+
 							<div className="row">
 								<div className="col-sm-12">
-									<div className="box">
+									<div className="box greyedContent">
 										<p>Location:</p> 
 										<h3>{this.state.eventLocation}</h3>
 									</div>
@@ -121,7 +130,7 @@ export default class SingleEventPage extends Component{
 								
 							</div>
 
-							<div className="row"  style={this.style}>
+							<div className="row" >
 								<div className="col-sm-12" style={this.style} >
 									 <Map data={this.state.items} onRef={ref =>(this.child = ref)}/>
 								</div>
@@ -130,7 +139,7 @@ export default class SingleEventPage extends Component{
 
 							<div className="row">
 								<div className="col-sm-12">
-									<div className="box">
+									<div className="box greyedContent">
 										<p>{this.state.eventDescription}</p>
 									</div>
 								</div>
@@ -138,7 +147,7 @@ export default class SingleEventPage extends Component{
 
 							<div className="row">
 								<div className="col-sm-12">
-									<div className="box">
+									<div className="box greyedContent">
 										<p>{this.state.eventPhone  ? this.state.eventPhone : "No contact number"}</p>
 									</div>
 								</div>
@@ -146,7 +155,7 @@ export default class SingleEventPage extends Component{
 
 							<div className="row">
 								<div className="col-sm-12">
-									<div className="box">
+									<div className="box greyedContent">
 										<p>{this.state.eventEmail ? this.state.eventEmail : "No email address"}</p>
 									</div>
 								</div>
@@ -154,7 +163,7 @@ export default class SingleEventPage extends Component{
 							
 							<div className="row">
 								<div className="col-sm-12">
-									<div className="box">
+									<div className="box greyedContent">
 										<p>{this.state.eventWebPage ? this.state.eventWebPage : "No web page"}</p>
 									</div>
 								</div>
@@ -162,33 +171,30 @@ export default class SingleEventPage extends Component{
 						
 							<div className="row">
 								<div className="col-sm-12">
-									<div className="box">
+									<div className="box greyedContent">
 										{EditEvent}
 									</div>
 								</div>
 							</div>
-
+							<div className="row">
+								<div className="col-sm-12">
+									<div className="box">
+							
+										<img src={this.state.eventLogo ? this.state.eventLogo : defaultLogo} className="imageFit" alt="event logo" /><br />
+										{EditImage}
+									</div>
+								</div>
+							</div>
 						</div> 
 
-						<div className="col-sm-3">
+						
 
-							<div className="row box styledDate">
-								
-								<ProcessEpochDisplay date={this.state.eventTime} hoursWanted={true} key={this.state.eventTime} />
-							</div>
+							
 
-							<div className="row">
-								<div className="col-sm-12 box text-center">
-									<img src={this.state.eventLogo ? this.state.eventLogo : defaultLogo} className="imageFit" alt="event logo" /><br />
-									{EditImage}
-								
-								</div>
-								
-								
-							</div>
+
 							
 							
-						</div>
+						
 					</div>
 				
 				

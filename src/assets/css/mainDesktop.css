@@ -72,7 +72,11 @@ h4,
 h5, 
 h6 {
 	font-family: 'Titillium Web', sans-serif;
-	margin-top: 10px;
+	
+}
+
+h3{
+	margin-top: 0px;
 }
 
 .img-rounded {
@@ -1456,6 +1460,8 @@ select{
 .imageFit {
 	width:100%;
 	height:100%;
+	max-width:350px;
+
 }
 
 
@@ -1519,6 +1525,9 @@ select{
 	background-color:#181818
 }
 
+.personComp{
+	background-image:linear-gradient(grey,black,black,black,grey);
+}
 
 /* React-datetime */
 

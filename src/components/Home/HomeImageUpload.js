@@ -135,7 +135,7 @@ class HomeImageUpload extends Component{
 						<h2>Upload Image</h2>
 					
 
-						<div className="box">
+						<div className="box greyedContent">
 							<div className="row">
 								
 								

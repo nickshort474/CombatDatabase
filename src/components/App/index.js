@@ -66,6 +66,7 @@ import ThankYouForListing from '../ThankYou/ThankYouForListing';
 
 //authorisation, profile, contact, other
 import Contact from '../AuthOther/Contact';
+import ReportContent from '../AuthOther/ReportContent';
 import Response from '../AuthOther/Response';
 import Privacy from '../AuthOther/Privacy';
 import AboutUs from '../AuthOther/AboutUs';
@@ -162,6 +163,7 @@ class App extends Component{
 						
 
 						<Route path="/Contact" component={Contact} />
+						<Route path="/ReportContent" component={ReportContent} />
 						<Route path="/Response" component={Response} />
 						<Route path="/Privacy" component={Privacy} />
 						<Route path="/AboutUs" component={AboutUs} />

@@ -213,7 +213,7 @@ class Community extends Component{
 
 		    <div className="container">
 				<div className="content-wrapper">
-					<div className="row text-center">
+					<div className="row text-center ">
 						
 							<div>{this.userUID ? <Link to="/SearchForPeople"><button type="button" className="btn btn-primary">Find people</button></Link> : signInMessage} </div>
 						
@@ -223,13 +223,13 @@ class Community extends Component{
 						
 						
 					
-					<div className="box text-center">
+					<div className="box text-center greyedContent">
 						
-						<h4>Your Community</h4>
+						<h3>Your Community</h3>
 						<div>
 							{requests}
 						</div>
-						<hr />
+						
 						<div className="text-center">	
 							{contactList}
 						</div>

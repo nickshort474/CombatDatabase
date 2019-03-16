@@ -300,14 +300,14 @@ class AddBusiness extends Component{
 				<div className="container">
 			        <section className="content-wrapper">
 			        	
-			        	<div className="box">
+			        	<div className="box greyedContent">
 					   		<Link to="/Business">&#60; Back</Link>
 					    </div>
 
 		               	<div className="row">
 
 	                		<div className="col-sm-3 hidden-xs">
-		                		<div className="box sidebar-box">
+		                		<div className="box sidebar-box greyedContent">
 				                	<h2>Register</h2>
 				                    <p>Register your business and get the benefits of CombatDB registration</p>
 				                   
@@ -315,7 +315,7 @@ class AddBusiness extends Component{
 			                </div>
 
 			                <div className="col-sm-9">
-			                	<div className="box">
+			                	<div className="box greyedContent">
 
 			                    <form onSubmit={this._onSubmit.bind(this)}>
 

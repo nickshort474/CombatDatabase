@@ -132,8 +132,8 @@ class Business extends Component{
 																
 						</div>
 						<div className="col-sm-9">
-							<div className="box">
-								<h2 className="text-center">Recently listed businesses</h2>
+							<div className="box greyedContent">
+								<h3 className="text-center">Recently listed businesses</h3>
 								<div>{business}</div>
 								{/*<div className="text-center">
 									<p>{moreButton}</p>

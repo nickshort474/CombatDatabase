@@ -4,7 +4,7 @@ import constants from '../../redux/constants';
 import {withRouter} from 'react-router';
 
 
-class Report extends Component{
+class ReportContent extends Component{
 	
 	constructor(){
 		super();
@@ -70,5 +70,5 @@ class Report extends Component{
 		)
 	}
 }
-export default withRouter(Contact);
+export default withRouter(ReportContent);
 		

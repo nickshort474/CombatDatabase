@@ -60,7 +60,7 @@ export default class ProcessEpochDisplay extends Component{
 		
 		return(
 			<div className="text-center styledDate" >
-				<span> {this.state.day}<br /> {this.state.date} {this.state.month} {this.props.hoursWanted ? `${this.state.hours}:${this.state.minutes}` : null}</span>
+				<span> {this.state.day} {this.state.date} {this.state.month} {this.props.hoursWanted ? `${this.state.hours}:${this.state.minutes}` : null}</span>
             </div>
 		)
 	}
