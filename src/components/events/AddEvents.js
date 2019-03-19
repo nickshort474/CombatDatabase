@@ -16,7 +16,7 @@ import store from '../../redux/store';
 import constants from '../../redux/constants';
 
 import LocalStorage from '../../utils/LocalStorage';
-
+import ReactLoading from 'react-loading';
 
 const google = window.google;
 
@@ -125,8 +125,13 @@ class AddEvents extends Component{
 
 	_onSubmit(e){
 		e.preventDefault();
+		
 		_disable();
-				
+
+		this.setState({
+    		loading:true
+    	});	
+
 		let errorMsgs = this._validate();
 		
 		if(errorMsgs.length > 0){
@@ -140,6 +145,10 @@ class AddEvents extends Component{
 			})
 			
 			_enable();
+
+			this.setState({
+    			loading:false
+    		});	
 		}else{
 			console.log("can be submitted");
 
@@ -179,6 +188,13 @@ class AddEvents extends Component{
 						
 						ref.set(eventObj).then(()=>{
 							
+							_enable();
+
+							this.setState({
+				    			loading:false
+				    		});	
+
+
 							this.props.history.push('/Events');
 						})
 					})
@@ -188,6 +204,12 @@ class AddEvents extends Component{
 					
 					ref.set(eventObj).then(()=>{
 						
+						_enable();
+
+						this.setState({
+			    			loading:false
+			    		});	
+
 						this.props.history.push('/Events');
 					})
 				}
@@ -244,8 +266,14 @@ class AddEvents extends Component{
 			})
 
 			if(nameMatch === true){
-				alert("Event name already exists please try another");
+				this.setState({
+			    	loading:false
+			    });	
+
 				_enable();
+
+				alert("Event name already exists please try another");
+				
 			}else{
 				callback();
 			}
@@ -316,6 +344,16 @@ class AddEvents extends Component{
 	}
 
 	render(){
+
+		let loadingCircle;
+
+		if(this.state.loading){
+			loadingCircle = <ReactLoading  id="loadingCircle" type="spin" color="#00ff00" height={25} width={25} />
+		}else{
+			loadingCircle = <p></p>
+		}
+
+
 		return(
 			<div>
 				<div className="container">
@@ -403,6 +441,9 @@ class AddEvents extends Component{
 				                    </div>
 				                </div>
 				            </form>
+				            <div>
+	                        	{loadingCircle}
+	                        </div> 
 	                    </div>
 
 		            </section>

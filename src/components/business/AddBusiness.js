@@ -15,7 +15,9 @@ import {_disable,_enable} from '../../utils/DisableGreyOut';
 import {_compressImage} from '../../utils/CompressImage';
 
 import LocalStorage from '../../utils/LocalStorage';
-		
+import ReactLoading from 'react-loading';
+
+
 const google = window.google;
 
 
@@ -115,7 +117,12 @@ class AddBusiness extends Component{
 	_onSubmit(e){
 		e.preventDefault();
 
+		//dsiable buttons and show loading circle
 		_disable();
+
+		this.setState({
+    		loading:true
+    	});
 
 		let errorMsgs = this._validate(this.state.businessName,this.state.businessLocation,this.state.businessSummary,this.state.businessDescription)
 		
@@ -128,7 +135,10 @@ class AddBusiness extends Component{
 			this.setState({
 				errors:formattedComp
 			})
-			
+
+			this.setState({
+    			loading:false
+    		});
 			_enable();
 		}else{
 			this.firestore = firebase.firestore();
@@ -176,6 +186,10 @@ class AddBusiness extends Component{
 
 				this._addBusinessToUserProfile(docId.id, () =>{
 					
+					this.setState({
+    					loading:false
+    				});
+    				_enable()
 					this.props.history.push('/ThankYouForListing');
 				})
 				
@@ -295,6 +309,15 @@ class AddBusiness extends Component{
   
 	render(){
 
+
+		let loadingCircle;
+
+		if(this.state.loading){
+			loadingCircle = <ReactLoading  id="loadingCircle" type="spin" color="#00ff00" height={25} width={25} />
+		}else{
+			loadingCircle = <p></p>
+		}
+
 		return(
 			<div>
 				<div className="container">
@@ -317,69 +340,71 @@ class AddBusiness extends Component{
 			                <div className="col-sm-9">
 			                	<div className="box greyedContent">
 
-			                    <form onSubmit={this._onSubmit.bind(this)}>
+				                    <form onSubmit={this._onSubmit.bind(this)}>
 
-			                    	<div className="form-group">
-			                            <label htmlFor="businessName">Business name<span>*</span></label>
-			                            <input type="text" className="form-control" id="businessName" value={this.state.businessName} onChange={this._handleInput.bind(this)}/>
-			                        </div>
+				                    	<div className="form-group">
+				                            <label htmlFor="businessName">Business name<span>*</span></label>
+				                            <input type="text" className="form-control" id="businessName" value={this.state.businessName} onChange={this._handleInput.bind(this)}/>
+				                        </div>
 
-			                        <div className="form-group">
-			                            <label>Business Address<span>*</span></label><br />
-			                           
-			                           <div>
-				                            <Geosuggest
-									          ref={el=>this._geoSuggest=el}
-									          placeholder="Search for your address"
-									          onSuggestSelect={this._onSuggestSelect.bind(this)}
-									          location={new google.maps.LatLng()}
-									          radius="20" 
-									          id="geoSuggest"
-									        />
-								        </div>
-			                        </div>
-									<div className="form-group">
-			                            <label htmlFor="businessSummary">Summary of your business:<span>*</span></label><br />
-			                            <textarea  id="businessSummary" value={this.state.businessSummary} className="form-control" onChange={this._handleInput.bind(this)}></textarea>
-			                        </div>
+				                        <div className="form-group">
+				                            <label>Business Address<span>*</span></label><br />
+				                           
+				                           <div>
+					                            <Geosuggest
+										          ref={el=>this._geoSuggest=el}
+										          placeholder="Search for your address"
+										          onSuggestSelect={this._onSuggestSelect.bind(this)}
+										          location={new google.maps.LatLng()}
+										          radius="20" 
+										          id="geoSuggest"
+										        />
+									        </div>
+				                        </div>
+										<div className="form-group">
+				                            <label htmlFor="businessSummary">Summary of your business:<span>*</span></label><br />
+				                            <textarea  id="businessSummary" value={this.state.businessSummary} className="form-control" onChange={this._handleInput.bind(this)}></textarea>
+				                        </div>
 
-			                       
+				                       
 
-			                        <div className="form-group">
-			                            <label htmlFor="businessDescription">Full description here:<span>*</span></label><br />
-			                            <textarea id="businessDescription" value={this.state.businessDescription} className="form-control" onChange={this._handleInput.bind(this)}></textarea>
-			                        </div>
+				                        <div className="form-group">
+				                            <label htmlFor="businessDescription">Full description here:<span>*</span></label><br />
+				                            <textarea id="businessDescription" value={this.state.businessDescription} className="form-control" onChange={this._handleInput.bind(this)}></textarea>
+				                        </div>
 
-			                        <div className="form-group">
-			                            <label htmlFor="businessPhone">Contact number:</label><br />
-			                            
-			                            <input type="text" id="businessPhone" value={this.state.businessPhone} className="form-control" onChange={this._handleInput.bind(this)}/>
-			                        </div>
+				                        <div className="form-group">
+				                            <label htmlFor="businessPhone">Contact number:</label><br />
+				                            
+				                            <input type="text" id="businessPhone" value={this.state.businessPhone} className="form-control" onChange={this._handleInput.bind(this)}/>
+				                        </div>
 
-			                        <div className="form-group">
-			                            <label htmlFor="businessEmail">Contact email:</label><br />
-			                            
-			                            <input type="email" id="businessEmail" value={this.state.businessEmail} className="form-control" onChange={this._handleInput.bind(this)}/>
-			                        </div>
-			                        <div className="form-group">
-			                            <label htmlFor="businessWebpage">Website:</label><br />
-			                            
-			                            <input type="email" id="businessWebpage" value={this.state.businessWebpage} className="form-control" onChange={this._handleInput.bind(this)}/>
-			                        </div>
-			                        <div className="form-group text-center">
-										<p>Add a business logo:</p>
-										<input type="file" id="fileUpload" style={{display:"none"}} name="pic" onChange={this._previewImage.bind(this)} accept="image/*" />
-										<input type="button" className="btn btn-primary"   value="Add Image" id="fakeBrowse" onClick={this._handleBrowseClick.bind(this)} /><br />
-										<img src={defaultLogo} id="previewImage" className="img-thumbnail" width="200px" height="200px" alt="Preview" />
-										
-									</div>  
-									<div className="text-center">
-										{this.state.errors}
-			                       		<button type="submit" className="btn btn-primary">Submit</button>
-			                        </div>
-			                 		 
-			                    </form>
-			                     
+				                        <div className="form-group">
+				                            <label htmlFor="businessEmail">Contact email:</label><br />
+				                            
+				                            <input type="email" id="businessEmail" value={this.state.businessEmail} className="form-control" onChange={this._handleInput.bind(this)}/>
+				                        </div>
+				                        <div className="form-group">
+				                            <label htmlFor="businessWebpage">Website:</label><br />
+				                            
+				                            <input type="email" id="businessWebpage" value={this.state.businessWebpage} className="form-control" onChange={this._handleInput.bind(this)}/>
+				                        </div>
+				                        <div className="form-group text-center">
+											<p>Add a business logo:</p>
+											<input type="file" id="fileUpload" style={{display:"none"}} name="pic" onChange={this._previewImage.bind(this)} accept="image/*" />
+											<input type="button" className="btn btn-primary"   value="Add Image" id="fakeBrowse" onClick={this._handleBrowseClick.bind(this)} /><br />
+											<img src={defaultLogo} id="previewImage" className="img-thumbnail" width="200px" height="200px" alt="Preview" />
+											
+										</div>  
+										<div className="text-center">
+											{this.state.errors}
+				                       		<button type="submit" className="btn btn-primary">Submit</button>
+				                        </div>
+				                 		 
+				                    </form>
+				                    <div>
+	                        			{loadingCircle}
+	                        		</div> 
 			                    </div>
 			                </div>
 
