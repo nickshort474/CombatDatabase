@@ -17,8 +17,8 @@ export default class Privacy extends Component{
 					<div className="box greyedContent">
 						<h3 className="text-center">Our Privacy Policy</h3>
 						<br />
-						
-						<p>The policy: This privacy policy notice is served by Aptly Named Media under the website; [www.combatdatabase.co.uk]. The purpose of this policy is to explain to you how we control, process, handle and protect your personal information through the business and while you browse or use this website. If you do not agree to the following policy you may wish to cease viewing / using this website, and or refrain from submitting your personal data to us.</p>
+						<h4>The Policy</h4>
+						<p>This privacy policy notice is served by Aptly Named Media under their website; [www.combatdatabase.co.uk]. The purpose of this policy is to explain to you how we control, process, handle and protect your personal information through the business and while you browse or use this website. If you do not agree to the following policy you may wish to cease viewing / using this website, and or refrain from submitting your personal data to us.</p>
 						<br />
 
 
@@ -36,8 +36,8 @@ export default class Privacy extends Component{
 
 						<div>
 							<h4>Who we are</h4>
-							<p>CombatDatabase.co.uk is delivered by Aptly Named Media &copy;We are committed to protecting the privacy of all personal information obtained from you during any visits to the combatdatabase.co.uk website.</p>
-							<p>This Privacy Policy sets out the basis on which any personal data we collect from you, or that you choose to provide to us in connection with the combatdatabase.co.uk website (this “Website”) will be processed.</p>
+							<p>CombatDatabase.co.uk is delivered by Aptly Named Media &copy; we are committed to protecting the privacy of all personal information obtained from you during any visits to the combatdatabase.co.uk website.</p>
+							<p>This Privacy Policy sets out the basis on which any personal data we collect from you, or that you choose to provide to us, in connection with the combatdatabase.co.uk website (this “Website”) will be processed.</p>
 							<p>This Website is operated by Aptly Named Media. Aptly Named Media is also the data controller (ICO Registration number: ##########) for combatdatabase.co.uk</p>
 						</div>
 						<br />
@@ -78,7 +78,7 @@ export default class Privacy extends Component{
 								</li>
 								<li>
 									<h5>Registration</h5>
-									<p>When you sign up through our own sign up form we will collect and hold your email address and password solely for authorisation purposes. Signing in with google will result in the collection and holding of google provided authentication data solely for authorisation purposes</p>
+									<p>When you sign up through our own sign up form we will collect and hold your email address and password solely for authorisation purposes. Signing in with Google will result in the collection and holding of Google provided authentication data solely for authorisation purposes</p>
 								</li>
 							</ul>
 						</div>
@@ -94,7 +94,7 @@ export default class Privacy extends Component{
 
 							We are not responsible for the content of any linked website and cannot take responsibility for the consequences of your using the information or services on linked websites. We cannot guarantee that these links will work all of the time.
 
-							Websites that we link to may have 'Terms and conditions' that are different from ours. Do not assume that our 'Terms and conditions' apply to other websites</p>
+							Websites that we link to may have 'Terms and Conditions' that are different from ours. Do not assume that our 'Terms and Conditions' apply to other websites</p>
 						</div>
 						<br />
 						<hr />
@@ -102,7 +102,7 @@ export default class Privacy extends Component{
 
 						<div>
 							<h4>Other third party content</h4>
-							<p>They may at times be embedded external content from third-party websites such as YouTube. This content is not published on combatdatabase.co.uk. It is delivered using devices and services provided by such third party sites that can be inserted into our site. We are not responsible for this content.</p>
+							<p>There may at times be embedded external content from third-party websites such as YouTube. This content is not published on combatdatabase.co.uk. It is delivered using devices and services provided by such third party sites that can be inserted into our site. We are not responsible for this content.</p>
 						</div>
 						<br />
 
@@ -128,7 +128,7 @@ export default class Privacy extends Component{
 
 						<div>
 							<h4>Information we collect from you</h4>
-							<p>Information that we may automatically collect in relation to your visits to this Website does not identify you personally. It provides us with data about how you use combatdatabase.co.uk.co.uk and engage with us. We use this information to improve our services and make them more useful to you. The information we collect includes some or all of the following:</p>
+							<p>Information that we may automatically collect in relation to your visits to this website does not identify you personally. It provides us with data about how you use combatdatabase.co.uk and engage with us. We use this information to improve our services and make them more useful to you. The information we collect includes some or all of the following:</p>
 							<h4>+ Technical information</h4>
 							<p>We collect your Internet Protocol (IP) address and details of which type of web browser you used.</p>
 
@@ -151,8 +151,8 @@ export default class Privacy extends Component{
 							<h4>What we do with the information we collect</h4>
 							<p>We use the information that we collect to understand your needs and provide you with a better service, including the following:</p>
 							<ul>
-								<li>respond to any request/feedback you send us, if you’ve asked us to</li>
-								<li>analyse, evaluate and improve this Website via data amalgamated from multiple visitors, which does not identify you personally</li>
+								<li>To respond to any request/feedback you send us, if you’ve asked us to</li>
+								<li>To analyse, evaluate and improve this website via data amalgamated from multiple visitors, which does not identify you personally</li>
 							</ul>
 						</div>
 						<br />
@@ -162,11 +162,11 @@ export default class Privacy extends Component{
 						<div>
 							<h4>Our lawful basis for collecting your information</h4>
 							<p>Lawful basis: Consent</p>
-							<p>Where our purpose for processing is: To provide the features and functionality of combatdatabase.co.uk, to show other users relevant information regarding business, event and community.</p>
+							<p>Where our purpose for processing is: to provide the features and functionality of combatdatabase.co.uk, to show other users relevant information regarding business, event and community.</p>
    							<p>Which is necessary because: combatdatabase.co.uk relies on user uploaded information to provide aforementioned features and functionality</p>
-    						<p>We process your information in the following ways: We collect, hold and display user provided information in its original user uploaded format and state.</p>
-						    <p>Data retention period: We will continue to process your information under this basis until you withdraw consent or it is determined your consent no longer exists.</p>
-						    <p>Sharing your information: We do not share your information with third parties.</p>
+    						<p>We process your information in the following ways: we collect, hold and display user provided information in its original user uploaded format and state.</p>
+						    <p>Data retention period: we will continue to process your information under this basis until you withdraw consent or it is determined your consent no longer exists.</p>
+						    <p>Sharing your information: we do not share your information with third parties.</p>
 						</div>
 						<br />
 						<hr />
@@ -197,7 +197,7 @@ export default class Privacy extends Component{
 							<h4>Who do we share your information with?</h4>
 							<p>As required by law, we may disclose information to government bodies and law enforcement agencies for their enforcement purposes. We will never share information other than for the purpose for which it was provided to us</p>
 							<p>For business improvement (evaluation) purposes, we may also share your data with Aptly Named Medias professional advisers, consultants and contracted suppliers working on Aptly Named Medias behalf who are subject to obligations of confidence.</p>
-							<p>We share your information on the site with people and accounts you share and communicate with. So that others may view your profile, business and/or event.</p>
+							<p>We share your information on the site with people and accounts you share and communicate with, so that others may view your profile, business and/or event.</p>
 							<p>Public listed profiles, events and business data are viewable by all</p>
 							<p>Messages sent to individuals are only viewable by the individual sending the messag, the intended recipient of the message and any authorised individual within Aptly Named Media</p>
 							<p>We do not take responsibility for private information accessed due to users not signing out of public or private computers and advise all users to employ safe and secure procedures during use of our site</p>
@@ -224,8 +224,8 @@ export default class Privacy extends Component{
 							
 							<p>Please note that we cannot delete your information where:</p>
 						    <ul>
-						    	<li>we’re required to have it by law</li>
-						    	<li>it is necessary for legal claims</li>
+						    	<li>We’re required to have it by law</li>
+						    	<li>It is necessary for legal claims</li>
 						    </ul>
 
 						    <h4>The right to have your data restricted or blocked from processing</h4>
@@ -246,7 +246,7 @@ export default class Privacy extends Component{
 						<hr />
 
 						<h4>Contacting us</h4>
-						<p>you have any specific data protection queries or concerns, you can address it to Aptly Named Medias Data Protection Officer at ############</p>	
+						<p>you have any specific data protection queries or concerns, you can address it to Aptly Named Medias Data Protection Officer at aptlynamedmedia@gmail.com</p>	
 						<br />
 						<hr />
 

@@ -168,14 +168,14 @@ export default class SearchForPeople extends Component{
 			    <div className="container">
 			        <section className="content-wrapper">
 
-			        	<div className="box  greyedContent">
+			        	<div className="box greyedContent">
 					   		<Link to="/Community">&lt; Back</Link>
 					    </div>
 
 		               	<div className="row">
 
 	                		<div className="col-sm-3 hidden-xs">
-		                		<div className="box sidebar-box">
+		                		<div className="box sidebar-box greyedContent">
 					   
 				                	<h2>Find people</h2>
 				                    <p>Find people near you!</p>

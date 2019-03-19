@@ -192,7 +192,7 @@ class AddBlog extends Component{
     	});
 		_enable();
 
-		this.props.history.push('/MyBlogList');
+		this.props.history.push('/MyBlogs');
 	}
 
 

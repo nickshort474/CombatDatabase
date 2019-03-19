@@ -12,17 +12,17 @@ class PersonComp extends Component{
 	render(){
 		
 		return(
-			<div className="row text-center box personComp">
+			<div className="row text-center personComp">
 				<section className="col-xs-6 text-center">
 					
 						
 						<Link to={`/PersonProfile/${this.props.uid}/${this.props.userName}`}>
-							<div>
+							
 								
-								<h4>{this.props.userName} </h4>
+							<h4>{this.props.userName} </h4>
 								
 																										
-							</div>
+							
 						</Link>	
 						
 												
@@ -48,7 +48,7 @@ class PersonComp extends Component{
 					</div>
 						
 				</section>
-				<hr />
+				
 			</div>
 
 		)

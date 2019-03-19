@@ -22,7 +22,7 @@ export default class SingleEventComp extends Component{
 								<div className="col-sm-8 msgCompStyle">
 									<div className="row">
 										<div className="col-xs-7">
-											<h2>{this.props.name}</h2>
+											<h3>{this.props.name}</h3>
 										</div>
 										<div className="col-xs-5">
 											<ProcessEpochDisplay date={this.props.date} hoursWanted={true} />

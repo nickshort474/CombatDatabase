@@ -4,7 +4,7 @@ import {firebase} from '@firebase/app';
 
 import TextArea from '../../utils/TextArea'
 import {_compressImage} from '../../utils/CompressImage';
-import {_disable} from '../../utils/DisableGreyOut';
+import {_enable,_disable} from '../../utils/DisableGreyOut';
 
 import store from '../../redux/store';
 import constants from '../../redux/constants';
@@ -196,7 +196,7 @@ import $ from 'jquery';
 
 					if(this.imageUploadCounter === this.imgArray.length && this.paraUploadCounter === this.paraArray.length){
 						// All content has been uploaded can route back to display
-
+						_enable();
 						this.props.history.push("/MyBlogPostList/" + this.userUID + "/" + this.props.match.params.BlogName);
 					}
 				});
@@ -231,7 +231,7 @@ import $ from 'jquery';
 
 						if(this.imageUploadCounter === this.imgArray.length && this.paraUploadCounter === this.paraArray.length){
 							// All content has been uploaded can route back to display
-
+							_enable();
 							this.props.history.push("/MyBlogPostList/" + this.userUID + "/" + this.props.match.params.BlogName);
 						}
 

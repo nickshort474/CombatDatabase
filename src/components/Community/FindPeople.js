@@ -73,7 +73,7 @@ class FindPeople extends Component{
 		               	<div className="row">
 
 	                		<div className="col-sm-3 hidden-xs">
-		                		<div className="box sidebar-box">
+		                		<div className="box sidebar-box greyedContent">
 					   
 				                	<h2>Find people</h2>
 				                    <p>Find people near you!</p>

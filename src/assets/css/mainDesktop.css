@@ -396,6 +396,7 @@ header.navbar .navbar-buttons .navbar-icon {
 	font-size:20px;
 }
 
+
 /*------------------------------
 	FOOTER
 ------------------------------*/
@@ -1526,7 +1527,13 @@ select{
 }
 
 .personComp{
-	background-image:linear-gradient(grey,black,black,black,grey);
+	margin-bottom:-10px;
+	padding:-10px;
+
+}
+
+.ruleLessMargin{
+	margin:10px;
 }
 
 /* React-datetime */

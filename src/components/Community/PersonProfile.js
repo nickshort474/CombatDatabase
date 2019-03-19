@@ -22,6 +22,7 @@ class PersonProfile extends Component{
 			age:" ",
 			friends:[],
 			requestSent:false,
+			data:false
 			
 		}
 				
@@ -44,17 +45,16 @@ class PersonProfile extends Component{
 				this.userExists = true;
 				this._getUserInfo();
 				this._getProfileImage();
+				this.setState({data:true});
 			}else{
 				//else inform user "this account is no longer active"
 				//show delete contact button instead of profile
 				//onDelete delete this users reference within - ("People").doc(this.userUID).collection("ContactList").doc(this.props.match.params.PersonKey).delete() 
+				this.setState({data:false});
 				this.userExists = false
 
 			}
 		})
-		
-		 
-		
 		
 	}
 
@@ -150,7 +150,9 @@ class PersonProfile extends Component{
 			buttonToShow = <p>Contact Request Pending</p>
 		}
 		
-		
+		if(!this.state.data){
+			return <div />
+		}
 
 		
 

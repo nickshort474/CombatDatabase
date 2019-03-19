@@ -27,6 +27,8 @@ class SignIn extends Component{
 
 		//store reference to page for rediret after signin
 		store.dispatch({type:constants.SAVE_PAGE, page:"Community"});
+
+		
 	}
 		
 	render(){
@@ -61,7 +63,8 @@ class Community extends Component{
 
 		this.state = {
 			items:[],
-			requestList:[]
+			requestList:[],
+			data:false
 		}
 
 		
@@ -93,10 +96,12 @@ class Community extends Component{
 			snapshot.forEach( (snap)=> {
 				//items.push(element.data());
 				items.push(snap.data());
+
 			});
 		
 			this.setState({
-				items:items
+				items:items,
+				data:true
 			})
 		})
 		
@@ -191,7 +196,7 @@ class Community extends Component{
 
 		
 		contactList = this.state.items.map((contact,index)=>{
-			return <PersonComp userName={contact.userName} uid={contact.userUID} haveReplied={contact.haveReplied} key={index} />
+			return <div key={index}><PersonComp userName={contact.userName} uid={contact.userUID} haveReplied={contact.haveReplied}  /><hr className="ruleLessMargin"/></div>
 		})
 		
 		
@@ -208,6 +213,9 @@ class Community extends Component{
 					</div>
 		})
 		
+		if(!this.state.data){
+			return <div />
+		}
 
 		return(
 
@@ -226,6 +234,7 @@ class Community extends Component{
 					<div className="box text-center greyedContent">
 						
 						<h3>Your Community</h3>
+						<hr className="ruleLessMargin"/>
 						<div>
 							{requests}
 						</div>
