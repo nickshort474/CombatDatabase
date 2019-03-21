@@ -1,35 +1,109 @@
 import React, {Component} from 'react';
 import store from '../../redux/store';
-import constants from '../../redux/constants';
 import {withRouter} from 'react-router';
 import LocalStorage from '../../utils/LocalStorage';
+
+import $ from 'jquery';
 
 class ReportContent extends Component{
 	
 	constructor(){
 		super();
 
-		store.dispatch({type:constants.SAVE_PAGE, page:"/Report"});
-
+		this.prevPageVisited = store.getState().page
+		
+		
+		
 		//if user is signed in get their uid to submit with form
 		this.userUID = LocalStorage.loadState('user');
+		
+		this.state = {
+			errors:[],
+			name:"",
+			report:"",
+			email:""
+		}
 	}
 	componentWillMount(){
 		window.scrollTo(0, 0);
 	}
 
-	componentDidMount(){
+	
 
-
-		let form = document.getElementById("form");
-		form.addEventListener("submit",(e) => {
-
-			this.props.history.push('/Response');
-
-		});
+	_onChange(e){
+		this.setState({
+			[e.target.name]:e.target.value
+		})
+		$(`#${e.target.id}`).removeClass('formError');
 	}
 
+	_onSubmit(){
+		let errorMsgs = this._validate();
+		
+		if(errorMsgs.length > 0){
+			let msgComp = errorMsgs.map((msg,index)=>{
+				return <div className="text-center" key={index}><p>{msg}</p></div>
+			})
+
+			let formattedComp = <div className="box">{msgComp}</div>
+			
+			this.setState({
+				errors:formattedComp
+			})
+		
+		}else{
+			var submit = $("#submit");
+	    	submit.click();
+
+			let form = document.getElementById("form");
+			form.addEventListener("submit",(e) => {
+				console.log("submitting?")
+				
+				this.props.history.push('/Response');
+			
+			});
+		}
+	}
+
+
+	_validate(){
 	
+		let name = $('#name').val();
+		let report = $('#report').val();
+		let email = $('#email').val();
+		
+		//store error messages in array
+		const errorMsgs = [];
+
+		if (name.length < 1) {
+		   errorMsgs.push("Please provide a name");
+		   $('#name').addClass('formError');
+		}
+
+		
+		if (report.length < 1) {
+		   errorMsgs.push("Please provide a report");
+		   $('#report').addClass('formError');
+		}
+
+		if(!this._isValidEmail(email)){
+			errorMsgs.push("Please provide a valid email");
+		    $('#email').addClass('formError');
+		}
+	
+  		return errorMsgs;
+	}
+
+	_isValidEmail(email){
+		// eslint-disable-next-line
+		if(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email) ){
+			return true
+		}else{
+			$('#email').removeClass('formError');
+			return false
+		}
+
+	}
 	
 	render(){
 		return(
@@ -41,7 +115,7 @@ class ReportContent extends Component{
 							
 							<div>
 								<p>Please complete this report form and we will investigate the issue.</p>
-								<p>All the fields marked with an asterisk (*) are mandatory. Please leave as much information about the issue as possible.</p>
+								<p>All the fields marked with an asterisk (*) are mandatory. Please leave as much information about the issue as possible, if you click the report button at the bottom of the page which has the content needing review, a reference to the page will be sent with your report.</p>
 							</div>
 						
 							<iframe name="votar" style={{display:"none"}} title="report form" ></iframe>
@@ -49,22 +123,27 @@ class ReportContent extends Component{
 							<form method="POST" id="form" action="report_email.php" target="votar">
 								<div className="form-group">
 								      <label htmlFor="name">* First Name:</label>
-								      <input type="text" className="form-control" id="name" name="name" />
+								      <input type="text" className="form-control" value={this.state.name} onChange={this._onChange.bind(this)} id="name" name="name" />
 								</div>
 								<div className="form-group">
 								    <label htmlFor="report">* Report:</label>
-								    <textarea className="form-control" id="report" name="report" rows="3"></textarea>
+								    <textarea className="form-control" id="report" value={this.state.report} onChange={this._onChange.bind(this)} name="report" rows="3"></textarea>
 								</div>
 								<div className="form-group">
 								    <label htmlFor="email">* Email address:</label>
-								    <input type="email" className="form-control" id="email" name="email" placeholder="name@example.com" />
+								    <input type="email" className="form-control" id="email" value={this.state.email} onChange={this._onChange.bind(this)} name="email" placeholder="name@example.com" />
 								</div>
+								
+
 								<input type="hidden" className="form-control" id="uid" name="uid" value={this.userUID}/>
-								<button className="btn btn-primary">
-									<i className="fa fa-paper-plane"></i>&nbsp;Send
-								</button>
+								<input type="hidden" className="form-control" id="page" name="page" value={this.prevPageVisited}/>
+								<input type="submit"  id="submit" style={{display:"none"}}  />
 								
 							</form>
+							<button className="btn btn-primary" onClick={this._onSubmit.bind(this)}>
+								<i className="fa fa-paper-plane"></i>&nbsp;Send
+							</button>
+							{this.state.errors}
 						</div>
 					</div>
 				</div>

@@ -1536,6 +1536,14 @@ select{
 	margin:10px;
 }
 
+
+.footerReport{
+	color:red;
+	margin-left:15px;
+}
+
+
+
 /* React-datetime */
 
 .rdt {

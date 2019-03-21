@@ -92,11 +92,11 @@ class Community extends Component{
 		let items = [];
 			
 		this.snapshotListener = ref.onSnapshot((snapshot)=>{
-		
+		console.log("const");
 			snapshot.forEach( (snap)=> {
 				//items.push(element.data());
 				items.push(snap.data());
-
+				console.log("get people")
 			});
 		
 			this.setState({
@@ -112,12 +112,13 @@ class Community extends Component{
 
 
 	_getContactRequests(){
+
 		let ref = this.firestore.collection("People").doc(this.userUID).collection("ContactRequests");
 
 		let requestList = [];
 
 		ref.get().then((snapshot)=>{
-			
+			console.log("get contatc")
 			if(snapshot){
 				snapshot.forEach((snap)=>{
 					requestList.push(snap.data())

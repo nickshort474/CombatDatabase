@@ -7,13 +7,14 @@ class Response extends Component{
 		return(
 			<div className="container"> 
 				<div className="content-wrapper text-center">
-					<h2>Thank you</h2>
-					
-					<div>
-						<p>Thank you for your enquiry/complaint, we will aim to respond as soon as possible</p>
+					<div className="box">
+						<h3>Thank you</h3>
 						
+						<div>
+							<p>Thank you for your enquiry, we will aim to respond as soon as possible.</p>
+							
+						</div>
 					</div>
-				
 					
 					
 				</div>
