@@ -46,14 +46,17 @@ export default class ViewBlogs extends Component{
 			let ref = this.firestore.collection("Users").doc(this.userUID).collection("BlogFollowing");
 			ref.get().then((snapshot)=>{
 				snapshot.forEach((snap)=>{
-					followingArray.push(snap.data().BlogName);
+					followingArray.push(snap.data().blogName);
 				})
 			}).then(()=>{
-				followingArray.forEach((item)=>{
+				
+				followingArray.forEach((item) => {
+					
+					let blogName = item;
 					// loop thorugh returned blogNames to gather data from BlogName firestore section
 					let ref = this.firestore.collection("BlogNames");
 					
-					let query = ref.where("name", "==" , item);
+					let query = ref.where("name", "==" , blogName);
 					
 					query.get().then((snapshot)=>{
 						snapshot.forEach((snap)=>{

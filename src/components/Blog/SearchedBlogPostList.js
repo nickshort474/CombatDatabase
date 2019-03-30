@@ -175,7 +175,7 @@ export default class SearchedBlogPostList extends Component{
 					
 						<div className="col-sm-12">
 							<div className="box">
-								<h2 className="text-center">{this.props.match.params.BlogName} </h2>
+								<h3 className="text-center">{this.props.match.params.BlogName} </h3>
 								{showFollowButton}
 								<div>
 									{content}

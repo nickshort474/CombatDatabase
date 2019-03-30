@@ -19,7 +19,7 @@ export default class BlogPostList extends Component{
 
 		this.state = {
 			postArray:[],
-			showFollow:"hide"
+			showFollow:"show"
 			
 		}
 
@@ -38,9 +38,11 @@ export default class BlogPostList extends Component{
 		
 		//check if signed in
 		if(this.userUID){
-			//check if blog being viewed is not  own blog.
-			if(!this.userUID === this.props.match.params.BlogUser){
-				//if not own blog check whether user is already following blog
+			
+			//check if blog being viewed is not own blog.
+			if(this.userUID !== this.props.match.params.BlogUser){
+				
+				//if not own blog check whether user is already following this blog
 				this._checkIfFollowing();
 			}
 			
@@ -78,7 +80,7 @@ export default class BlogPostList extends Component{
 
 	_checkIfFollowing(){
 		
-		//
+		console.log(this.props.match.params.BlogName)
 		let showFollow = "show";	
 			
 		let ref = this.firestore.collection("Users").doc(this.userUID).collection("BlogFollowing");
@@ -88,8 +90,9 @@ export default class BlogPostList extends Component{
 			snapshot.forEach((snap)=>{
 				
 				//if one of the blog names in BlogFollowed list matches this blog name, already following				
-				if(snap.data().BlogName === this.props.match.params.BlogName){
+				if(snap.data().blogName === this.props.match.params.BlogName){
 					// set local let to hide
+					console.log("already following");
 					showFollow = "hide";						
 				}
 			})
@@ -98,6 +101,7 @@ export default class BlogPostList extends Component{
 			this.setState({
 				showFollow:showFollow
 			})
+			console.log(this.state.showFollow)
 		})
 		
 	}
@@ -157,7 +161,8 @@ export default class BlogPostList extends Component{
 		}else if(this.state.showFollow === "hide"){
 			showFollowButton = <p></p>
 		}
-
+		
+		
 		return(
 			<div className="container">
 				
@@ -176,11 +181,11 @@ export default class BlogPostList extends Component{
 						<div className="col-sm-12">
 							<div className="box">
 								<h2 className="text-center">{this.props.match.params.BlogName} </h2>
-								{showFollowButton}
+								
 								<div>
 									{content}
 								</div>
-								
+								<div className="text-center">{showFollowButton}</div>
 							</div>
 						</div>
 												

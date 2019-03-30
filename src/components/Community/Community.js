@@ -118,7 +118,7 @@ class Community extends Component{
 		let requestList = [];
 
 		ref.get().then((snapshot)=>{
-			console.log("get contatc")
+			console.log("get contact")
 			if(snapshot){
 				snapshot.forEach((snap)=>{
 					requestList.push(snap.data())

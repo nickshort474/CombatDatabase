@@ -7,7 +7,7 @@ export default class EditHistory extends Component{
 	constructor(){
 		super();
 
-		//let ref = firebase.database().ref("WikiHistory/");
+		
 		this.state={
 			items:[]
 		}
