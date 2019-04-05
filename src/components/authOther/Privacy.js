@@ -38,7 +38,7 @@ export default class Privacy extends Component{
 							<h4>Who we are</h4>
 							<p>CombatDatabase.co.uk is delivered by Aptly Named Media &copy; we are committed to protecting the privacy of all personal information obtained from you during any visits to the combatdatabase.co.uk website.</p>
 							<p>This Privacy Policy sets out the basis on which any personal data we collect from you, or that you choose to provide to us, in connection with the combatdatabase.co.uk website (this “Website”) will be processed.</p>
-							<p>This Website is operated by Aptly Named Media. Aptly Named Media is also the data controller (ICO Registration number: ##########) for combatdatabase.co.uk</p>
+							<p>This Website is operated by Aptly Named Media. Aptly Named Media is also the data controller (ICO Registration number:00011603683) for combatdatabase.co.uk</p>
 						</div>
 						<br />
 						<hr />
@@ -240,7 +240,7 @@ export default class Privacy extends Component{
 							<h4>The right to object to processing of your personal data</h4>
 							<p>Processing is the term under data protection law that describes all uses of your personal data. This will include the collection, sharing, storage, retention and destruction of your data.</p>
 							<p>You have the right to object any aspect of our processing of your personal data</p>
-							<p>If you would like to exercise your right of access in relation to information held on you by Apty Named Media, you can address it to Aptly Named Medias Data Protection Officer at ############</p>	
+							<p>If you would like to exercise your right of access in relation to information held on you by Apty Named Media, you can address it to Aptly Named Medias Data Protection Officer at aptlynamedmedia@gmail.com</p>	
 						</div>
 						<br />
 						<hr />

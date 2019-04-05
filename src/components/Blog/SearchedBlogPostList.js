@@ -33,7 +33,7 @@ export default class SearchedBlogPostList extends Component{
 	componentWillMount() {
 		window.scrollTo(0, 0);
 		
-		store.dispatch({type:constants.SAVE_PREV_PAGE, prevPage:`/SearchedBlogPostList/${this.props.match.params.BlogUser}/${this.props.match.params.BlogName}`});
+		store.dispatch({type:constants.SAVE_PREV_PAGE, prevPage:`/SearchedBlogPostList/${this.props.match.params.BlogUser}/${this.props.match.params.BlogName}/${this.props.match.params.SearchTerm}`});
 		this._getBlogInfo();
 		
 		//check if signed in
@@ -146,7 +146,7 @@ export default class SearchedBlogPostList extends Component{
 
 		let content = this.state.postArray.map((blog)=>{
 			
-			return <BlogPostComp postName={blog.postName} descr={blog.postIntro} blogName={this.props.match.params.BlogName}  blogUser={this.props.match.params.BlogUser} date={blog.date} firstImage={blog.firstImage}   key={blog.date} />
+			return <BlogPostComp postName={blog.postName} descr={blog.postIntro} blogName={this.props.match.params.BlogName}  blogUser={this.props.match.params.BlogUser} date={blog.date} imgData={blog.firstImage}   key={blog.date} />
 			
 		})
 

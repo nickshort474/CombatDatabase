@@ -121,9 +121,12 @@ class PersonProfile extends Component{
 	_getProfileImage(){
 		let ref = this.firestore.collection("PeopleImages").doc(this.props.match.params.PersonKey);
 		ref.get().then((snapshot)=>{
-			this.setState({
-				profilePic:snapshot.data().profilePicUrl
-			})
+			if(snapshot.data() !== undefined){
+				this.setState({
+					profilePic:snapshot.data().profilePicUrl
+				})
+			}
+			
 		})
 	}
 
@@ -181,7 +184,7 @@ class PersonProfile extends Component{
 								<div className="row">
 									<div className="col-xs-8">
 										<h2>{this.state.userName}</h2>
-										<p>Also known as: {this.state.firstName + " " + this.state.lastName}</p>
+										<p>{this.state.firstName ? "Also known as " +  this.state.firstName + " " + this.state.lastName : ""}</p>
 										
 									</div>
 									<div className="col-xs-4">
@@ -192,14 +195,14 @@ class PersonProfile extends Component{
 								<div className="row">
 									<p className="col-xs-2">Bio</p>
 									<div className="col-xs-10">
-										<p>{this.state.bio}</p>
+										<p>{this.state.bio ? this.state.bio : "No user data"}</p>
 									</div>
 								</div>
 								<hr />
 								<div className="row">
 									<p className="col-xs-2">Styles</p>
 									<div className="col-xs-10">
-										<p>{this.state.styles}</p>
+										<p>{this.state.styles ? this.state.styles : "No user data"}</p>
 									</div>
 								</div>
 								<hr />
@@ -208,7 +211,7 @@ class PersonProfile extends Component{
 								<div className="row">
 									<p className="col-xs-2">General Location</p>
 									<div className="col-xs-10">
-										<p>{this.state.location}</p>
+										<p>{this.state.location ? this.state.location : "No user data"}</p>
 									</div>
 								</div>
 								

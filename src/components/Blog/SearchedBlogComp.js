@@ -39,7 +39,7 @@ export default class SearchedBlogComp extends Component{
 							<p className="text-10"> {this.userUID === this.props.blogUser ? <span>Your blog</span> : <span>{this.state.username}</span>}</p> 
 						</div>
 						<div className="col-sm-4">
-							<img src={this.props.logo ? this.props.logo : defaultLogo} className="thumbnail" alt="Blog logo" width="100%" />
+							<img src={this.props.blogLogo ? this.props.blogLogo : defaultLogo} className="thumbnail" alt="Blog logo" width="100%" />
 						</div>
 						
 					</Link>

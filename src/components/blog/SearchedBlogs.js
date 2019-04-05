@@ -61,7 +61,7 @@ export default class Searchedlogs extends Component{
 	render(){
 
 		let blogs = this.state.items.map((blog)=>{
-			return <SearchedBlogComp  type={blog.type} blogName={blog.name} description={blog.description} blogUser={blog.user} searchTerm={this.props.match.params.SearchTerm} key={blog.name} />
+			return <SearchedBlogComp  type={blog.type} blogName={blog.name} description={blog.description} blogUser={blog.user} blogLogo={blog.blogLogo} searchTerm={this.props.match.params.SearchTerm} key={blog.name} />
 		})
 
 		return(
@@ -77,7 +77,7 @@ export default class Searchedlogs extends Component{
 						
 						<div className="col-xs-12">
 							<div className="box">
-								<h2 className="text-center">Search Results for {this.state.value}:</h2>
+								<h3 className="text-center">Search results : {this.state.value}</h3>
 								
 								<div>
 									
