@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {firebase} from '@firebase/app';
  
-import {_handleDisable,_handleEnable} from '../../utils/HandleDisable';
+import {_disable,_enable} from '../../utils/DisableGreyOut';
 
 import store from '../../redux/store';
 import constants from '../../redux/constants';
@@ -114,7 +114,7 @@ export default class ProfilePic extends Component{
 
 	_submitForm(e){
 		e.preventDefault();
-		_handleDisable();
+		_disable();
 		//add image to storage
 		this._addImageToStorage((downloadURL)=>{
 			//add reference to image to People section in firestore
@@ -123,7 +123,7 @@ export default class ProfilePic extends Component{
 			let profileRef = this.firestore.collection("PeopleImages").doc(this.props.match.params.UserRef);
 
 			profileRef.set({profilePicUrl:downloadURL});
-			_handleEnable();
+			_enable();
 			this.props.history.push("/Profile");
 			
 		})

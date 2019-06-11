@@ -58,26 +58,34 @@ export default class MyBlogs extends Component{
 
 	_getMyBlogData(user){
 
+		//create blog names and items array
 		this.items = [];
 		this.blogNames = [];
 
+		//set initial firestore reference
 	    let firestore = firebase.firestore();
 
+	    //set reference to blogs in blog user list to gather blog names
 	    let ref = firestore.collection("BlogUserList").doc(this.user).collection("blogs");
 
 	    ref.get().then((snapshot)=>{
 
+	    	
 	    	snapshot.forEach((snap)=>{
 	    		
 
 	    		let blogRef = snap.data().blogName;
+
+	    		//for each blog name get blog info
 	    		let ref = firestore.collection("BlogNames").doc(blogRef);
 	    		
 	    		ref.get().then((snapshot)=>{
 	    			
+	    			//push blog data and blog name to arrays 
 	    			this.items.push(snapshot.data());
 	    			this.blogNames.push(snapshot.data().name)
 
+	    			//set arrays to state
 	    			this.setState({
 						items:this.items,
 						blogNames:this.blogNames
@@ -96,6 +104,7 @@ export default class MyBlogs extends Component{
 		
 		let num = 0;
 		
+		//loop thorugh array to display
 		let posts = this.state.items.map((blog) =>{
 			let blogName = this.state.blogNames[num];
 			num++;

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 import {firebase} from '@firebase/app';
-import {_handleDisable,_handleEnable} from '../../utils/HandleDisable';
+import {_disable,_enable} from '../../utils/DisableGreyOut';
 
 import LocalStorage from '../../utils/LocalStorage';
 
@@ -28,7 +28,7 @@ class ContactRequest extends Component{
 	_handleSubmit(e){
 		e.preventDefault()
 
-		_handleDisable();
+		_disable();
 
 		if(this.state.requestContent.length > 1){
 			let ref = this.firestore.collection("Users").doc(this.userUID);
@@ -54,7 +54,7 @@ class ContactRequest extends Component{
 			
 		}else{
 			alert("please add a short request statement, who you are, why you want to make contact etc..")
-			_handleEnable();
+			_enable();
 		}
 		//get user's username for making request
 		

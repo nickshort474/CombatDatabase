@@ -37,7 +37,9 @@ class PasswordForgetFormBase extends Component {
                 ...INITIAL_STATE 
             });
 
-            this.props.history.push('/Sign in')
+            this.setState({
+            	error:"Password reset email has been sent"
+            })
 
         }).catch(error => {
 

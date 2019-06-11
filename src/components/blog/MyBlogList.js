@@ -4,8 +4,6 @@ import {Link} from 'react-router-dom';
 
 import MyBlogComp from './MyBlogComp';
 
-/*import SideBarAdvert from '../../Components/SideBarAdvert';*/
-
 import store from '../../redux/store';
 import constants from '../../redux/constants';
 import LocalStorage from '../../utils/LocalStorage';
@@ -17,8 +15,10 @@ export default class MyBlogList extends Component{
 	constructor(){
 		super();
 		
+		//save referecne to current page to store
 		store.dispatch({type:constants.SAVE_PAGE, page:"MyBlogList"});
 
+		//set initial state
 		this.state = {
 			items:[],
 			blogNames:[],
@@ -30,15 +30,16 @@ export default class MyBlogList extends Component{
 	
 	componentWillMount() {
 
-		// scroll window back to start
+		// scroll window back to top
 		window.scrollTo(0, 0);
 
-		
+		//get current user from localstorage
 		this.user = LocalStorage.loadState("user");
 		
 		
-		// if user signed in gather blogs from firebase using UID
+		// if user signed in gather blog data from firestore using UID
 		if(this.user){
+			
 			this.setState({
 				user:this.user
 			}) 
@@ -58,26 +59,36 @@ export default class MyBlogList extends Component{
 
 	_getMyBlogData(user){
 
+		//create blog and blog name arrays
 		this.items = [];
 		this.blogNames = [];
 
+		//set initial firesore reference
 	    let firestore = firebase.firestore();
 
+	    //set reference to this users blogs
 	    let ref = firestore.collection("BlogUserList").doc(this.user).collection("blogs");
 
+	    //get blog data from firestore
 	    ref.get().then((snapshot)=>{
 
 	    	snapshot.forEach((snap)=>{
 	    		
-
+	    		//get blog names from returned blog data
 	    		let blogRef = snap.data().blogName;
+
+	    		//use blog names to get data for each blog
 	    		let ref = firestore.collection("BlogNames").doc(blogRef);
 	    		
 	    		ref.get().then((snapshot)=>{
 	    			
+	    			//push data to array
 	    			this.items.push(snapshot.data());
+
+	    			//push blog name to array
 	    			this.blogNames.push(snapshot.data().name)
 
+	    			//set arrays to state
 	    			this.setState({
 						items:this.items,
 						blogNames:this.blogNames
@@ -96,6 +107,7 @@ export default class MyBlogList extends Component{
 		
 		let num = 0;
 		
+		//loop through array to display
 		let posts = this.state.items.map((blog) =>{
 			let blogName = this.state.blogNames[num];
 			num++;

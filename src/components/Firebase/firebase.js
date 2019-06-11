@@ -53,14 +53,6 @@ class Firebase {
     doDeleteUser = () =>  this.auth.currentUser.delete();
    
 
-    /*doDeletePasswordAccount = (email,password) => {
-        
-        const credentials = this.auth.EmailAuthProvider.credential(email,password);
-        
-        this.auth.currentUser.reauthenticateAndRetrieveDataWithCredential(credentials).then(()=>{
-            this.auth.currentUser.delete();
-        })
-    };*/
 
     
 }

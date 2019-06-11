@@ -10,6 +10,7 @@ export default class BlogCommentComp extends Component{
 	constructor(props){
 		super(props);
 
+		//set initial state
 		this.state = {
 			replyArray:[],
 			showHideText:"Show",
@@ -18,7 +19,10 @@ export default class BlogCommentComp extends Component{
 			replyText:""
 		}
 
+		//set reference to firestore
 		this.firestore = firebase.firestore();
+
+		//get user from localStorage
 		this.userUID = LocalStorage.loadState("user");
 
 		//get users username ready for comments or replies
@@ -45,8 +49,10 @@ export default class BlogCommentComp extends Component{
 	_getCommentReplies(){
 
 		
-		
+		//get comment replies from firestore
 		let ref = this.firestore.collection("BlogComments").doc(this.props.userUID).collection(this.props.blogName).doc(this.props.postKey).collection("Comments").doc(this.props.commentKey).collection("Replies");
+		
+		//order returned data
 		let query = ref.orderBy("timePosted", "asc");
 		
 		this.snapshot = query.onSnapshot((snapshot)=>{
@@ -54,11 +60,13 @@ export default class BlogCommentComp extends Component{
 			let replyNum = 0;
 			let replyArray = [];
 
+			//add returned data to replyArray
 			snapshot.forEach((snap)=>{
 				replyNum++;
 				replyArray.push(snap.data())
 			})
 
+			//set state
 			this.setState({
 				replyArray:replyArray,
 				replyNum:replyNum
@@ -85,6 +93,7 @@ export default class BlogCommentComp extends Component{
 	}
  
 	_handleReplytext(e){
+		//set state for reply text
 		this.setState({
 			replyText:e.target.value
 		})
@@ -107,8 +116,10 @@ export default class BlogCommentComp extends Component{
 
 	_cancelReply(e){
 		
+		//get id of cancel reply button
 		let id = String(e.target.id).slice(11);
 		
+		//hide reply buttons
 		this._hideReplyElements(id);
 
 	}
@@ -116,14 +127,17 @@ export default class BlogCommentComp extends Component{
 
 	_onCommentReply(e){
 		
+		//get id of reply button
 		let id = String(e.target.id).slice(9);
 		
-
+		//use id to get value of reply text
 		let replyText = document.getElementById(`replyText${id}`).value;
-				
+		
+		//set reference to replies in blog comments		
 		let ref = this.firestore.collection("BlogComments").doc(this.props.userUID).collection(this.props.blogName).doc(this.props.postKey).collection("Comments").doc(this.props.commentKey).collection("Replies");
 		let now = Date.now();		
 		
+		//create reply object
 		let obj = {
 			text:replyText,
 			user:this.userUID,
@@ -131,9 +145,13 @@ export default class BlogCommentComp extends Component{
 			timePosted:now
 		}
 
+		//add reply object to firestore
 		ref.add(obj);
+
+		//hide reply elements
 		this._hideReplyElements(id);
 
+		//set state redy for new reply
 		this.setState({
 			showHideText:"Hide",
 			showHideLet:"Show",
@@ -144,14 +162,14 @@ export default class BlogCommentComp extends Component{
 	_showHideReplies(){
 
 		
-
+		//hide replies to comment
 		if(this.state.showHideLet === "Hide"){
 			this.setState({
 				showHideText:"Hide",
 				showHideLet:"Show",
 				
 			})
-
+		//show replies
 		}else{
 			this.setState({
 				showHideText:"Show",
@@ -166,7 +184,7 @@ export default class BlogCommentComp extends Component{
 
 		let replies = [];
 		
-
+		//loop through reply array to display replies for this comment
 		replies = this.state.replyArray.map((reply, index)=>{
 			
 			return <BlogCommentReplyComp text={reply.text} time={reply.timePosted} username={reply.username} index={index} key={index} />

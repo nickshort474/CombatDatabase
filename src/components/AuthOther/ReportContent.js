@@ -17,6 +17,7 @@ class ReportContent extends Component{
 		//if user is signed in get their uid to submit with form
 		this.userUID = LocalStorage.loadState('user');
 		
+		//set initial state
 		this.state = {
 			errors:[],
 			name:"",
@@ -25,22 +26,30 @@ class ReportContent extends Component{
 		}
 	}
 	componentWillMount(){
+		//scroll window back to top
 		window.scrollTo(0, 0);
 	}
 
 	
 
 	_onChange(e){
+
+		//set value for input fields
 		this.setState({
 			[e.target.name]:e.target.value
 		})
+		//remove error indocator for input field if new data entered
 		$(`#${e.target.id}`).removeClass('formError');
 	}
 
 	_onSubmit(){
+
+		//catch errors from validate function
 		let errorMsgs = this._validate();
 		
+		//test for errors
 		if(errorMsgs.length > 0){
+			//create msgComp from errors
 			let msgComp = errorMsgs.map((msg,index)=>{
 				return <div className="text-center" key={index}><p>{msg}</p></div>
 			})
@@ -52,13 +61,14 @@ class ReportContent extends Component{
 			})
 		
 		}else{
+
+			//submit form if no errors
 			var submit = $("#submit");
 	    	submit.click();
 
 			let form = document.getElementById("form");
 			form.addEventListener("submit",(e) => {
-				console.log("submitting?")
-				
+				//redirect to response page				
 				this.props.history.push('/Response');
 			
 			});
@@ -67,7 +77,8 @@ class ReportContent extends Component{
 
 
 	_validate(){
-	
+		
+		//gather input field values
 		let name = $('#name').val();
 		let report = $('#report').val();
 		let email = $('#email').val();
@@ -75,12 +86,12 @@ class ReportContent extends Component{
 		//store error messages in array
 		const errorMsgs = [];
 
+		//test each field
 		if (name.length < 1) {
 		   errorMsgs.push("Please provide a name");
 		   $('#name').addClass('formError');
 		}
 
-		
 		if (report.length < 1) {
 		   errorMsgs.push("Please provide a report");
 		   $('#report').addClass('formError');
@@ -95,6 +106,7 @@ class ReportContent extends Component{
 	}
 
 	_isValidEmail(email){
+		//test for valid email
 		// eslint-disable-next-line
 		if(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email) ){
 			return true

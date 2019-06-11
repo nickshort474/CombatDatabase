@@ -4,8 +4,6 @@ import {Link} from 'react-router-dom';
 
 import Map from '../../utils/Map';
 
-/*import MapContainer from '../../utils/MapComponent2';*/
-
 import Geosuggest from 'react-geosuggest';
 
 import constants from '../../redux/constants';

@@ -92,11 +92,11 @@ class Community extends Component{
 		let items = [];
 			
 		this.snapshotListener = ref.onSnapshot((snapshot)=>{
-		console.log("const");
+		
 			snapshot.forEach( (snap)=> {
-				//items.push(element.data());
+				
 				items.push(snap.data());
-				console.log("get people")
+				
 			});
 		
 			this.setState({

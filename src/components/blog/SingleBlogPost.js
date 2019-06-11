@@ -14,12 +14,14 @@ export default class SingleBlogPost extends Component{
 	constructor(){
 		super();
 
+		//set style
 		this.style = {
 			height:"100%",
 			width:"100%",
 			display:"block",
 		}
 
+		//set initial state
 		this.state = {
 			blogPara:[],
 			comments:[],
@@ -28,16 +30,23 @@ export default class SingleBlogPost extends Component{
 
 		}
 		
+		//set intial referecne to firestore
 		this.firestore = firebase.firestore();
+
+		//get user id from localstorage
 		this.userUID = LocalStorage.loadState("user");
+
+		//gert previous page from store
 		this.prevPage = store.getState().prevPage;
 		
 	}
 	
 	componentWillMount() {
+
+		//scroll to top
 		window.scrollTo(0, 0);
 		
-		//get this blog users username
+		//get this blog users username from firestore
 		let firestore = firebase.firestore();
 		let ref = firestore.collection("Users").doc(this.props.match.params.BlogUser);
 		ref.get().then((snapshot)=>{
@@ -47,7 +56,7 @@ export default class SingleBlogPost extends Component{
 			})
 		})
 
-		//get users username ready for comments or replies
+		//get viewing users username ready for comments or replies
 		if(this.userUID){
 			let usernameRef = this.firestore.collection("Users").doc(this.userUID);
 			usernameRef.get().then((snapshot)=>{
@@ -58,7 +67,10 @@ export default class SingleBlogPost extends Component{
 			this.signedIn = false
 		}
 		
+		//gather blog info
 		this._getBlogInfo();
+
+		//gather comments
 		this._getComments();
 	}
 
@@ -71,17 +83,23 @@ export default class SingleBlogPost extends Component{
 
 	_getBlogInfo(){
 		
-	    
+	    //set reference to blog data
 	    let ref = this.firestore.collection("Blogs").doc(this.props.match.params.BlogUser).collection(this.props.match.params.BlogName).doc(this.props.match.params.PostKey).collection("contentBlocks").orderBy("time");
-	    let dataArray = [];
 	    
+	    //create empty array
+	    let dataArray = [];
+
+	    //get blog data from  firestore	
 	    ref.get().then((snapshot)=>{
 	    	
 	    	snapshot.forEach((element)=>{
+
+	    		//push data to array
 	    		dataArray.push(element.data())
 	    		
 	    	})
 
+	    	//save array to state
 	    	this.setState({
 	    		blogPara:dataArray
 	    	})
@@ -90,18 +108,26 @@ export default class SingleBlogPost extends Component{
 
 	_getComments(){
 
-		
+		//set reference to comments in firestore
 		let ref = this.firestore.collection("BlogComments").doc(this.props.match.params.BlogUser).collection(this.props.match.params.BlogName).doc(this.props.match.params.PostKey).collection("Comments");
+
+		//order comments by time
 		let query = ref.orderBy("timePosted", "asc")
+
+		//get comments use onsnapshot so as comments are added they immediately display
 		this.snapshot = query.onSnapshot((snapshot)=>{
+
+			//create empty arrays
 			let commentArray = [];
 			let commentKeyArray = [];
 
+			//loop thoprugh snapshot to get comments and their keys
 			snapshot.forEach((snap)=>{
 				commentArray.push(snap.data());
 				commentKeyArray.push(snap.id)
 			})
 			
+			//save arrays to state
 			this.setState({
 				comments:commentArray,
 				commentKeys:commentKeyArray
@@ -114,6 +140,8 @@ export default class SingleBlogPost extends Component{
 	
 
 	_commentText(e){
+
+		//save comment text to state for display
 		this.setState({
 			[e.target.id]:e.target.value
 		})
@@ -121,29 +149,38 @@ export default class SingleBlogPost extends Component{
 
 	_postComment(){
 		
+		//get comment text from state
 		let commentText = this.state.commentText;
 		
+		//clear comment text from state
 		this.setState({
 			commentText:""
 		});
 
+		//test for 4 character minimum for comment
 		if(commentText.length >= 4){
-				
+			
+			//set date	
 			let now = Date.now();
+
+			//set referecne to comments section in firestore
 			let ref = this.firestore.collection("BlogComments").doc(this.props.match.params.BlogUser).collection(this.props.match.params.BlogName).doc(this.props.match.params.PostKey).collection("Comments");
 			
+			//create comment object
 			let obj = {
 				text:commentText,
 				user:this.userUID,
 				username:this.username,
 				timePosted:now
 			}
+
+			//add comment Object to firestore
 			ref.add(obj);
 			
 			
 		}else{
+			//alert user aboput 4 character minimum
 			alert("There is a four character minimum for comments")
-			
 		}	
 
 		
@@ -156,7 +193,7 @@ export default class SingleBlogPost extends Component{
 		let content, comments;
 		
 		
-
+		//loop through blog data to display
 		content = this.state.blogPara.map((con)=>{
 			
 			if(con.type === "img"){
@@ -173,6 +210,7 @@ export default class SingleBlogPost extends Component{
 			
 		})
 
+		//loop through comment data to display
 		comments = this.state.comments.map((comment,index)=>{
 			
 			return <BlogCommentComp commentKey={this.state.commentKeys[index]} index={index} text={comment.text}  userUID={this.props.match.params.BlogUser} blogName={this.props.match.params.BlogName} postKey={this.props.match.params.PostKey} username={comment.username} timePosted={comment.timePosted} key={index} />
@@ -185,8 +223,7 @@ export default class SingleBlogPost extends Component{
 				<section className="content-wrapper">
 					
 					<div className="box greyedContent">
-						
-						   		{/*<span className="col-xs-6"><Link to={`/BlogPostList/${this.props.match.params.BlogUser}/${this.props.match.params.BlogName}`}>&#60; Back</Link></span>*/}
+						   		
 						<Link to={this.prevPage}>&#60; Back</Link>
 						   		
 						 

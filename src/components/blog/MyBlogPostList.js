@@ -13,18 +13,21 @@ export default class MyBlogPostList extends Component{
 	constructor(){
 		super();
 		
-
+		//set initial state
 		this.state = {
 			postArray:[]
-			
 		}
-
 		
 	}
 	
 	componentWillMount() {
+		//scroll to top
 		window.scrollTo(0, 0);
+
+		//save reference to current page to store for later navigation
 		store.dispatch({type:constants.SAVE_PREV_PAGE, prevPage:`/MyBlogPostList/${this.props.match.params.BlogUser}/${this.props.match.params.BlogName}`});
+		
+		//get blog post list
 		this._getBlogInfo();
 		    
 	}
@@ -33,20 +36,25 @@ export default class MyBlogPostList extends Component{
 
 	_getBlogInfo(){
 		
+		//set initial referecne to firestore
 		let firestore = firebase.firestore();
 			
+		//set reference to blog post list	
 		let ref = firestore.collection("BlogPostList").doc(this.props.match.params.BlogUser).collection(this.props.match.params.BlogName);
 
+		//create post array
 		let postArray = [];
 
 		ref.get().then((snapshot)=>{
 		
 			snapshot.forEach((element)=>{
 				
+				//push to post array
 				postArray.push(element.data());
 
 			})
 
+			//set array to state
 			this.setState({
 				postArray:postArray
 			});
@@ -61,6 +69,7 @@ export default class MyBlogPostList extends Component{
 
 	render(){
 
+		//loop through post array to display
 		let content = this.state.postArray.map((blog,index)=>{
 			
 			return <BlogPostComp postName={blog.postName} descr={blog.postIntro} blogName={this.props.match.params.BlogName} blogUser={this.props.match.params.BlogUser} imgData={blog.firstImage} date={blog.date} key={index} />

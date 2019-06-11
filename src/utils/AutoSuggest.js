@@ -29,22 +29,18 @@ export default class AutoSuggest extends Component{
 		}
 		
 		
-		/*return inputLength === 0 ? [] : this.props.list.filter(lang => lang.word.toLowerCase().slice(0,inputLength) === inputValue);*/
-		/*if(testReturn.length > 0){
-			this.props.handler(testReturn);
-		}*/
+	
 		
 	}
 
 	getSuggestionValue(suggestion){
-		console.log(suggestion);
-		console.log(this.page)
+		
 		if(this.page === "searchForBlog"){
 
 			store.dispatch({type:constants.SAVE_BLOG_SEARCH_TERM, blogSearchTerm:suggestion.word})
 			return suggestion.word;
 		}else if(this.page === "searchForPeople"){
-			console.log("returning suggestion");
+			
 			store.dispatch({type:constants.SAVE_PEOPLE_SEARCH_TERM, peopleSearchTerm:suggestion})
 			
 			return suggestion;

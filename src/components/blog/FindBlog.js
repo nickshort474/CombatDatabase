@@ -14,29 +14,39 @@ class FindBlog extends Component{
 
 	constructor(){
 		super();
+
+		//set initial state
 		this.state = {
 			value:"",
 			suggestions:[]
 		}
 
+		//set intial reference to firestore
 		this.firestore = firebase.firestore();
+
+		//create keyword list array
 		this.keyWordList = [];
 	}
 
 	componentWillMount(){
+
+		//scroll to top
 		window.scrollTo(0, 0);
 
 		//clear searchTerm every time come to FindBlog page
 		store.dispatch({type:constants.SAVE_BLOG_SEARCH_TERM, blogSearchTerm:undefined})
 		
+		// set reference to keywords in firestore
 		let ref = this.firestore.collection("KeyWords").doc("KeyWordList").collection("list");
 		
+		//get keywords
 		ref.get().then((snapshot)=>{
 			
 			snapshot.forEach((snap)=>{
 				this.keyWordList.push(snap.data())
 			})
 			
+			//set keywords to state
 			this.setState({
 				keyWordList:this.keyWordList
 			})
@@ -49,31 +59,37 @@ class FindBlog extends Component{
 	
 	_submitForm(e){
 		e.preventDefault();
-
 		
+
 		let blogObj= [];
 
+		//get blog search term from store (added to store in AutoSuggest component)
 		let storeState = store.getState();
 		let searchTerm = storeState.blogSearchTerm;	
-		/*store.dispatch({type:constants.SAVE_BLOG_SEARCH_TERM, blogSearchTerm:undefined})*/
+		
 
-		// if searchTerm !exist then???
+		// if searchTerm !exist then alert user
 		if(searchTerm === undefined){
 			alert("please select a keyword from the search list")
 			
 		}else{
-
+			//lowercase searchterm
 			let value = searchTerm.trim().toLowerCase();
 	
+			//get reference to blogs which have search term from KeyWords section of firestore
 			let ref = this.firestore.collection("KeyWords").doc(value).collection("blogs");
 			ref.get().then((snapshot)=>{
 				
 				snapshot.forEach((snap)=>{
-				
+					//add reference to each blog to blogObj 
 					blogObj.push(snap.data().blogName);
 						
 				})
+
+				//save blog object to store ready for display in SearchedBlogs component
 				store.dispatch({type:constants.SAVE_BLOGS, blogObj:blogObj});
+
+				//navigate to Searched blogs page ready to display blog object
 				this.props.history.push("/SearchedBlogs/" + value);
 			})
 		}

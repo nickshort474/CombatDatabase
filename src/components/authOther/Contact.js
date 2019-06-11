@@ -27,16 +27,25 @@ class Contact extends Component{
 	}
 
 	_onChange(e){
+
+		//set value of input field
 		this.setState({
 			[e.target.name]:e.target.value
 		})
+
+		// remove error signal if new data is being entered
 		$(`#${e.target.id}`).removeClass('formError');
 	}
 
 	_onSubmit(){
+
+		// validate input fields
 		let errorMsgs = this._validate();
 		
+		//test errorMsgs for errors
 		if(errorMsgs.length > 0){
+			
+			// create msgComp for displaying of error messages
 			let msgComp = errorMsgs.map((msg,index)=>{
 				return <div className="text-center" key={index}><p>{msg}</p></div>
 			})
@@ -48,13 +57,13 @@ class Contact extends Component{
 			})
 		
 		}else{
+			//if no errors submit form
 			var submit = $("#submit");
 	    	submit.click();
 
 			let form = document.getElementById("form");
 			form.addEventListener("submit",(e) => {
-				console.log("submitting?")
-				
+				// redirect to response page				
 				this.props.history.push('/Response');
 			
 			});
@@ -62,7 +71,7 @@ class Contact extends Component{
 	}
 
 	_validate(){
-	
+		//get values from input fields
 		let name = $('#name').val();
 		let report = $('#report').val();
 		let email = $('#email').val();
@@ -70,6 +79,7 @@ class Contact extends Component{
 		//store error messages in array
 		const errorMsgs = [];
 
+		//test each input field
 		if (name.length < 1) {
 		   errorMsgs.push("Please provide a name");
 		   $('#name').addClass('formError');
@@ -90,6 +100,7 @@ class Contact extends Component{
 	}
 
 	_isValidEmail(email){
+		//test for valid email
 		// eslint-disable-next-line
 		if(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email) ){
 			return true

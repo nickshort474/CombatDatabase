@@ -18,6 +18,7 @@ class AddBlog extends Component{
 	constructor(){
 		super();
 		
+		//set initial state
 		this.state = {
 			blogName:"",
 			blogDescription:"",
@@ -28,39 +29,50 @@ class AddBlog extends Component{
 			keyWord5:"",
 		}
 		
-		
+		//set reference to firestore
 		this.firestore = firebase.firestore();
+
+		//get user info from localstorage
 		this.user = LocalStorage.loadState("user");
-		//this.keyWordArray = [];
+		
+		//create blog KeyWord object
 		this.blogKeywordObj = {};
 		
 
 	}
 	
 	componentWillMount() {
+		//scroll to top
 	    window.scrollTo(0, 0); 
    		
 	}
 
 
-	_handleSearchChoice(e){
+	/*_handleSearchChoice(e){
 		
 		this.setState({
 			blogType:e.target.value
 		})
 			
 					
-	}
+	}*/
 
 	_handleKeywordInput(e){
+		//set blog keyword in state for display
 		this.setState({
 			[e.target.id]:e.target.value
 		})
-		this.blogKeywordObj[e.target.id] = e.target.value.trim().toLowerCase();;
+
+		//set blog keyword in object
+		this.blogKeywordObj[e.target.id] = e.target.value.trim().toLowerCase();
+
+		//remove error indicator for input field
 		$(`#${e.target.id}`).removeClass('formError');
 	}
 
 	_handleInput(e){
+		
+		//set state for other input fields
 		this.setState({
 			[e.target.id]:e.target.value
 		})
@@ -71,18 +83,22 @@ class AddBlog extends Component{
 	_submitForm(e){
 		e.preventDefault();
 		
+		//disable buttons on submit
 		_disable();
 		
+		//set loading indicator to true
     	this.setState({
     		loading:true
     	});
 
 
 
-
+    	// validate all form fields and assign errors to errorMsgs
 		let errorMsgs = this._validate(this.state.blogName,this.state.blogDescription,this.state.keyWord1,this.state.keyWord2);
 		
+		//test for erros
 		if(errorMsgs.length > 0){
+			//create msgComp from erros
 			let msgComp = errorMsgs.map((msg,index)=>{
 				return <div className="text-center" key={index}><p>{msg}</p></div>
 			})
@@ -93,23 +109,26 @@ class AddBlog extends Component{
 				errors:formattedComp,
 				loading:false
 			})
-			
+			//enable buttons for re submit
 			_enable();
 		}else{
 			
+			//get whether blog has image from store (set in GetImage component)
 			let storeState = store.getState();
 			this.hasImage = storeState.blogHasImg;
 
-			
-
+			// test for name match
 			this._testForName(()=>{
 				
-
+				//if callback no match exists so can be created
 				let ref = this.firestore.collection("BlogNames").doc(this.state.blogName);
+				
+				//create reference to new blog location in firestore
 				let docRef = ref.id;
 
 				let now = Date.now();
 				
+				//create blog object
 				let obj = {
 					name:this.state.blogName,
 	    			user:this.user,
@@ -118,25 +137,35 @@ class AddBlog extends Component{
 	    			creationDate:now
 	    		}
 	  		
-
+	    		//if blog has image 
 	    		if(this.hasImage){
 	    			
+	    			//add blog image to storage
 	    			this._addBlogImage(docRef,(url)=>{
 
+	    				//add referecne to image to blogObject
 	    				obj["blogLogo"] = url;
 
+	    				//set blogObject in firestore
 	    				ref.set(obj).then((result)=>{
+	    					//set keywords in firestore
 	    					this._createKeywordReferences();
+	    					//set other blog references in firestore
 	    					this._sendFinalReferences();
 	    					
 	    				})
 					})
 
 	    		}else{
+	    			//blog has no image
 	    			obj["blogLogo"] = false;
 
+	    			//set blog object in firestore
 	    			ref.set(obj).then((result)=>{
+	    				//set keywords in firestore
 						this._createKeywordReferences();
+
+						//set other blog references in firestore
 						this._sendFinalReferences();
 						
 	    			})
@@ -147,9 +176,10 @@ class AddBlog extends Component{
 
 	_testForName(callback){
 
+		//create nameMatch var
 		let nameMatch = false;
 
-		//check whether event name already exists
+		//check whether blog name already exists
 		let nameCheckRef = this.firestore.collection("BlogNames");
 		let query = nameCheckRef.where("name", "==", this.state.blogName);
 
@@ -157,13 +187,14 @@ class AddBlog extends Component{
 			
 			snapshot.forEach((snap)=>{
 				
+				// from returned data test if blog name exists set nameMatch accordinly
 				if(snap.data().blogName){
 					nameMatch = true;
 				}else{
 					nameMatch = false
 				}
 			})
-
+			//test nameMatch var
 			if(nameMatch === true){
 				alert("Blog name already exists please try another");
 				
@@ -181,9 +212,12 @@ class AddBlog extends Component{
 
 
 	_sendFinalReferences(){
+
+		//set references in firestore to blog user list
 		let newRef = this.firestore.collection("BlogUserList").doc(this.user).collection("blogs");
 		newRef.add({"blogName":this.state.blogName});
 
+		//set references to blog list
 		let BlogRef = this.firestore.collection("Blogs").doc(this.user).collection(this.state.blogName);
 		BlogRef.add({"empty":true});
 		
@@ -192,16 +226,20 @@ class AddBlog extends Component{
     	});
 		_enable();
 
+		//redirect to MyBlog list
 		this.props.history.push('/MyBlogs');
 	}
 
 
 	_createKeywordReferences(){
 		
+		//set date
 		let now = Date.now();
 
+		//create a batch write
 		let batch = this.firestore.batch();
 
+		//for each keyword at a write to the batch
 		for(let val in this.blogKeywordObj){
 			
 
@@ -210,8 +248,10 @@ class AddBlog extends Component{
 				blogName:this.state.blogName,
 				creationDate:now
 			}
+			//set the batch
 			batch.set(ref,obj);
 		}
+		//commit the batch write
 		batch.commit();
 
 
@@ -222,7 +262,7 @@ class AddBlog extends Component{
 		let keyWordObjectLength = 0;
 		let keyWordCounter = 0;
 
-		
+		// create reference to keyword in global keywordlist for easy searching
 		for(let val in this.blogKeywordObj){
 			
 			//increment counter to hold reference for number of items in object
@@ -316,6 +356,7 @@ class AddBlog extends Component{
 		//store error messages in array
 		const errorMsgs = [];
 
+		//test data form each input field
 		if (name.length < 1) {
 		   errorMsgs.push("Please provide an blog name");
 		   $('#blogName').addClass('formError');
@@ -341,7 +382,7 @@ class AddBlog extends Component{
 	render(){
 
 		let loadingCircle;
-
+		
 		if(this.state.loading){
 			loadingCircle = <ReactLoading  id="loadingCircle" type="spin" color="#00ff00" height={25} width={25} />
 		}else{

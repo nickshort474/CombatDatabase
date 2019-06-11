@@ -7,15 +7,22 @@ import LocalStorage from '../../utils/LocalStorage';
 export default class SearchedBlogComp extends Component{
 	
 	componentWillMount(){
+		
+		//set initial state
 		this.setState({
 			username:""
 		})
 
+		//get user from localstorage
 		this.userUID = LocalStorage.loadState("user");
+
+		//set initial reference to firestore
 		this.firestore = firebase.firestore();
 		
+		//set reference to user in firestore
 		let ref = this.firestore.collection("Users").doc(this.props.blogUser);
 		
+		//get users username from firestore
 		ref.get().then((snapshot)=>{
 			this.setState({
 				username:snapshot.data().userName

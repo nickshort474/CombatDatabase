@@ -13,8 +13,7 @@ export default class Searchedlogs extends Component{
 	constructor(){
 		super();
 
-		
-
+		//set initial state
 		this.state = {
 			items:[]
 		}
@@ -22,29 +21,42 @@ export default class Searchedlogs extends Component{
 	}
 		
 	componentWillMount() {
+
+		//scroll to top
 		window.scrollTo(0, 0);
 
+		//save current page to store
 		let pageToSave = "/SearchedBlogs/" + this.props.match.params.SearchTerm;
 		store.dispatch({type:constants.SAVE_PAGE, page:pageToSave});
 		
+		//get state from store
 		let storeState = store.getState();
+
+		//get blogObj from store (created in FindBlogs)
 		let blogs = storeState.blogObj;
 		
+		//set search term to state
 		this.setState({
 			value:this.props.match.params.SearchTerm
 		});	
+
+		//create empty array
 		this.items = [];
 		
+		//for each found blog in blog object
 		blogs.forEach((blog) =>{
 				
-			// for each snap connect to BlogNames DB and gather info
+			//connect to BlogNames in firestore and gather info
 			let firestore = firebase.firestore();
 			
 			let ref = firestore.collection("BlogNames").doc(blog);
 			
 			ref.get().then((snapshot)=>{
 				
+				//push blog data to array
 				this.items.push(snapshot.data());
+
+				//set array to state
 				this.setState({
 					items:this.items
 				});	
@@ -60,6 +72,7 @@ export default class Searchedlogs extends Component{
 
 	render(){
 
+		//display searched blogs 
 		let blogs = this.state.items.map((blog)=>{
 			return <SearchedBlogComp  type={blog.type} blogName={blog.name} description={blog.description} blogUser={blog.user} blogLogo={blog.blogLogo} searchTerm={this.props.match.params.SearchTerm} key={blog.name} />
 		})

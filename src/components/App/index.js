@@ -121,11 +121,7 @@ class App extends Component{
 						<Route path="/ContactRequest/:PersonKey" component={ContactRequest} />
 						<Route path="/NewMessage/:Username/:UserUID" component={NewMessage} />
 						<Route path="/SearchForPeople" component={SearchForPeople} />
-						{/*
-						<Route path="/NewCommunityMessage" component={NewCommunityMessage} />
-						<Route path="/NewPrivateMessage/:MessageName/:MessageUID" component={NewPrivateMessage} />
-						<Route path="/MessageReply/:MessageUser/:MessageID/:MessageType" component={MessageReply} />
-						*/}
+					
 
 						<Route path="/Events" component={EventsPage} />
 						<Route path="/SingleEvent/:EventKey" component={SingleEventPage} />
@@ -139,16 +135,9 @@ class App extends Component{
 						<Route path="/EditStyle/:Category/:Style" component={EditStyle} />
 						<Route path="/EditHistory/:HistoryKey" component={EditHistory} />
 						<Route path="/Report/:ItemName" component={Report} />
-
-						{/*<Route path="Forum" component={Forum} />
-						<Route path="ForumList/:Name" component={ForumList} />
-						<Route path="ForumSingle/:topicCat/:topicId" component={ForumSingle} />
-						<Route path="AddThreadPage" component={AddThreadPage} />
-						*/}
-
+						
 						<Route path="/MyBlogs" component={MyBlogs} />
 						<Route path="/MyBlogPostList/:BlogUser/:BlogName" component={MyBlogPostList} />
-						
 						<Route path="/ViewBlogs" component={ViewBlogs} />
 						<Route path="/BlogPostList/:BlogUser/:BlogName" component={BlogPostList} />
 
