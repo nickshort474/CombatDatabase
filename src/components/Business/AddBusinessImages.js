@@ -11,34 +11,41 @@ export default class AddBusinessImages extends Component{
 	constructor(){
 		super();
 		
+		//set initial state and variables
 		this.state = {};
-		
 		this.thumbnailArray = [];
 		this.imageArray = [];
 
+		//set initial references to firestore and storage
 		this.storageRef = firebase.storage().ref();
 		this.firestore = firebase.firestore();
 	}
 
 	componentWillMount(){
 		
+		//set ref to business thumbnails section
 		let ref = this.firestore.collection("Business").doc(this.props.match.params.BusinessKey).collection("businessThumbnailImages");
 
+		//get current business thumbnails
 		ref.get().then((snapshot)=>{
 			
 			snapshot.forEach((snap)=>{
 				
+				//assign thumbnail urls to state
 				this.setState({
 					[snap.id]:snap.data().url
 				})
 				
+				//add thumbnail urls to array
 				this.thumbnailArray.push(snap.data().url);
 				
 			})
 		})
 
+		//set ref to full size business images
 		let ref2 = this.firestore.collection("Business").doc(this.props.match.params.BusinessKey).collection("businessImages");
 
+		//get urls for full size images and save to array
 		ref2.get().then((snapshot)=>{
 			
 			snapshot.forEach((snap)=>{
@@ -51,6 +58,7 @@ export default class AddBusinessImages extends Component{
 
 	_handleBrowseClick(e){
 	   
+	   	//handle browse click for user uploading images
 		let fileinput = document.getElementById(e.target.id);
 	    fileinput.click();
 	}
@@ -61,16 +69,16 @@ export default class AddBusinessImages extends Component{
 
 	_handleMessagePic(e){
 		
-		
+		// get id of image being added
 		let imageDisplayKey = `businessPic${e.target.id}`;
 		
-
-		let blobKey = `imageBlob${e.target.id}`
-
+		//setup file reader
 		let reader = new FileReader();
 		
-		 reader.onload = (e) => {
+		//set onload event
+		reader.onload = (e) => {
 			
+			//compress image using outside component
 			_compressImage(e.target.result, 600, (result)=>{
 				
 				//add full size picture to storage
@@ -85,7 +93,7 @@ export default class AddBusinessImages extends Component{
 				
 				this.setState({
 					[imageDisplayKey]:objUrl,
-					[blobKey]:result
+					
 				})
 				//add thumbnail to storage
 				this._addThumbnailToStorage(result,imageDisplayKey);
@@ -93,6 +101,7 @@ export default class AddBusinessImages extends Component{
 			})
 		}
 
+		//read image data
 		reader.readAsDataURL(e.target.files[0]);
 	}
 
@@ -100,9 +109,10 @@ export default class AddBusinessImages extends Component{
 
 	_addImageToStorage(image,imageName){
 
-
-
+		//set file location using business key 
 		let messageImageFileLocation = `businessImages/${this.props.match.params.BusinessKey}/${imageName}.jpg`;
+		
+		//set upload task 
 		let uploadTask = this.storageRef.child(messageImageFileLocation).put(image);
 		// Register three observers:
 		// 1. 'state_changed' observer, called any time the state changes
@@ -129,9 +139,9 @@ export default class AddBusinessImages extends Component{
 		    // eslint-disable-next-line
 		}, () => {
 		    // Handle successful uploads on complete
-		    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
 		    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL)=>{
 				
+				//add download url of image to firestore 
 		    	let ref = this.firestore.collection("Business").doc(this.props.match.params.BusinessKey).collection("businessImages").doc(imageName);
 		    	let obj = {
 		    		url:downloadURL,
@@ -147,8 +157,10 @@ export default class AddBusinessImages extends Component{
 	_addThumbnailToStorage(image,imageName){
 
 
-
+		//set file location using business key
 		let messageImageFileLocation = `businessThumbnails/${this.props.match.params.BusinessKey}/${imageName}.jpg`;
+
+		//set upload task for image
 		let uploadTask = this.storageRef.child(messageImageFileLocation).put(image);
 		// Register three observers:
 		// 1. 'state_changed' observer, called any time the state changes
@@ -175,9 +187,9 @@ export default class AddBusinessImages extends Component{
 		    // eslint-disable-next-line
 		}, () => {
 		    // Handle successful uploads on complete
-		    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
 		    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL)=>{
 				
+				//add download url of image thumbnail to firestore
 		    	let ref = this.firestore.collection("Business").doc(this.props.match.params.BusinessKey).collection("businessThumbnailImages").doc(imageName);
 		    	let obj = {
 		    		url:downloadURL,
@@ -235,7 +247,7 @@ export default class AddBusinessImages extends Component{
 									<input type="button" value="Add Image" id="2" onClick={this._handleBrowseClick.bind(this)} className="btn btn-primary extraMargin"/>
 								</div>	
 								<div className="col-sm-6">
-									<img src={this.state.businessPic2 ? this.state.businessPic2 : defaultLogo}  id="businessPic2"  style={{"width":"100%"}} alt="" />
+									<img src={this.state.businessPic2 ? this.state.businessPic2 : defaultLogo}  id="businessPic2"   alt="" />
 								</div>
 							</div>
 
@@ -302,10 +314,7 @@ export default class AddBusinessImages extends Component{
 						</div>
 
 
-						{/*<div className="row text-center">
-
-							<button onClick={this._handleImageSubmit.bind(this)}>Upload images</button>
-						</div>*/}
+						
 					</div>
 				</div>
 			</div>

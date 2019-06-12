@@ -14,6 +14,8 @@ export default class EditBusinessLogo extends Component{
 
 	constructor(){
 		super();
+		
+		//set initial state
 		this.state = {
 			caption0:"",
 			urlReturned:false
@@ -24,11 +26,17 @@ export default class EditBusinessLogo extends Component{
 	}
 
 	componentWillMount(){
+
+		//set base firstore reference
 		this.firestore = firebase.firestore()
+
+		//set referecne to business section in firestore
 		let ref = this.firestore.collection("Business").doc(this.props.match.params.BusinessKey);
 
+		//get business data
 		ref.get().then((snapshot)=>{
 		
+			//add business logo to store 
 			this.setState({
 				businessLogo:snapshot.data().businessLogo,
 				urlReturned:true
@@ -41,7 +49,7 @@ export default class EditBusinessLogo extends Component{
 
 	_handleImageSubmit(e){
 		
-		//disable
+		//disable buttons
 		_disable();
 
 		//set references
@@ -49,8 +57,11 @@ export default class EditBusinessLogo extends Component{
 		
 		//set variables
 		let img  = store.getState().businessImg;
-			
+		
+		//set file location	
 		let messageImageFileLocation = `businessLogos/${this.props.match.params.BusinessKey}.jpg`;
+		
+		//set upload task
 		let uploadTask = storageRef.child(messageImageFileLocation).put(img);
 		// Register three observers:
 		// 1. 'state_changed' observer, called any time the state changes
@@ -77,8 +88,9 @@ export default class EditBusinessLogo extends Component{
 		    // eslint-disable-next-line
 		}, () => {
 		    // Handle successful uploads on complete
-		    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
 		    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL)=>{
+
+		    	//get downloadURL and send it to firstore
 				this._uploadRefToFirestore(downloadURL);		
 		    });
 		})
@@ -88,19 +100,21 @@ export default class EditBusinessLogo extends Component{
 
 	_uploadRefToFirestore(downloadURL){
 		
-				
-		//create ref for  image
+		//create ref to image in firestore
 		let ref = this.firestore.collection("Business").doc(this.props.match.params.BusinessKey);
 
-			
-		// create data from downloadURL
+		// create object using downloadURL
 		let obj = {
 			businessLogo:downloadURL
 		}
 
-		// commit batch write
+		// update firestore
 		ref.update(obj).then(()=>{
+
+			//enable buttons
 			_enable();
+
+			//redirect to business page
 			this.props.history.push(`/Business/${this.props.match.params.BusinessKey}`)
 		});
 		
@@ -111,7 +125,7 @@ export default class EditBusinessLogo extends Component{
 		
 		
 		let imagePicker;
-
+		
 		if(this.state.urlReturned){
 			imagePicker = <GetImage prompt="Please choose new business logo" src={this.state.businessLogo} comp="EditBusinessLogo"/>
 		}

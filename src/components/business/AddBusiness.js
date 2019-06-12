@@ -26,7 +26,7 @@ class AddBusiness extends Component{
 	constructor(){
 		super();
 
-
+		// set initial state
 		this.state = {
 			businessName:"",
 			businessLocation:"",			
@@ -38,9 +38,10 @@ class AddBusiness extends Component{
 			
 		}
 
-
+		//get user id form storage
 		this.userUID = LocalStorage.loadState("user");
 		
+		//save current page to store
 		store.dispatch({type:constants.SAVE_PAGE, page:"AddBusiness"});
 
   		this.textStyle = {
@@ -61,28 +62,33 @@ class AddBusiness extends Component{
 	}
 
 	componentWillMount(){
+		//scroll to top
 		window.scrollTo(0, 0);
 	}
 	
 
 
 	_handleInput(e){
-				
+		
+		//handle input fields		
 		this.setState({
 			[e.target.id]:e.target.value
 		})
 
+		//remove error indications on new input
 		$(`#${e.target.id}`).removeClass('formError');
 	}
 
 	_handleBrowseClick(){
 	   
+		//handle browse click for adding images	   
 	    var fileinput = $("#browse");
 	    fileinput.click();
 	}
 
 	_onSuggestSelect(suggest) {
 		
+		//handle suggestion from GeoSuggest component
 		if(suggest){
 			this.setState({
 				businessLocation:suggest.gmaps.formatted_address,
@@ -91,24 +97,33 @@ class AddBusiness extends Component{
 			})
 		
 		}
+
+		//remove error indicator once suggestion has been selected
 		$('#geoSuggest').removeClass('formError');
     	
   	}
 
   	_previewImage(e){
 		
+		//setup file reader
 		let reader = new FileReader();
 
+		//handfle onload event
 		reader.onload = (e) =>{
 			
+			//compress image using outside component
 			_compressImage(e.target.result, 200, (result)=>{
-								
+				
+				//get result from compression				
 				this.businessThumbnail = result;
 								
 			})
+
+			//set preview image from file reader
 			$('#previewImage').attr("src", e.target.result);
 		}
 
+		//read image data 
 		reader.readAsDataURL(e.target.files[0]);
 		
 	}
@@ -124,9 +139,13 @@ class AddBusiness extends Component{
     		loading:true
     	});
 
+		//call validate passing values
 		let errorMsgs = this._validate(this.state.businessName,this.state.businessLocation,this.state.businessSummary,this.state.businessDescription)
 		
+		//test whether there are any errors
 		if(errorMsgs.length > 0){
+
+			//create msgComp to display error messages
 			let msgComp = errorMsgs.map((msg,index)=>{
 				
 				return <div className="text-center" key={index}><p>{msg}</p></div>
@@ -136,11 +155,15 @@ class AddBusiness extends Component{
 				errors:formattedComp
 			})
 
+			//enable buttons and hide loading circle
+			_enable();
 			this.setState({
     			loading:false
     		});
-			_enable();
+			
 		}else{
+
+			//if no errors set reference to firstore and business section
 			this.firestore = firebase.firestore();
 			let docId = this.firestore.collection("Business").doc();
 							
@@ -150,7 +173,7 @@ class AddBusiness extends Component{
 				
 				let businessLogo;
 
-				//when finished route back to business listing
+				//set businessLogo based on upload result
 				if(callBackParam === "noImage"){
 					businessLogo = false;
 					
@@ -183,13 +206,16 @@ class AddBusiness extends Component{
 				//write data to firebase
 				docId.set(postData);
 				
-
+				//set reference to business in profile of user uplaoding business
 				this._addBusinessToUserProfile(docId.id, () =>{
 					
+					//enable buttons and hide loading circle
+					_enable()
 					this.setState({
     					loading:false
     				});
-    				_enable()
+    				
+    				//redirect to thank you
 					this.props.history.push('/ThankYouForListing');
 				})
 				
@@ -206,6 +232,7 @@ class AddBusiness extends Component{
 		//store error messages in array
 		const errorMsgs = [];
 
+		//run validation on each field
 		if (name.length < 1) {
 		   errorMsgs.push("Please provide a business name");
 		   $('#businessName').addClass('formError');
@@ -229,16 +256,18 @@ class AddBusiness extends Component{
 
 	_addBusinessToUserProfile(key, funcToCallBack){
 		
-
+		//set reference to People section
 		let ref = this.firestore.collection("People");
 
+		//find current user based on their uid
 		let query = ref.where("uid", "==", this.userUID);
 		query.get().then((snapshot)=>{
 			
+			//update this users associated business
 			snapshot.forEach((element)=>{
 				this.firestore.collection("People").doc(this.userUID).update({business:key});
 			})
-			//
+			//callback to continue
 			funcToCallBack();
 		})
 		
@@ -247,17 +276,16 @@ class AddBusiness extends Component{
 
 	_addBusinessImage(key, funcToCallBack){
 		
+		//set initial storage reference
 		let storageRef = firebase.storage().ref();
 
-		/*let files = document.getElementById("fileUpload").files;
-		let file;*/
-
-		//get resulting file from _compressIMAGE TO UPLOAD INSTEAD
-		
+		//test whether there is image to upload	
 		if(this.businessThumbnail !== null){
 
-			
+			//create file location using key (location of business in firestore)
 			let businessImageFileLocation = `businessLogos/${key}.jpg`;
+
+			//upload businessThumbnail to storage
 			let uploadTask = storageRef.child(businessImageFileLocation).put(this.businessThumbnail);
 			
 			// Register three observers:
@@ -284,15 +312,15 @@ class AddBusiness extends Component{
 			    // Handle unsuccessful uploads
 			}, () => {
 			    // Handle successful uploads on complete
-			    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-			   
-			  	uploadTask.snapshot.ref.getDownloadURL().then((downloadURL)=>{
+			    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL)=>{
+					//callback with url of businessThumbnail
 					funcToCallBack(downloadURL);
 			  	})
 			   
 			});
 
 		}else{
+			//callback with no image
 			funcToCallBack("noImage");
 		}
 				
@@ -312,6 +340,7 @@ class AddBusiness extends Component{
 
 		let loadingCircle;
 
+		// show or hide loading cirlce based on state
 		if(this.state.loading){
 			loadingCircle = <ReactLoading  id="loadingCircle" type="spin" color="#00ff00" height={25} width={25} />
 		}else{

@@ -19,38 +19,45 @@ export default class FindBusiness extends Component{
 	constructor(){
 		super();
 		
+		//dispatch reference to page to store
 		store.dispatch({type:constants.SAVE_PAGE, page:"FindBusiness"});
 		store.dispatch({type:constants.SAVE_PREV_PAGE, prevPage:"FindBusiness"});
 		
+		//set initial variable / reference
 		this.first = false;
 		this.firestore = firebase.firestore();
 		
 		
-
+		//set initial state
 		this.state = {
 			items:"",
 			businessComps:[],
 			radius:"25"
 			
 		}
-		//store.dispatch({type:constants.HAS_SAVED_BUSINESS_SEARCH, hasSavedBusinessSearch:false})
+		
 	}
 	
 	componentWillMount(){
+		//scroll to top
 		window.scrollTo(0, 0);
 
 	}
 
 	componentDidMount(){
 
+		//get store reference
 		let storeState = store.getState();
 
-		// get state of previouslySavedBusinessSearch from redux
+		// test whether has been previous search
 		let hasSavedSearch = storeState.hasSavedBusinessSearch;
 		
 		//if true load state and apply
 		if(hasSavedSearch){
+
+			//get previous search values
 			let businessSearchValues = storeState.businessSearchValues;
+
 
 			this.lat = businessSearchValues.lat;
 			this.lng = businessSearchValues.lng;
@@ -101,7 +108,7 @@ export default class FindBusiness extends Component{
 	    	let searchValues = {
 	    		lat:suggest.location.lat,
 	    		lng:suggest.location.lng,
-	    		radius:this.radius
+	    		radius:this.state.radius
 	    	}
 
 
@@ -230,19 +237,7 @@ export default class FindBusiness extends Component{
 				                      
 				                        <Map data={this.state.items} onRef={ref =>(this.child = ref)} />
 
-				                        {/*<p>What would you like to search by?</p>
-				                        <div className="form-group">
-				                        	<input type="radio" name="search" defaultValue="style" onChange={this._handleSearchChoice.bind(this)}  />Style<br />
-				                        	<input type="radio" name="search" defaultValue="description" onChange={this._handleSearchChoice.bind(this)}/>Description
-				                        </div>
-										
-
-				                        
-				                        <div className="form-group">
-				                            {this.searchChoice}											
-				                        </div>
-				                       
-				                        <button type="submit" className="btn btn-primary">Submit</button>*/}
+				                 
 
 				                        <div className="box">
 				                        	{businessComps}

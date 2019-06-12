@@ -16,9 +16,10 @@ export default class PhotoDisplay extends Component{
 			gallery:false
 		}
 		
-			this.imgStyle = {
-			width:"100%"
+		this.imgStyle = {
+			width:"35%"
 		}
+
 		this.firestore = firebase.firestore();
 		
 	}

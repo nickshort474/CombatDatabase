@@ -18,40 +18,46 @@ class Business extends Component{
 	constructor(props){
 		super(props);
 
+		//save reference to page for navigation
 		store.dispatch({type:constants.SAVE_PAGE, page:"Business"});
 		store.dispatch({type:constants.SAVE_PREV_PAGE, prevPage:"Business"});
 		
+		//set intial state
 		this.state = {
 			items:[],
 			imageUrl:""
 			
 		}
-
-		this.showLimit = 10;
-
+		
+		//set base firestore reference
 		this.firestore = firebase.firestore()
 	}
 
 	
 	
 	componentWillMount() {
+
+		//scroll to top
 		window.scrollTo(0, 0);
 		
-		this.counter = 0;		
+		//initialise  array
+			
 		this.items = [];
 	    
-	    let ref = this.firestore.collection("Business").orderBy("creationDate","desc").limit(this.showLimit);
+	    //set reference to Business section limiting to latest 10 listings
+	    let ref = this.firestore.collection("Business").orderBy("creationDate","desc").limit(10);
 
-	    
+	    //get business info
 	    ref.get().then((snapshot)=>{
-	    	//this.lastVisible = snapshot.docs[snapshot.docs.length - 1];
-
+	    	
 	    	snapshot.forEach((element)=>{
 			
+				//push to array
 				this.items.push(element.data());
-				this.counter++;
+				
 			})
 			
+			//add array to state if component is mounted
 			if(this.mounted){
 				this.setState({
 					items:this.items
@@ -63,45 +69,30 @@ class Business extends Component{
 		
 	}
 
+
 	componentDidMount(){
+		//set mounted so state is updated only on mounted component
 		this.mounted = true
 	}
 
 	componentWillUnmount(){
+		//set mounted to false so no state updates called once component unmouts
 		this.mounted = false;
 	}
 
 
-	/*_handleMoreButton(){
-		this.counter = 0;
-
-		let ref = this.firestore.collection("Business").orderBy("creationDate", "desc").startAfter(this.lastVisible).limit(this.showLimit);
-		
-		ref.get().then((snapshot)=>{
-			this.lastVisible = snapshot.docs[snapshot.docs.length - 1];
-			
-			snapshot.forEach((element)=> {
-				this.items.push(element.data())
-				this.counter++;
-			});
-			this.setState({
-	    		items:this.items
-	    	});
-	    	
-		})
-
-	}*/
 
 	_addBusiness(){
+		//get user id form localstorage
 		let userUID = LocalStorage.loadState("user");
 		
-		
+		//if user signed in direcet to add business
 		if(userUID){
-			// redirect to AddBusiness page
+		
 			this.props.history.push('/AddBusiness');
-			
 
 		}else{
+			//alert user to sign in
 			window.alert("please create an account or sign in to add a business to our databases");
 
 
@@ -112,7 +103,7 @@ class Business extends Component{
 
 	render(){
 
-		
+		//loop through business array for display
 		let business = this.state.items.map((business) =>{
 			
 			return <BusinessComp businessName={business.businessName} summary={business.summary} businessKey={business.key} location={business.location} businessLogo={business.businessLogo} key={business.key} />
@@ -135,9 +126,7 @@ class Business extends Component{
 							<div className="box greyedContent">
 								<h3 className="text-center">Recently listed businesses</h3>
 								<div>{business}</div>
-								{/*<div className="text-center">
-									<p>{moreButton}</p>
-								</div>	*/}
+								
 							</div>
 
 						</div>

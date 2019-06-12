@@ -18,6 +18,7 @@ export default class EditBusiness extends Component{
 	constructor(){
 		super()
 
+		//set initial state
 		this.state = {
 			businessName:"",
 			businesslocation:"",		
@@ -30,10 +31,10 @@ export default class EditBusiness extends Component{
 
 
 	componentWillMount() {
+		//scroll to top
 		window.scrollTo(0, 0);
 
-		// get previous page from redux for back button
-		//let storeState = store.getState();
+		//save current page to store
 		let pageString = `EditBusiness/${this.props.match.params.BusinessKey}`
 		store.dispatch({type:constants.SAVE_PAGE, page:pageString});
 
@@ -73,10 +74,13 @@ export default class EditBusiness extends Component{
 
 
 	_handleInput(e){
+
+		//handle input box data
 		this.setState({
 			[e.target.id]:e.target.value
 		})
 
+		//remove error indicators when new data is added
 		$(`#${e.target.id}`).removeClass('formError');
 	}
 
@@ -84,15 +88,24 @@ export default class EditBusiness extends Component{
 
 	_onSuggestSelect(suggest) {
 		
+		//handle suggestion form GeoSuggest component
 		if(suggest){
+
+			//set state based on returned suggestion
 			this.setState({
 				businessLocation:suggest.gmaps.formatted_address,
 				lat:suggest.location.lat,
 				lng:suggest.location.lng
 			})
-		$('#geoSuggest').removeClass('formError');	
+
+			//remove error indicator when suggestion selected
+			$('#geoSuggest').removeClass('formError');	
 		}else{
+
+			//add error indicator if no suggestion selected
 			$('#geoSuggest').addClass('formError');
+			
+			//clear input box by clearing state
 			this.setState({
 				businessLocation:""
 			})
@@ -105,10 +118,14 @@ export default class EditBusiness extends Component{
 
 	_onSubmit(e){
 		e.preventDefault();
+
+		//disable buttons on submit
 		_disable();
 
+		//run validation passing data to function
 		let errorMsgs = this._validate(this.state.businessName,this.state.businessLocation,this.state.businessSummary,this.state.businessDescription)
 		
+		//if errors exist in returned array create error display component
 		if(errorMsgs.length > 0){
 			let msgComp = errorMsgs.map((msg,index)=>{
 				return <div className="text-center" key={index}><p>{msg}</p></div>
@@ -117,11 +134,15 @@ export default class EditBusiness extends Component{
 			this.setState({
 				errors:formattedComp
 			})
+
+			// enable buttons for bnext submit
 			_enable();
 		}else{
-				
+			
+			//if no errors set reference to business section in firestore	
 			let ref = this.firestore.collection("Business").doc(this.props.match.params.BusinessKey);
 
+			//create business object
 			let obj = {
 				businessName:this.state.businessName,
 				location:this.state.businessLocation,
@@ -134,8 +155,9 @@ export default class EditBusiness extends Component{
 				
 			}
 
+			//update business info
 			ref.update(obj).then(()=>{
-				
+				//redirect back to business page
 				this.props.history.push(`/Business/${this.props.match.params.BusinessKey}`);
 			});
 		}
@@ -148,6 +170,7 @@ export default class EditBusiness extends Component{
 		//store error messages in array
 		const errorMsgs = [];
 
+		//validate each input data
 		if (name.length < 1) {
 		   errorMsgs.push("Please provide a business name");
 		   $('#businessName').addClass('formError');

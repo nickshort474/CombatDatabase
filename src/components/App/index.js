@@ -14,7 +14,7 @@ import FindBusiness from '../Business/FindBusiness';
 import SingleBusinessPage from '../Business/SingleBusinessPage';
 import ReviewPage from '../Business/ReviewPage';
 import EditBusiness from '../Business/EditBusiness';
-import AddBusinessImages from '../Business/AddBusinessImages2';
+import AddBusinessImages from '../Business/AddBusinessImages';
 import EditBusinessLogo from '../Business/EditBusinessLogo';
 
 //Community files
