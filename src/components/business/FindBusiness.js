@@ -49,26 +49,27 @@ export default class FindBusiness extends Component{
 		//get store reference
 		let storeState = store.getState();
 
-		// test whether has been previous search
+		// test whether has been previous search so can show search results from previous search allowing user to go through multiple options
 		let hasSavedSearch = storeState.hasSavedBusinessSearch;
 		
 		//if true load state and apply
 		if(hasSavedSearch){
 
-			//get previous search values
+			//get previous search values from store
 			let businessSearchValues = storeState.businessSearchValues;
 
-
+			//set variables from stored search
 			this.lat = businessSearchValues.lat;
 			this.lng = businessSearchValues.lng;
 			
-
+			//set state from stored values
 			this.setState({
 				location:storeState.businessSearchTerm,
 				items:storeState.businessSearchObj,
 				businessComps:storeState.businessSearchObj,
 				radius:businessSearchValues.radius
 			},()=>{
+				//update map based on previous search values
 				this.child._updateMap(this.lng, this.lat, "FindBusiness",this.state.radius, this.state.items);
 			})
 		}else{
@@ -80,14 +81,18 @@ export default class FindBusiness extends Component{
 	
 	_distanceChange(evt){
 		
+		//set state from distance change option group
 		this.setState({
 			radius:evt.target.value,
 		})
 		
-				
+		//test whether this is first selection of distance option 		
 		if(!this.first){
+			//if first option selection switch bool
 			this.first = true;
 		}else{
+
+			//if not first selection and search suggestion already exists gatherCoords to populate map
 			if(this.hasSuggestion){
 				this._gatherCoords();
 			}
@@ -97,24 +102,31 @@ export default class FindBusiness extends Component{
 	}
 
 	_onSuggestSelect(suggest) {
+		
+		//handle suggestion from GeoSuggest component
 		if(suggest){
 
+			//set has suggestion to true ready for distance change test
 			this.hasSuggestion = true;
 			
+			//get data from suggestion
 	    	this.location = suggest.gmaps.formatted_address;
 	    	this.lat = suggest.location.lat;
 	    	this.lng = suggest.location.lng;
 	    	
+	    	//save suggestion data to object
 	    	let searchValues = {
 	    		lat:suggest.location.lat,
 	    		lng:suggest.location.lng,
 	    		radius:this.state.radius
 	    	}
 
-
+	    	//save object and location to store for later use
 	    	store.dispatch({type:constants.SAVE_BUSINESS_SEARCH_TERM, businessSearchTerm:this.location})
 	    	store.dispatch({type:constants.SAVE_BUSINESS_SEARCH_VALUES, businessSearchValues:searchValues})
 	    	store.dispatch({type:constants.HAS_SAVED_BUSINESS_SEARCH, hasSavedBusinessSearch:true})
+	    	
+	    	//run gather coords to populate map
 	    	this._gatherCoords();
     	}
 		
@@ -122,46 +134,62 @@ export default class FindBusiness extends Component{
 
 
   	_gatherCoords(){
-  			   
+  		
+  		// calculate which business to return from firestore based on lat and lng of search suggestion and distance supplied	   
+	    
+  		//calculate lat points of distance given
 	    let latDifference =   this.state.radius / 69;
+
+	    //calculate upper and lower latitudes which fall within distance provided
 	    let lowerLat = this.lat - latDifference;
 	    let upperLat = this.lat + latDifference;
 
-	    
+	    //longitude calculations based on locations latitude
+
+	    //calculate longitude number based on its latitude
 	    let longRadians = this._toRadians(this.lat);
 	    
+	    //mulitple by 69.172
 	    let milesPerLong = longRadians * 69.172;
 	   
-
+	    //work out upper and lower longitude for distance given
 	    let longDifference = this.state.radius / milesPerLong;
 	    let lowerLong = this.lng - longDifference;
 	    let upperLong = this.lng + longDifference;
 	  
 
 
-	    
+	    //set reference to business in firestore
 	    let businessReference = this.firestore.collection("Business");
+
+	    //get all business within latitude coords
 	    let query = businessReference.where("lat","<=" , upperLat).where("lat", ">=", lowerLat);
 	   
+	   	//create empty array
 		let items = [];
 
+		//get data
 	    query.get().then((snapshot)=>{
 	    	snapshot.forEach((doc)=> {
-	    		// statements
 	    		
+	    		// for returned data sort for business within longitude coords
 	    		if(doc.data().lng >= lowerLong && doc.data().lng <= upperLong){
-									
+					
+					//push to array				
 					items.push(doc.data());
 					
 	    		}
 	    	});
 
+	    	//add array to store for later use
 			store.dispatch({type:constants.SAVE_SEARCHED_BUSINESS,businessSearchObj:items})
 
+			//add array to state
 	    	this.setState({
 	    		businessComps:items
 	    	});
 
+	    	//update map with data
 			this.child._updateMap(this.lng, this.lat, "FindBusiness",this.state.radius, items);
 	    })
 
@@ -169,7 +197,7 @@ export default class FindBusiness extends Component{
 
 
   	_toRadians (angle) {
-
+  		//work out radians from degrees
   		return angle * (Math.PI / 180);
 	}
 
@@ -178,7 +206,7 @@ export default class FindBusiness extends Component{
 	render(){
 		let businessComps;
 
-		
+		//loop thorugh data from display
 		businessComps = this.state.businessComps.map((business,index)=>{
 			return <BusinessComp businessName={business.businessName} summary={business.summary} location={business.location} key={index} businessLogo={business.businessLogo} businessKey={business.key} />		
 		})

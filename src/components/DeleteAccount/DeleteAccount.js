@@ -12,12 +12,16 @@ class DeleteAccount extends Component {
     constructor(props) {
         super(props);
         
+        //set initial state
         this.state = {
             email:"",
             password:""
         }
 
+        //set base ref for firestore
         this.firestore = firebase.firestore();
+
+        //get user id and user token from localstorage
         this.userUID = LocalStorage.loadState("user");
         this.token  = LocalStorage.loadState("token");
 
@@ -25,6 +29,8 @@ class DeleteAccount extends Component {
 
 
     _handleInput(e){
+
+        //handle input for password account deletion
         this.setState({
             [e.target.id]:e.target.value
         })
@@ -32,15 +38,23 @@ class DeleteAccount extends Component {
 
 
     _deletePasswordAccount(){
+
+        //test for entry of data into password and email boxes
         if(this.state.password.length > 1 && this.state.email.length > 1){
             
+            //send password and email to get google credentials 
             let credentials = this.props.firebase.doGetGoogleCredentials(this.state.email,this.state.password);
            
+            //if credentials come back
             if(credentials){
                 
+                //re authenticate using checked credentials    
                 this.props.firebase.doReauthenticatePassword(credentials).then((returned)=>{
                     
+                    //delete user from firebase
                     this.props.firebase.doDeleteUser();
+
+                    //delete user info from firestore
                     this._deleteUserInfo(returned.user.uid);
                     
                 })
@@ -56,15 +70,18 @@ class DeleteAccount extends Component {
 
     _deleteGoogleAccount(){
         
-        
-        
+        //get user credentials using token        
         let credentials = this.props.firebase.doGetGoogleCredentials(this.token);
                 
         if(credentials){
             
+            //re authenticate using credentials
             this.props.firebase.doReauthenticateGoogle(credentials).then((returned)=>{
                 
+                //delete usr form firebase
                 this.props.firebase.doDeleteUser();
+
+                //delete user info  from firestore
                 this._deleteUserInfo(returned.user.uid);
                 
             })
@@ -76,7 +93,7 @@ class DeleteAccount extends Component {
 
     _deleteUserInfo(uid){
 
-        //dlete session storage
+        //delete session storage
         store.dispatch({type:constants.CLEAR_STORE});
         
         //delete local storage
@@ -98,6 +115,7 @@ class DeleteAccount extends Component {
         let query = ref2.where("uid", "==", uid);
         query.delete();
         
+        // redirect back to home page
         this.props.history.push('/Home');
     }
 
@@ -106,6 +124,7 @@ class DeleteAccount extends Component {
 
         let deleteRequest;
 
+        
         if(this.token === "password"){
             deleteRequest =  <div>
                                 <div className="form-group">

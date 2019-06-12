@@ -57,8 +57,6 @@ export default class Profile extends Component{
 	
 	componentWillMount(){
 		window.scrollTo(0, 0);
-		
-	
 	}
 
 	componentDidMount(){
@@ -118,82 +116,6 @@ export default class Profile extends Component{
 	    	alert("Please sign in to see your profile")
 	    }	
 	}
-
-	/*componentDidMount(){
-
-		//Check if user is signed in.
-	    if (this.userUID) {
-	    	
-	    	// connect to userUIDs db section
-			let ref = this.firestore.collection('Users').doc(this.userUID);
-
-			//get snapshot
-			ref.get().then((snapshot)=>{
-				
-				
-				
-				// check for profileCreated in userUIDs db section
-				if(snapshot.data().profileCreated === true){
-	    			console.log(snapshot.data().profileCreated)
-	    			this.profileCreated = true;
-	    			//connect to People section
-	    			let userRef = this.firestore.collection("People").doc(this.userUID);	
-
-					
-
- 					//gather user data to display
-	    			userRef.get().then((snapshot2) => {
-	    				
-						//get user details or assign to empty string if not details in database
-						let userName = snapshot.data().userName ? snapshot.data().userName: "";
-						let firstName = snapshot2.data().firstName ? snapshot2.data().firstName : "";
-						let lastName = snapshot2.data().lastName ? snapshot2.data().lastName : "";
-						let age = snapshot2.data().age ? snapshot2.data().age : "";
-						let styles = snapshot2.data().styles ? snapshot2.data().styles : "";
-						let bio = snapshot2.data().bio ? snapshot2.data().bio : "";
-						let generalLoc = snapshot2.data().generalLoc ? snapshot2.data().generalLoc : ""
-						let lat = snapshot2.data().lat ? snapshot2.data().lat : "";
-						let lng = snapshot2.data().lng ? snapshot2.data().lng : "";
-
-
-						this.setState({
-							firstName:firstName,
-							lastName:lastName,
-							userName:userName,
-							age:age,
-							styles:styles,
-							bio:bio,
-							generalLoc:generalLoc,
-							lat:lat,
-							lng:lng
-						});
-					
-	    			})
-	    		}else{
-	    			//Leave fields blank for first input apart from username if exists
-	    			let username = snapshot.data().userName ? snapshot.data().userName : "";
-
-	    			this.setState({
-	    				userName:username
-	    			})
-	    			this.profileCreated = false;
-	    		}
-			});
-
-			let picRef = this.firestore.collection("PeopleImages").doc(this.userUID);
-			picRef.get().then((snapshot)=>{
-				
-				this.setState({
-					profilePicUrl:snapshot.data().profilePicUrl
-				})
-			})
-	    	
-	    }else{
-	    	// No user is signed in. prompt to sign in.
-	    	alert("Please sign in to see your profile")
-	    }	
-	}
-*/
 
 
 	//handle input fields

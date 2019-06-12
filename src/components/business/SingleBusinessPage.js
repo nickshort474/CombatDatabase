@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import { firebase } from '@firebase/app';
 
 import Review from './ReviewComp';
-import PhotoDisplay from '../../utils/PhotoDisplay';
+/*import PhotoDisplay from '../../utils/PhotoDisplay';*/
 import Map from '../../utils/Map';
 
 import store from '../../redux/store';
@@ -113,7 +113,8 @@ export default class SingleBusinessPage extends Component{
 
 	render(){
 
-		let EditPage,AddImages,EditLogo;
+
+		let EditPage,EditLogo;
 
 		//map state review array to Review components
 		let reviews = this.state.reviews.map((review) => {
@@ -124,7 +125,7 @@ export default class SingleBusinessPage extends Component{
 		if(this.state.owner === true){
 			
 			EditPage = <Link to={`/EditBusiness/${this.props.match.params.BusinessKey}`}><p>Edit the information on this page</p></Link>
-			AddImages = <Link to={`/AddBusinessImages/${this.props.match.params.BusinessKey}`}><p>Click here to add images to your page</p></Link>
+			/*AddImages = <Link to={`/AddBusinessImages/${this.props.match.params.BusinessKey}`}><p>Click here to add images to your page</p></Link>*/
 			EditLogo = <div><Link to={`/EditBusinessLogo/${this.props.match.params.BusinessKey}`}><p>Edit your business logo</p></Link></div>
 		}
 
@@ -154,12 +155,18 @@ export default class SingleBusinessPage extends Component{
 						<div className="col-xs-12">
 							<div className="row">
 								
-								<div className="text-center">
-									<h2 className="box greyedContent">{this.state.businessName}</h2>
+								<div className="text-center ">
+									<h2 className="box greyedContent col-sm-6">{this.state.businessName}</h2>
+								</div>
+								<div className="text-center col-sm-6">
+									<img src={this.state.businessLogo ? this.state.businessLogo: defaultLogo}  className=""   alt="Business logo" />
 								</div>
 								
 							</div>
-
+							
+							<div className="text-center">
+								{EditLogo}
+							</div>
 							<div className="row">
 								
 								<p className="box text-center greyedContent">{this.state.summary}</p>
@@ -205,18 +212,17 @@ export default class SingleBusinessPage extends Component{
 							</div>
 							: null}
 							
-							<div className="text-center">
-								<img src={this.state.businessLogo ? this.state.businessLogo: defaultLogo}  className="imageFit"   alt="Business logo" />
-							</div>
-							<div className="text-center">
-								{EditLogo}
-							</div>
+							
+
+							{/* -- VERSION 2 --
 
 							<PhotoDisplay data={this.props.match.params.BusinessKey} page="SingleBusinessPage" />
 							
+							
+
 							<div className="text-center">
 								{AddImages}
-							</div>
+							</div>*/}
 
 
 						</div>

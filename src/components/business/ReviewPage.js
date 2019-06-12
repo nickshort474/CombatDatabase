@@ -17,11 +17,14 @@ export default class ReviewPage extends Component{
 	constructor(props){
 		super(props);
 
+		//save page to store 
 		let pageString = `Review/${this.props.match.params.BusinessKey}`
 		store.dispatch({type:constants.SAVE_PAGE, page:pageString});
 		
+		//set base firestore reference
 		this.firestore = firebase.firestore();
 
+		//get username
 		this._getUserName()
 		
 		
@@ -34,8 +37,13 @@ export default class ReviewPage extends Component{
 	}
 
 	_getUserName(){
+		//get user id form storage
 		this.userUID = LocalStorage.loadState("user");
+
+		//use id to get username form firestore 
 		let ref = this.firestore.collection("Users").doc(this.userUID);
+		
+		//get data
 		ref.get().then((snapshot)=>{
 			this.userName = snapshot.data().userName;
 		})
@@ -44,10 +52,13 @@ export default class ReviewPage extends Component{
 
 	
 	_handleInput(e){
+
+		//handle input data
 		this.setState({
 			[e.target.id]:e.target.value
 		})
 
+		//remove error indicator when new data entered
 		$(`#${e.target.id}`).removeClass('formError');
 	}
 
@@ -60,13 +71,19 @@ export default class ReviewPage extends Component{
 
 		e.preventDefault()
 
+		//disbale buttons
 		_disable();
 
+		//run validation
 		let errorMsgs = this._validate()
 		
+		//if no errors within returned array 
 		if(errorMsgs.length === 0){
+			
+			//set reference to review section
 			let reviewRef = this.firestore.collection("Reviews").doc(this.props.match.params.BusinessKey).collection("Review").doc(this.userName);
 
+			//create review object
 			let obj = {
 				Username:this.userName,
 				UserUID:this.userUID,
@@ -74,14 +91,20 @@ export default class ReviewPage extends Component{
 				Comment:this.state.reviewComment,
 				Stars:this.state.starRating
 			}
+
+			//add review object to firestore
 			reviewRef.set(obj).then(()=>{
+				//enable buttons
 				_enable();	
+				//redirect
 				this.props.history.push("/SingleBusiness/" + this.props.match.params.BusinessKey)
 			})
 			
 		}else{
+			//enable buttons
 			_enable()
 
+			//create error component
 			let msgComp = errorMsgs.map((msg,index)=>{
 				
 				return <div className="text-center" key={index}><p>{msg}</p></div>
@@ -89,6 +112,7 @@ export default class ReviewPage extends Component{
 
 			let formattedComp = <div className="box">{msgComp}</div>
 			
+			//set error component to state for display
 			this.setState({
 				errors:formattedComp
 			})
@@ -103,6 +127,7 @@ export default class ReviewPage extends Component{
 		//store error messages in array
 		const errorMsgs = [];
 
+		// run validation
 		if (this.state.reviewTitle.length < 1) {
 		   errorMsgs.push("Please provide a review title");
 		   $('#reviewTitle').addClass('formError');

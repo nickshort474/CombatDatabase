@@ -14,7 +14,7 @@ import FindBusiness from '../Business/FindBusiness';
 import SingleBusinessPage from '../Business/SingleBusinessPage';
 import ReviewPage from '../Business/ReviewPage';
 import EditBusiness from '../Business/EditBusiness';
-import AddBusinessImages from '../Business/AddBusinessImages';
+/*import AddBusinessImages from '../Business/AddBusinessImages';*/
 import EditBusinessLogo from '../Business/EditBusinessLogo';
 
 //Community files
@@ -43,7 +43,7 @@ import EditHistory from '../Styles/EditHistory';
 import Report from '../Styles/Report';
 
 
-// Blog files 
+/*// Blog files 
 import MyBlogs from '../Blog/MyBlogs';
 import MyBlogPostList from '../Blog/MyBlogPostList';
 
@@ -57,7 +57,7 @@ import SearchedBlogPostList from '../Blog/SearchedBlogPostList';
 import SingleBlogPost from '../Blog/SingleBlogPost';
 
 import AddBlog from '../Blog/AddBlog';
-import AddBlogPost from '../Blog/AddBlogPost';
+import AddBlogPost from '../Blog/AddBlogPost';*/
 
 
 
@@ -110,18 +110,18 @@ class App extends Component{
 						<Route path="/FindBusiness" component={FindBusiness} />
 						<Route path="/Review/:BusinessKey" component={ReviewPage} />
 						<Route path="/EditBusiness/:BusinessKey" component={EditBusiness} />
-						<Route path="/AddBusinessImages/:BusinessKey" component={AddBusinessImages} />
+						{/*<Route path="/AddBusinessImages/:BusinessKey" component={AddBusinessImages} />*/}
 						<Route path="/EditBusinessLogo/:BusinessKey" component={EditBusinessLogo} />
 
 						<Route path="/ThankYouForListing" component={ThankYouForListing} />
 
 						<Route path="/Community" component={Community} />
-						<Route path="/Messages/:PersonUsername/:PersonKey" component={Messages} />
 						<Route path="/PersonProfile/:PersonKey" component={PersonProfile} />
 						<Route path="/ContactRequest/:PersonKey" component={ContactRequest} />
-						<Route path="/NewMessage/:Username/:UserUID" component={NewMessage} />
 						<Route path="/SearchForPeople" component={SearchForPeople} />
 					
+						<Route path="/Messages/:PersonUsername/:PersonKey" component={Messages} />
+						<Route path="/NewMessage/:Username/:UserUID" component={NewMessage} />
 
 						<Route path="/Events" component={EventsPage} />
 						<Route path="/SingleEvent/:EventKey" component={SingleEventPage} />
@@ -136,19 +136,16 @@ class App extends Component{
 						<Route path="/EditHistory/:HistoryKey" component={EditHistory} />
 						<Route path="/Report/:ItemName" component={Report} />
 						
-						<Route path="/MyBlogs" component={MyBlogs} />
+					{/*	<Route path="/MyBlogs" component={MyBlogs} />
 						<Route path="/MyBlogPostList/:BlogUser/:BlogName" component={MyBlogPostList} />
 						<Route path="/ViewBlogs" component={ViewBlogs} />
 						<Route path="/BlogPostList/:BlogUser/:BlogName" component={BlogPostList} />
-
 						<Route path="/FindBlog" component={FindBlog} />
 						<Route path="/SearchedBlogs/:SearchTerm" component={SearchedBlogs} />
 						<Route path="/SearchedBlogPostList/:BlogUser/:BlogName/:SearchTerm" component={SearchedBlogPostList} />
-
 						<Route path="/SingleBlogPost/:BlogUser/:BlogName/:PostKey" component={SingleBlogPost} />
-
 						<Route path="/AddBlog" component={AddBlog} />
-						<Route path="/AddBlogPost/:BlogName" component={AddBlogPost} />
+						<Route path="/AddBlogPost/:BlogName" component={AddBlogPost} />*/}
 						
 
 						<Route path="/Contact" component={Contact} />

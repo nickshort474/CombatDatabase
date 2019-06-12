@@ -11,7 +11,6 @@ import $ from 'jquery';
 import GetImage from '../../utils/GetImage';
 import {_disable,_enable} from '../../utils/DisableGreyOut';
 
-
 import store from '../../redux/store';
 import constants from '../../redux/constants';
 
@@ -26,6 +25,7 @@ class AddEvents extends Component{
 	constructor(){
 		super();
 		
+		//set initial state
 		this.state = {
 			eventName:"",
 			eventLocation:"",
@@ -38,15 +38,19 @@ class AddEvents extends Component{
 			
 		}
 
+		//save page to store
 		store.dispatch({type:constants.SAVE_PAGE, page:"AddEvents"});
-		store.dispatch({type:constants.EVENT_HAS_IMAGE, eventHasImg:false})
 
+		//set event has image to false ready for adding of new image in GetImage component
+		store.dispatch({type:constants.EVENT_HAS_IMAGE, eventHasImg:false})
 		
-		
+		//get user id form store		
 		this.userUID = LocalStorage.loadState("user");
 		
-		//firestore ref
+		//set base firestore ref
 		this.firestore = firebase.firestore();
+
+		//set initial variables
 		this.hasImage = false;
 		
 
@@ -61,16 +65,20 @@ class AddEvents extends Component{
 	}
 
 	componentWillMount(){
+		//scroll to top
 		window.scrollTo(0, 0);
 	}
 
 	componentDidMount(){
+
+		//get reference to date time container
 		this.eventDateTimeDiv = document.getElementById("dateTimeContainer");
 	}
 
 
 	_onSuggestSelect(suggest) {
 		
+		//handle suggestion from GeoSuggest component
 		if(suggest){
 			
 	    	this.setState({
@@ -81,42 +89,48 @@ class AddEvents extends Component{
 	    	})
 				    	
 	    }
+
+	    //remove error indicator on new input
 	    $('#geoSuggest').removeClass('formError');
   	}
 
 	
 	_handleInput(e){
-		//this._testInput();
 		
+		//handle input field data
 		this.setState({
 			[e.target.id]:e.target.value
 		})
 
-		// remove formError class on user input
+		//remove error indicator on new input
 		$(`#${e.target.id}`).removeClass('formError');
 	}
 
 
 	_handleDateTimeChange(dateObject){
+		
+		//handle date time selection from DateTime component
 		if(typeof dateObject === 'object'){
 			
+			//set unix time from date time component
 			let unix = moment(dateObject).unix() * 1000;
-			console.log(unix);
-				
+			
+			//set sate to display time	
 			this.setState({
 				eventTime:unix,
 				eventTimeFormat:true
 			})
 			
-			
+			//remove error indicator
 			this.eventDateTimeDiv.setAttribute("style", "border:none")
 		}else{
 			
+			// false input to DateTime
 			this.setState({
 				eventTime:1,
 				eventTimeFormat:false
 			})
-			//add immediate red border for text input of time suggest box
+			//add red border for text input of time suggest box to indicate error
 			this.eventDateTimeDiv.setAttribute("style", "border:2px solid red")
 		}
 	}
@@ -126,38 +140,44 @@ class AddEvents extends Component{
 	_onSubmit(e){
 		e.preventDefault();
 		
+		//disable buttons
 		_disable();
 
+		//show loading circle
 		this.setState({
     		loading:true
     	});	
 
+		//validate form fields
 		let errorMsgs = this._validate();
 		
+		// if returned error msg array has errors
 		if(errorMsgs.length > 0){
+			
+			//create error msg component
 			let msgComp = errorMsgs.map((msg,index)=>{
 				return <div className="text-center" key={index}><p>{msg}</p></div>
 			})
 
 			let formattedComp = <div className="box">{msgComp}</div>
+			//set state to display error messages
 			this.setState({
 				errors:formattedComp
 			})
 			
+			//enable buttons and clear loading circle
 			_enable();
-
 			this.setState({
     			loading:false
     		});	
 		}else{
-			console.log("can be submitted");
-
+			// no errors
+			//get whether event has associated image from store (saved in GetImage comp)
 			let storeState = store.getState();
 			this.hasImage = storeState.eventHasImg;
 
 			//test for matching event names
 			this._testForName(()=>{
-				
 				
 
 				let ref = this.firestore.collection("Events").doc();
@@ -248,12 +268,13 @@ class AddEvents extends Component{
 
 	_testForName(callback){
 
+		
 		let nameMatch = false;
 
 		//check whether event name already exists
 		let nameCheckRef = this.firestore.collection("Events");
 		let query = nameCheckRef.where("eventName", "==", this.state.eventName);
-
+		
 		query.get().then((snapshot)=>{
 			
 			snapshot.forEach((snap)=>{

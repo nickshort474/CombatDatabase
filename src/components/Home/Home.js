@@ -66,9 +66,9 @@ export default class Home extends Component{
 			        				<div className="txtCompStyle">
 										<Link to="/Styles">Styles</Link><p className="text-10">Database of styles</p> 	
 			        				</div>
-			        				<div className="txtCompStyle">
+			        				{/*<div className="txtCompStyle">
 										<Link to="/ViewBlogs">Blogs</Link><p className="text-10">Share your views, opinions and thoughts</p> 
-			        				</div>
+			        				</div>*/}
 			        				<div className="txtCompStyle">
 			        					<Link to="/Profile">Profile</Link><p className="text-10">Check your profile, update and add more details</p> 
 			        				</div>

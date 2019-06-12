@@ -49,68 +49,6 @@ export default class Username extends Component{
 
 
 
-	/*_submitForm(){
-		// check for matching usernames first
-		let ref = this.firestore.collection('Users');
-		let query = ref.where("userName", "==", this.state.userName);
-		
-		let match = false;
-
-		console.log(this.state.userName);
-
-		query.get().then((snapshot)=>{
-			
-			snapshot.forEach((snap)=>{
-				if(snap){
-					alert(snap.data().userName + " already exists please try another user name");
-					match = true;
-				}
-			})
-			
-			
-		}).then(()=>{
-			if(!match){
-				console.log("update")
-
-				let ref = this.firestore.collection('People').doc(this.userUID);
-				ref.get().then((snapshot)=>{
-					
-					if(snapshot.exists){
-						console.log("exists");
-						ref.update({userName:this.state.userName});
-						this.firestore.collection('Users').doc(this.userUID).update({userName:this.state.userName, profileCreated:true});
-						
-						//this._updateUsernameSection();
-						//username section for SearchForPeople (autosuggest box)
-						console.log("trying to update username section")
-						//delete doc of old username 
-						this.firestore.collection('Usernames').doc(this.state.oldUsername).delete();
-						console.log("nothing to delete!")
-						//add new doc with new username
-						this.firestore.collection('Usernames').doc(this.state.userName).set({uid:this.userUID});
-
-					}else{
-						ref.set({userName:this.state.userName})
-						this.firestore.collection('Users').doc(this.userUID).update({userName:this.state.userName, profileCreated:true});
-						//this._updateUsernameSection();
-						//username section for SearchForPeople (autosuggest box)
-						console.log("trying to update username section")
-						//delete doc of old username 
-						//this.firestore.collection('Usernames').doc(this.state.oldUsername).delete();
-						console.log("nothing to delete!")
-						//add new doc with new username
-						this.firestore.collection('Usernames').doc(this.state.userName).add({uid:this.userUID});
-
-					}
-					this.props.history.push("/Profile");
-				})
-
-						
-				
-			}
-		})
-	}*/
-
 	_submitForm(){
 
 		// check for matching usernames first
