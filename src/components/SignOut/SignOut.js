@@ -10,6 +10,8 @@ class SignOutButton extends Component{
 	
 
 	_onClick(e){
+		
+		//on sign out use funciton in firebase.js
 		this.props.firebase.doSignOut().then(()=>{
 
 			//signed out so clear all data from store ready for another user or another fresh session

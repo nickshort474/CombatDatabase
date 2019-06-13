@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 
+//create initial state const
 const INITIAL_STATE = {
 	password1:"",
 	password2:"",
@@ -19,6 +20,7 @@ class PasswordChangeFormBase extends Component{
 	constructor(props){
 		super(props);
 
+		//set initial state from const
 		this.state = {
 			...INITIAL_STATE
 		};
@@ -28,22 +30,26 @@ class PasswordChangeFormBase extends Component{
 	_onSubmit(e){
 		e.preventDefault();
 
+		//call firestore password credential function in firebase.js file
 		let credentials = this.props.firebase.doGetPasswordCredentials(this.state.email, this.state.oldPassword);
 
 		if(credentials){
-                
+            //re authenticate using password credentials 
             this.props.firebase.doReauthenticatePassword(credentials).then((returned)=>{
-                
+               
+               //get entered pasword 
                let password1  = this.state.password1;
                
+               //update password
                this.props.firebase.doPasswordUpdate(password1).then(()=>{
-			
+					
+					//set state basck to initial values
 					this.setState({
 						...INITIAL_STATE
 					})
 
 				}).catch((error)=>{
-			
+					//catch error add to state for display
 					this.setState({
 						error:error
 					})
@@ -58,6 +64,8 @@ class PasswordChangeFormBase extends Component{
 	}
 
 	_onChange(e){
+
+		//handle password input
 		this.setState({
 			[e.target.id]:e.target.value
 		})
@@ -65,6 +73,7 @@ class PasswordChangeFormBase extends Component{
 
 	render(){
 
+		//test for matching passwords to enable submit button
 		const isInvalid = this.state.oldPassword !== "" || this.state.password1 !== this.state.password2 || this.state.password1 === '';
 
 		return(

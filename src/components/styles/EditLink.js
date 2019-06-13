@@ -8,8 +8,6 @@ export default class EditLink extends Component{
 	render(){
 		
 		return(
-
-			
 				
 			<div>	
 			{/*Wiki edit button*/}

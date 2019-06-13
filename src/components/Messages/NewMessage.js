@@ -8,9 +8,6 @@ class NewMessage extends Component{
 	
 	constructor(props){
 		super(props);
-		
-		this.user = LocalStorage.loadState("user");
-		this.firestore = firebase.firestore();
 
 		// setup initial state
 		this.state = {
@@ -18,16 +15,24 @@ class NewMessage extends Component{
 			items:[]
 			
 		}
-			
+
+		//get user id fomr localstorage
+		this.user = LocalStorage.loadState("user");
+
+		//set base firestore reference
+		this.firestore = firebase.firestore();	
 	}
 	
 	componentWillMount() {
+
+		//scorll to top
 		window.scrollTo(0, 0);
 			
 	}
 
 	_handleInput(e){
 		
+		//handle text input and set to state
 		this.setState({
 			[e.target.id]:e.target.value
 		})
@@ -37,10 +42,10 @@ class NewMessage extends Component{
 	_handlePost(e){
 		e.preventDefault();
 		
-		// collect data
-		
+		// collect data from input
 		let content = e.target.content.value;
 		
+		//test for content
 		if(content.length > 1){
 			
 			// set ref for user in Messages section
@@ -54,7 +59,7 @@ class NewMessage extends Component{
 					query.get().then((snapshot)=>{
 						
 						snapshot.forEach((snap)=>{
-							console.log(snap.id);
+							//delete old message from both users message store
 							this.firestore.collection("Messages").doc(this.user).collection(this.props.msgUser).doc(snap.id).delete();
 							this.firestore.collection("Messages").doc(this.props.msgUser).collection(this.user).doc(snap.id).delete();
 						})
@@ -62,19 +67,23 @@ class NewMessage extends Component{
 				}
 			})
 
+			//create doc in firestore
 			let refDoc = ref.doc();
+
+			//get ref of doc
 			let messageID = refDoc.id;
+
 			//get date time
 			let now = Date.now();
 			
 			// create object data
 			let obj = {
-				
 				messageContents:content,
 				messageDate:now,
 				messageUser:this.user,
 				
 			}
+			
 			//add message data to Messages section in firestore
 			refDoc.set(obj).then(()=>{
 

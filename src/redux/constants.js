@@ -1,8 +1,5 @@
 export default {
-	/*CREATE_USER:'create user',
-	SAVE_USER:'save user',
-	SAVE_USERNAME:'save username',
-	REMOVE_USER:'remove user',*/
+	
 	SAVE_PAGE:'save page',
 	SAVE_PREV_PAGE:'save previous page',
 	RESTORE:'restore state',

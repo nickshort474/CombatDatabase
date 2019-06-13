@@ -10,6 +10,7 @@ const PasswordForgetPage = () => (
     </div>
 );
 
+//create initial state const
 const INITIAL_STATE = {
     email: '',
     error: null,
@@ -20,6 +21,7 @@ class PasswordForgetFormBase extends Component {
     constructor(props) {
         super(props);
 
+        //set initial state from const
         this.state = {
             ...INITIAL_STATE 
         };
@@ -29,20 +31,24 @@ class PasswordForgetFormBase extends Component {
     _onSubmit(e){
         e.preventDefault();
        
+        //get user enterde email       
         let email = this.state.email;
 
+        //call password reset from firebase.js
         this.props.firebase.doPasswordReset(email).then(() => {
 
+            //set state back to initial values
             this.setState({
                 ...INITIAL_STATE 
             });
 
+            //show error display as success
             this.setState({
             	error:"Password reset email has been sent"
             })
 
         }).catch(error => {
-
+            //show error display message
             this.setState({ error });
 
         });
@@ -51,6 +57,8 @@ class PasswordForgetFormBase extends Component {
     };
 
     _onChange(e){
+
+        //handle input
         this.setState({ 
             [e.target.name]: e.target.value 
         });

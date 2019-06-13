@@ -14,23 +14,7 @@ export default class Styles extends Component{
 	constructor(){
 		super();
 
-		this.dropDownStyle = {
-			color:"black"
-		}
-
-		let storeState = store.getState();
-		let style = storeState.style;
-		
-
-		if(style === undefined){
-			this.currentSelectedStyle = "Karate";
-		}else{
-			this.currentSelectedStyle = style;
-		}
-
-		store.dispatch({type:constants.SAVE_PAGE, page:"Styles"});
-		
-
+		//set initial state
 		this.state = {
 			styleItems:[],
 			styleName:"",
@@ -42,23 +26,50 @@ export default class Styles extends Component{
 			history:""
 		}
 
+		//style dropdown box
+		this.dropDownStyle = {
+			color:"black"
+		}
+
+		//get cuurently slected style from store
+		let storeState = store.getState();
+		let style = storeState.style;
 		
-		let styleItems = [];
+		//if style is undefined set it to Aikido
+		if(style === undefined){
+			this.currentSelectedStyle = "Aikido";
+		}else{
+			this.currentSelectedStyle = style;
+		}
+
+		//save current page to store
+		store.dispatch({type:constants.SAVE_PAGE, page:"Styles"});
+		
+		//get user id form local storage
 		this.userUID = LocalStorage.loadState("user");
+		let styleItems = [];
 		
+		//set base firestore ref
 		this.firestore = firebase.firestore();
+
+		//set styles ref
 		let ref = this.firestore.collection("Styles");
 
+		//get style data
 		ref.get().then((snapshot)=>{
 			
+			//loop through snapshot
 			snapshot.forEach((element)=> {
-				// statements
+				//push data to array
 				styleItems.push(element.data().Name);
 			});
 
+			//add array to state for display
 			this.setState({
 				styleItems:styleItems
-			},(initialStyle)=>{
+			},()=>{
+
+				//handle first collection of style data
 				this._handleStyleClick(false);
 			})
 		})
@@ -70,43 +81,40 @@ export default class Styles extends Component{
 		window.scrollTo(0, 0);
 	}
 
-	_handleStyleClick(event){
+	_handleStyleClick(e){
 		
-		if(event !== false){
-			
-			this.currentSelectedStyle = event.target.value;
+		//if e !== false then is new selection from drop down so populate currentlySelectedStyle from target.value
+		if(e !== false){
+			//set value of slectedStyle
+			this.currentSelectedStyle = e.target.value;
 			
 		}
-		
+
+		//save currently selected style to store
 		store.dispatch({type:constants.SAVE_STYLE, style:this.currentSelectedStyle});
 		
-
-		if(this.currentSelectedStyle !== "Select style to view"){
+		//set ref to sleceted style in styles section
+		let ref = this.firestore.collection("Styles").doc(this.currentSelectedStyle); 
 			
+		//get style data
+		ref.get().then((snapshot)=>{
 			
-			let ref = this.firestore.collection("Styles").doc(this.currentSelectedStyle); 
-			
-			ref.get().then((snapshot)=>{
-				
-				this.setState({
-					styleName:snapshot.data().Name,
-					countryOfOrigin:snapshot.data().Country,
-					dateCreated:snapshot.data().Created,
-					definingFeatures:snapshot.data().Features,
-					famousPractitioners:snapshot.data().Practitioners,
-					fullDescription:snapshot.data().Description,
-					history:snapshot.data().History
-				})
+			//save data to state for display
+			this.setState({
+				styleName:snapshot.data().Name,
+				countryOfOrigin:snapshot.data().Country,
+				dateCreated:snapshot.data().Created,
+				definingFeatures:snapshot.data().Features,
+				famousPractitioners:snapshot.data().Practitioners,
+				fullDescription:snapshot.data().Description,
+				history:snapshot.data().History
 			})
+		})
 
-			
-		}else{
-			console.log("no value");
-		}
 	}
 
 	_addStyle(){
-
+		// if user is signed in allow them to navigate to add style
 		if(this.userUID){
 			this.props.history.push('/AddStyle');
 		}else{
@@ -117,6 +125,7 @@ export default class Styles extends Component{
 
 	render(){
 		
+		//loop through styleItems to create drop down 
 		var styleList = this.state.styleItems.map((styleName) => {
 			
 			let routeString = styleName.replace(/\s+/g, '');
@@ -137,7 +146,7 @@ export default class Styles extends Component{
 			        <section className="content-wrapper">
 			        	<div className="row">
 			        		
-			        		{/*Start of Sidebar*/}
+			        		
 			        		<div className="col-sm-3">
 			        			
 			        			<div className="row">
@@ -153,15 +162,9 @@ export default class Styles extends Component{
 					        			</div>
 				        			</div>
 			        			</div>
-
-			        			
-			        			
-			        			
 			        		</div>
 
 
-
-			        		{/*Start of main window*/}
 							<div className="col-sm-9">
 			                    
 								<div className="row">
@@ -266,11 +269,11 @@ export default class Styles extends Component{
 			        					
 			        					
 				        					<div className="col-sm-4 addStyleButton" onClick={this._addStyle.bind(this)}>
-				        						{/*<Link to="/AddStyle" className="clearFloat">*/}
-					        						<div className="box text-center greyedContent">
-					        							<h4>Add Style</h4><i className="fa fa-plus-circle fa-3x" alt="Add Style"></i>
-								                	</div>
-							                	{/*</Link>*/}
+				        						
+				        						<div className="box text-center greyedContent">
+				        							<h4>Add Style</h4><i className="fa fa-plus-circle fa-3x" alt="Add Style"></i>
+							                	</div>
+							                	
 							                </div>
 
 							                <div className="col-sm-4">
@@ -291,15 +294,8 @@ export default class Styles extends Component{
 
 			        				</div>
 			        			</div>
-								
-
-								
 			            	</div>
-
-			            	
-
 			        	</div>
-			        	
 			        </section>
 			    </div>
 			</div>

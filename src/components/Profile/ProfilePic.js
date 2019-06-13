@@ -13,20 +13,25 @@ export default class ProfilePic extends Component{
 	constructor(props){
 		super(props);
 		
-		this.firestore = firebase.firestore();
-
-		let pageRef = `ProfilePic/${this.props.match.params.UserRef}`;
-
-		store.dispatch({type:constants.SAVE_PAGE, page:pageRef});
-
+		//set initial state
 		this.state = {
 			addedPic:false
 		}
+
+		//set base firestore reference
+		this.firestore = firebase.firestore();
+
+		//save curent page to store
+		let pageRef = `ProfilePic/${this.props.match.params.UserRef}`;
+		store.dispatch({type:constants.SAVE_PAGE, page:pageRef});
+
 		
+		//set ref to People images 
 		let userRef = this.firestore.collection("PeopleImages").doc(this.props.match.params.UserRef);	
 		
+		//get users profile picture
 		userRef.get().then((snapshot)=>{
-			
+			//save profile image url to state
 			this.setState({
 				profilePicUrl:snapshot.data().profilePicUrl
 			})
@@ -36,7 +41,7 @@ export default class ProfilePic extends Component{
 
 
 	_handleBrowseClick(){
-	   
+	   //handle browse for file click 
 	    var fileinput = document.getElementById("browse");
 	    fileinput.click();
 	}
@@ -44,13 +49,16 @@ export default class ProfilePic extends Component{
 
 	
 	_handleProfilePic(e){
-		
+		//set reader
 		let reader = new FileReader();
 		
+		//set onload event
 		reader.onload = (e) => {
-		
+			
+			//assign uploaded pic to image elements src for display
 			document.getElementById('profilePic').src = e.target.result;
 			
+			//add data to state
 			this.setState({
 				profilePic:e.target.result,
 				addedPic:true
@@ -58,18 +66,23 @@ export default class ProfilePic extends Component{
 
 		}
 
+		//read data
 		reader.readAsDataURL(e.target.files[0]);
 	}
 
 
 	_addImageToStorage(callback){
 		
+		// if new image has been added 
 		if(this.state.addedPic){
 			
+			//set base storage ref
 			let storageRef = firebase.storage().ref();
 
-			// upload img to storage
+			// uset image name
 			let profileImageFileLocation = `profilePics/${this.props.match.params.UserRef}.jpg`;
+
+			//set upload task
 			let uploadTask = storageRef.child(profileImageFileLocation).putString(this.state.profilePic,'data_url');
 
 			// Register three observers:
@@ -101,8 +114,8 @@ export default class ProfilePic extends Component{
 				    console.log(error);
 				}, () => {
 				    // Handle successful uploads on complete
-				    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
 				    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL)=>{
+				    	//callback with download url
 						callback(downloadURL);
 				    });
 				})
@@ -114,16 +127,24 @@ export default class ProfilePic extends Component{
 
 	_submitForm(e){
 		e.preventDefault();
+
+		//disable buttons
 		_disable();
+
 		//add image to storage
 		this._addImageToStorage((downloadURL)=>{
 			//add reference to image to People section in firestore
-			console.log(downloadURL);
-			
+		
+			//set ref to People images
 			let profileRef = this.firestore.collection("PeopleImages").doc(this.props.match.params.UserRef);
 
+			//update download url for profile pic
 			profileRef.set({profilePicUrl:downloadURL});
+
+			//enable buttons
 			_enable();
+
+			//redirect to profile
 			this.props.history.push("/Profile");
 			
 		})

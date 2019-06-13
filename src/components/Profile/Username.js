@@ -1,10 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {firebase} from '@firebase/app';
- 
 
-import store from '../../redux/store';
-import constants from '../../redux/constants';
 import LocalStorage from '../../utils/LocalStorage';
 
 
@@ -13,21 +10,22 @@ export default class Username extends Component{
 	constructor(){
 		super();
 
+		//set initial state
 		this.state = {
 			userName:""
 		}
+
+		//get user id form localstorage
 		this.userUID = LocalStorage.loadState("user");
+
+		//set base firestore ref
 		this.firestore = firebase.firestore();
-
-		store.dispatch({type:constants.SAVE_PAGE, page:"Username"});
-
-		
 
 	}
 
 	componentWillMount(){
 		
-		//get existing username
+		//get existing username from firestore
 		let ref = this.firestore.collection('Users').doc(this.userUID);
 		ref.get().then((snapshot)=>{
 			
@@ -41,7 +39,7 @@ export default class Username extends Component{
 	}
 
 	_changeUsername(e){
-		
+		//handle input of username
 		this.setState({
 			userName:e.target.value
 		})
@@ -59,6 +57,7 @@ export default class Username extends Component{
 
 		ref.get().then((snapshot)=>{
 			
+			//if snapshot exists then username is already in firestore
 			if(snapshot.exists){
 				alert(this.state.userName + " already exists please try another user name");
 				match = true;
@@ -67,6 +66,8 @@ export default class Username extends Component{
 			}
 			
 		}).then(()=>{
+
+			//if match is false then update username across all section of firestore that name exists in
 			if(!match){
 				
 				this.firestore.collection('Users').doc(this.userUID).update({userName:this.state.userName});
@@ -78,7 +79,7 @@ export default class Username extends Component{
 				//update username in People section
 				this.firestore.collection("People").doc(this.userUID).update({userName:this.state.userName})
 
-				//redirect
+				//redirect back to profile
 				this.props.history.push("/Profile");
 
 				

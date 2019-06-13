@@ -22,8 +22,10 @@ export default class Profile extends Component{
 	constructor(props){
 		super(props);
 		
+		//save current page to store for sign in redirect
 		store.dispatch({type:constants.SAVE_PAGE, page:"Profile"});
 
+		//set initial state
 		this.state = {
 			firstName:"",
 			lastName:"",
@@ -37,25 +39,29 @@ export default class Profile extends Component{
 			
 		}
 		
-		
+		//ghet user id form localstorage
 		this.userUID = LocalStorage.loadState("user");
+
+		//get token from storage
 		this.token = LocalStorage.loadState("token");
+
+		//set base firestore ref
 		this.firestore = firebase.firestore()
 
 
-
+		//check if user is signed in
 		if(this.userUID){
-			
 			this.signedIn = true
 		}else{
-			console.log("redirect");
 			this.signedIn = false
+			//redirect to sign-in
 			this.props.history.push('/Signin')
 		}
 		
 	}
 	
 	componentWillMount(){
+		//scroll to top
 		window.scrollTo(0, 0);
 	}
 
@@ -86,7 +92,7 @@ export default class Profile extends Component{
 				let lat = snapshot.data().lat ? snapshot.data().lat : "";
 				let lng = snapshot.data().lng ? snapshot.data().lng : "";
 
-
+				//set to state
 				this.setState({
 					firstName:firstName,
 					lastName:lastName,
@@ -102,10 +108,13 @@ export default class Profile extends Component{
 	    	})
 	    	
 			
-
+	    	//set ref to profile image url
 			let picRef = this.firestore.collection("PeopleImages").doc(this.userUID);
+			
+			//get image url
 			picRef.get().then((snapshot)=>{
 				
+				//set to state
 				this.setState({
 					profilePicUrl:snapshot.data().profilePicUrl
 				})
@@ -118,9 +127,9 @@ export default class Profile extends Component{
 	}
 
 
-	//handle input fields
+	
 	_onChangeInput(e){
-		
+		//handle input fields
 		this.setState({
 			[e.target.name]:e.target.value
 		})
@@ -136,9 +145,10 @@ export default class Profile extends Component{
 		if(this.userUID) {
 		    
 		    	
-		    //create profile
+		    //create profile ref
 			let profileRef = this.firestore.collection('People').doc(this.userUID);
 		    
+		    //create user object
 			let userObj = {
 
 				firstName:this.state.firstName,
@@ -153,6 +163,7 @@ export default class Profile extends Component{
 				
 			}
 			
+			//update profile
 			profileRef.update(userObj)
 			alert("Thank you for updating your profile!")
 			
@@ -167,17 +178,20 @@ export default class Profile extends Component{
 
 	
 	_handleProfilePic(e){
+		//handle updating of profile pic
 		let urlToPush = `/ProfilePic/${this.userUID}`
 		this.props.history.push(urlToPush);
 
 	}
 
 	_handleUsernameChange(){
+		//handle updaing of username
 		this.props.history.push('/Username');
 	}
 
 	_onSuggestSelect(suggest) {
 		
+		//handle saving of location suggestion from Geosuggest component
 		if(suggest){
 			this.setState({
 				generalLoc:suggest.gmaps.formatted_address,
@@ -297,19 +311,6 @@ export default class Profile extends Component{
 										
 										
 
-
-										{/*<div className="row">
-											<div className="col-sm-6">
-												<label>Contactable by:</label>
-											</div>
-											<div className="col-sm-4">
-												<select name="contact" value={this.state.contact} onChange={this._changeContact.bind(this)} >
-													<option value="No-one">No one</option>
-													<option value="Friends">Friends</option>
-													<option value="Everyone">Everyone</option>
-												</select>
-											</div>
-										</div>*/}
 										<hr />
 										
 				                        <div className="row form-group">

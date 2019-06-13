@@ -10,6 +10,7 @@ export default class AddStyle extends Component{
 	constructor(){
 		super();
 
+		//set initial state
 		this.state = {
 			styleName:"",
 			countryOfOrigin:"",
@@ -20,18 +21,25 @@ export default class AddStyle extends Component{
 			history:""
 		}
 
+		//get user id from local storage
 		this.userUID = LocalStorage.loadState("user");
 	}
 
 	componentWillMount(){
+
+		//scroll to top
 		window.scrollTo(0, 0);
 
 	}
 
 	_handleInput(e){
+
+		//handle input fields
 		this.setState({
 			[e.target.id]:e.target.value
 		})
+
+		//remove error indicator on new data entry
 		$(`#${e.target.id}`).removeClass('formError');
 	}
 
@@ -39,26 +47,39 @@ export default class AddStyle extends Component{
 
 
 	_addStyle(e){
+
+		//disable buttons
 		_disable()
+
+		//validate data
 		let errors = this._validate();
 
+		//if errors exist
 		if(errors.length > 0){
+
+			//create msg comp from error array
 			let msgComp = errors.map((msg,index)=>{
 				
 				return <div className="text-center" key={index}><p>{msg}</p></div>
 			})
 			let formattedComp = <div className="box">{msgComp}</div>
+
+			//save error array to state for display
 			this.setState({
 				errors:formattedComp
 			})
-			
+			//enable buttons
 			_enable();
+
 		}else{
+
+			//create base firestore ref
 			let firestore = firebase.firestore();
 
+			//create ref to new style name in styles section
 			let ref = firestore.collection("Styles").doc(this.state.styleName);
-			console.log(ref);
-
+			
+			//create style object
 			let styleObject = {
 				Name:this.state.styleName,
 				Country:this.state.countryOfOrigin,
@@ -71,8 +92,13 @@ export default class AddStyle extends Component{
 				
 				
 			}
+
+			//set new object in firestore
 			ref.set(styleObject).then(()=>{
+				//enable buttons
 				_enable();
+
+				//redirect back to styles
 				this.props.history.push('/Styles');
 			});
 		}
@@ -86,6 +112,7 @@ export default class AddStyle extends Component{
 		//store error messages in array
 		const errorMsgs = [];
 
+		//validfate each input
 		if (this.state.styleName.length < 1) {
 		   errorMsgs.push("Please provide a style name");
 		   $('#styleName').addClass('formError');
@@ -100,6 +127,8 @@ export default class AddStyle extends Component{
 		   errorMsgs.push("Please provide some defining features");
 		   $('#definingFeatures').addClass('formError');
 		}
+
+		//return error array
   		return errorMsgs;
 	}
 

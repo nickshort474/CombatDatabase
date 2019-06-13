@@ -9,20 +9,28 @@ export default class Report extends Component{
 	constructor(){
 		super();
 
+		//set initial state
 		this.state = {
 			report:"",
 			category:"Date created"
 		}
+
+		//set base firestore ref
 		this.firestore = firebase.firestore();
+
+		//get user form state
 		this.userUID = LocalStorage.loadState("user");
 	}
 
 	componentWillMount(){
+		//scrolll to top
 		window.scrollTo(0, 0);
 		
 	}
 
 	_handleInput(e){
+
+		//handle input
 		this.setState({
 			[e.target.id]:e.target.value
 		})
@@ -30,23 +38,31 @@ export default class Report extends Component{
 
 	_onSubmit(e){
 		
+		//test report length
 		if(this.state.report.length > 4){
 		
+			//set ref topreport section in firestore
 			let ref = this.firestore.collection("ReportContent")
+
 			let user;
+
+			//test if user signed
 			if(this.userUID){
 				user = this.userUID
 			}else{
 				user = "anonymous";
 			}
 
+			//create report object
 			let obj = {
 				category:this.state.category,
 				report:this.state.report,
 				user:user
 			}
-
+			//add object to firestore
 			ref.add(obj).then(()=>{
+
+				//redirecet back to Styles
 				this.props.history.push(`/Styles/${this.props.match.params.ItemName}`)
 			})
 		}else{

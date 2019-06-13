@@ -7,7 +7,7 @@ export default class EditHistory extends Component{
 	constructor(){
 		super();
 
-		
+		//set initial state
 		this.state={
 			items:[]
 		}
@@ -15,22 +15,29 @@ export default class EditHistory extends Component{
 	}
 
 	componentWillMount(){
+
+		//scroll to top
 		window.scrollTo(0, 0);
 		
-		console.log(this.props.match.params.HistoryKey);
-	
+		//set base firestore ref	
 		let firestore = firebase.firestore();
+
+		//set ref to changes to Styles in StyleHistory
 		let ref = firestore.collection("StyleHistory").doc(this.props.match.params.HistoryKey).collection("changes");
 		
+		//create mepty array
 		let items = [];
 
+		//get style change history
 		ref.get().then((snapshot)=>{
 			
+			//loop through snapshot
 			snapshot.forEach((element)=>{
-				console.log(element.data());
+				//push to array
 				items.push(element.data());
 			})
 			
+			//save array to state for display
 			this.setState({
 				items:items
 			})
@@ -41,12 +48,17 @@ export default class EditHistory extends Component{
 
 	
 	render(){
+
+		//loop thorugh state and display
 		let history = this.state.items.map((obj,index)=>{
+			
+			//process date time data
 			let day =  new Date(obj.Date);
 			let dayString = day.toString();
 			let strLength = dayString.length;
 			let cutDayString = dayString.substring(0,strLength - 31);
 
+			//return comp
 			return <div className="row" key={index}><p className="col-sm-4">{cutDayString}</p><p className="col-sm-4">{obj.Category}</p><p className="col-sm-4">{obj.EditorName}</p><hr /></div>
 		})
 

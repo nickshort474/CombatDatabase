@@ -9,16 +9,19 @@ export default class AutoSuggest extends Component{
 	constructor(props){
 		super(props);
 		
+		//set initial state
 		this.state = {
 			value:"",
 			suggestions:[]
 		}
+
+		//get page which component is being used in
 		this.page = this.props.page;
 	}
 
 
 	getSuggestions(value){
-
+		
 		const inputValue = value.trim().toLowerCase();
 		const inputLength = inputValue.length;
 

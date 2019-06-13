@@ -9,7 +9,7 @@ import $ from 'jquery';
 import { AuthUserContext } from '../Session';
 
 
-
+//get authorised user and display appropriate components in navigation bar
 const Navigation = () => (
  	<div>
     	<AuthUserContext.Consumer>

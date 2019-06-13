@@ -26,6 +26,7 @@ const SignInPage = () => (
   	</div>
 );
 
+// create initial state const
 const INITIAL_STATE = {
   	email: '',
   	password: '',
@@ -38,10 +39,16 @@ class SignInFormBase extends Component{
 	constructor(props) {
     	super(props);
 
-    	this.state = { ...INITIAL_STATE };
+    	//create initial state based on constants
+    	this.state = { 
+    		...INITIAL_STATE
+    	};
+
     	this.cursorStyle = {
     		cursor: "pointer"
     	}
+
+    	//get last viewed page from state ready for redirect after sign in
     	let storeState = store.getState();
     	
     	if(storeState.page !== ""){
@@ -49,62 +56,85 @@ class SignInFormBase extends Component{
     	}else{
     		this.prevPage = "/Home";
     	}
+
+    	//set base firestore ref
     	this.firestore = firebase.firestore()
     	
   	}
 	
 
 	componentWillMount() {
+		//scroll to top
 		window.scrollTo(0, 0);
-
-	 	 
 	}
 
 	_onChange(e){
+		//handle input 
     	this.setState({ 
     		[e.target.id]: e.target.value 
     	});
+
+    	//remove error indicator on new data input
     	$(`#${e.target.id}`).removeClass('formError');
 	
  	};
 
 	_onSubmit(e){
     	e.preventDefault();
+
+    	//disbale buttons
 		_disable();
+
+		//validate input
 		let errors = this._validate();
 
+		// if errors exist
 		if(errors.length > 0){
+
+			//create error comp
 			let msgComp = errors.map((msg,index)=>{
 				
 				return <div className="text-center" key={index}><p>{msg}</p></div>
 			})
 			let formattedComp = <div className="box">{msgComp}</div>
+
+			//assign error comp to state for display
 			this.setState({
 				errors:formattedComp
 			})
-			
+
+			//enable buttons
 			_enable();
 		}else{
+			//get email and password from state
 	    	const { email, password } = this.state;
 	    	
-
+	    	//sign in with email / password in firebase.js 
 		    this.props.firebase.doSignInWithEmailAndPassword(email, password).then((authUser) => {
+		       	
+		       	//get returned user id from authUser
 		       	let userUID = authUser.user.uid;
 		       	
 		       	//clear  state
-		       	this.setState({ ...INITIAL_STATE });
+		       	this.setState({ 
+		       		...INITIAL_STATE 
+		       	});
 		       
 		        //save reference to user in localStoarge to match google auth state
 		        LocalStorage.saveState("user",userUID);
 		        LocalStorage.saveState("token","password");
 
-		       	//store.dispatch({type:constants.SAVE_USER,userUID:userUID})
+		       	//enable buttons
 		       	_enable();
+
+		       	//redirect back to previous page
 		        this.props.history.push(this.prevPage);
 
 		    }).catch(error => {
+		    	//enable buttons on error
 		    	_enable();
 
+		    	//add error to state for display and clear other data
 		        this.setState({
 		        	error:error,
 		        	password:"",
@@ -120,24 +150,32 @@ class SignInFormBase extends Component{
 
 	_signInGoogle(e){
 		
+		// change google sisgn in button to indicate pressed
 		let googleButton = document.getElementById("googleButton");
 		googleButton.setAttribute("src", GoogleButtonPressed);
 
+		//sign in with google using function fom firebase.js
 		this.props.firebase.doSignInWithGoogle().then((authUser) => {
 			
+			//get returned user id from authUser
 			let userUID = authUser.user.uid;
 			
+			//handle first sign in
 			this._handleFirstSignIn(userUID);
 
 			//save reference to user in localStoarge to match google auth state
 			LocalStorage.saveState("user",userUID);
 			LocalStorage.saveState("token",authUser.credential.accessToken)
 	        
+	        //redirect to previously viewed page
 	        this.props.history.push(this.prevPage);
 
 	    }).catch(error => {
 
-	        this.setState({ error });
+	    	//save error to state for display
+	        this.setState({ 
+	        	error
+	        });
 
 	    });;
 		
@@ -145,13 +183,16 @@ class SignInFormBase extends Component{
 	}
 
 	_handleFirstSignIn(userUID){
+
+		//connect to firestore user section
 		let ref = this.firestore.collection("Users").doc(userUID);
 
-
+		//get user data
 		ref.get().then((snapshot)=>{
+
 			// if user exists no need to do anything
 			if(snapshot.exists){
-				
+				//redirect to previous page
 				this.props.history.push(this.prevPage);
 			}else{
 				//else is new user so create a reference in Users collection with random username to start off;
@@ -162,13 +203,15 @@ class SignInFormBase extends Component{
 					userName:username
 				})
 				
-				//create reference to username in usernames section for esy people search functionality  
+				//create reference to username in usernames section for easy people search functionality  
 				let ref2 = this.firestore.collection("Usernames").doc(username);
 				let obj2 = {uid:userUID};
 				ref2.set(obj2);
 				
+				//create reference to new user in People section 
 				let ref3 = this.firestore.collection("People").doc(userUID);
 				ref3.set({userName:username,uid:userUID,profileCreated:now}).then(()=>{
+					//redirect back
 					this.props.history.push(this.prevPage);
 				})
 			}
@@ -180,7 +223,7 @@ class SignInFormBase extends Component{
 
 
 	_hoverGoogleButton(){
-		
+		//handle google button hover
 		let googleButton = document.getElementById("googleButton");
 		googleButton.setAttribute("src", GoogleButtonFocus);
 		
@@ -197,7 +240,7 @@ class SignInFormBase extends Component{
 		//store error messages in array
 		const errorMsgs = [];
 
-
+		//validate input fields
 		if (!this._isValidEmail()) {
 		   errorMsgs.push("Please provide a valid email address");
 		   $('#email').addClass('formError');
@@ -209,10 +252,12 @@ class SignInFormBase extends Component{
 		   $('#password').addClass('formError');
 		}
 		
+		//return error array
   		return errorMsgs;
 	}
 
 	_isValidEmail(){
+		//test for vlaid email format
 		if( /(.+)@(.+){2,}\.(.+){2,}/.test(this.state.email) ){
 			return true
 		}else{
@@ -253,7 +298,7 @@ class SignInFormBase extends Component{
 			                           	 	{this.state.errors}<br />
 			                           	 	{this.state.error && <p>{this.state.error.message}</p>}
 			                            </div>
-			                            {/*<div className="checkbox remember"><label><input type="checkbox" /> Remember me on this computer</label></div>*/}
+			                            
 			                           	
 			                        </form>
 			                    </div>
@@ -284,6 +329,5 @@ class SignInFormBase extends Component{
 
 const SignInForm = withRouter(withFirebase(SignInFormBase));
 
-/*export { SignInForm };*/
 
 export default SignInPage;

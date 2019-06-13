@@ -9,6 +9,7 @@ const withAuthorization = condition => Component =>{
 	class withAuthorization extends React.Component {
 		
 		componentDidMount(){
+			
 			this.listener = this.props.firebase.auth.onAuthStateChanged((authUser)=>{
 				if(!condition(authUser)){
 					this.props.history.push('/Signin')
@@ -17,10 +18,13 @@ const withAuthorization = condition => Component =>{
 		}
 
 		componentWillUnmount(){
+			//clear listener
 			this.listener();
 		}
 
 		render(){
+
+			//higher order component for wrapping components in Consumer
 			return(
 				<AuthUserContext.Consumer>
 					{authUser =>

@@ -11,12 +11,15 @@ const withAuthentication = Component => {
   	constructor(props) {
       super(props);
 
+      //set state
       this.state = {
         authUser: null,
       };
     }
 
     componentDidMount() {
+
+      //listen for auth state change and set state
       this.listener = this.props.firebase.auth.onAuthStateChanged(
         authUser => {
           authUser
@@ -27,11 +30,13 @@ const withAuthentication = Component => {
     }
 
     componentWillUnmount() {
+      //clear listener
       this.listener();
     }
 
     render() {
       return (
+        //pass state of auth down to consumers of AuthUserContext
         <AuthUserContext.Provider value={this.state.authUser}>
           <Component {...this.props} />
         </AuthUserContext.Provider>

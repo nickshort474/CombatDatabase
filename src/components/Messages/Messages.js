@@ -15,48 +15,64 @@ class Messages extends Component{
 	constructor(){
 		super();
 		
-		
+		//set initial state
 		this.state = {
 			messages:[]
-			
 		}
 				
 	}
 
 	componentWillMount(){
-		window.scrollTo(0, 100);
-		
+				
+		//save current page to state
 		store.dispatch({type:constants.SAVE_PAGE, page:`/Person/${this.props.match.params.PersonKey}/${this.props.match.params.PersonUsername}`})
 		
+		//set base firestore ref
 		this.firestore = firebase.firestore();
+
+		//get user id form localstorage
 		this.userUID = LocalStorage.loadState("user");
 		
+		//gather message data
 		this._gatherMessages();
 
 	}
 	
 
 	componentWillUnmount(){
+
+		//remove snapshot listener
 		this.snapshotListener();
 	}
 
 	_gatherMessages(){
 		
+		//set ref to message conversation in firestore
 		let ref = this.firestore.collection("Messages").doc(this.userUID).collection(this.props.match.params.PersonKey);
+
+		//query by message date
 		let query = ref.orderBy("messageDate","asc");
 		
+		//get message data
 		this.snapshotListener = query.onSnapshot((snapshot)=>{
+			
+			//set empty array to store messages
 			let items = [];
 
+			//loop through snapshot 
 			snapshot.forEach((snap)=>{
 				
+				//push each message to array
 				items.push(snap.data());
 				
 			})
+
+			//save array to state 
 			this.setState({
 				messages:items
 			},()=>{
-			
+				
+				//scroll to bottom of page to see lastest messages
 				window.scrollTo(0, 1000);
 			})
 
@@ -65,13 +81,9 @@ class Messages extends Component{
 		
 	}
 
-
-
 	render(){
-
-				
 		
-
+		// loop through state to display each message using MessageComp
 		let messages = this.state.messages.map((msg,index)=>{
 
 			let ownMsg = false;

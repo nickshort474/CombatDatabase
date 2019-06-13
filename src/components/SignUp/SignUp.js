@@ -17,6 +17,7 @@ const SignUpPage = () => (
 	</div>
 )
 
+//create initial state const
 const INITIAL_STATE = {
 	regEmail:"",
 	regUsername:"",
@@ -32,31 +33,39 @@ class SignUpFormBase extends Component{
 	
 	constructor(props){
 		super(props);
-		this.state = { ...INITIAL_STATE };
 
+		//set initial state form constant
+		this.state = {
+			...INITIAL_STATE 
+		};
+
+		//set base firestore ref
 		this.firestore = firebase.firestore();
 	}
+
 	componentWillMount(){
+		//scroll to top
 		window.scrollTo(0, 0);
 
 	}
 	
 	_handleInput(e){
-				
+		//handle input		
 		this.setState({
 			[e.target.id]:e.target.value
 		})
-
+		//remove error indicator on new input
 		$(`#${e.target.id}`).removeClass('formError');
 	}
 
 	_handleTerms(){
+		//handle terms and conditons click
 		if(this.state.termsClicked){
-			console.log("true");
+			
 			this.setState({
 				termsClicked:false
 			})
-
+			//show error indicating terms and conditions need clicking
 			$('#terms').addClass('formError');
 
 		}else{
@@ -64,7 +73,7 @@ class SignUpFormBase extends Component{
 			this.setState({
 				termsClicked:true
 			})
-
+			//remove error indicator once clicked
 			$('#terms').removeClass('formError');
 		}
 
@@ -75,24 +84,33 @@ class SignUpFormBase extends Component{
 
 	_submitSignUp(e){
 		e.preventDefault();
+
+		//disable buttons
 		_disable()
 		
-
+		//vlaidate input field
 		let errorMsgs = this._validate(this.state.regEmail,this.state.regUsername,this.state.regPassword1,this.state.regPassword2);
+		
+		//if errors exist
 		if(errorMsgs.length > 0){
+
+			//create error msg comp
 			let msgComp = errorMsgs.map((msg,index)=>{
 				
 				return <div className="text-center" key={index}><p>{msg}</p></div>
 			})
 			let formattedComp = <div className="box">{msgComp}</div>
+
+			//assign error comp to state for display
 			this.setState({
 				errors:formattedComp
 			})
 			
+			//enable buttons
 			_enable();
 		}else{
 			
-			// check database for existing usernames...
+			//no errors so check database for existing usernames...
 			this._checkForExistingUsername();
 		}
 		
@@ -103,30 +121,36 @@ class SignUpFormBase extends Component{
 
 	_checkForExistingUsername(){
 		
-		
+		// create ref to users section ion firestore
 		let ref = this.firestore.collection('Users');
+
+		//create query for specific username
 		let query = ref.where("userName", "==",this.state.regUsername);
 		
 		let match = false;
 
 		query.get().then((snapshot)=>{
-			console.log(snapshot);
+			
+			//loop snapshot
 			snapshot.forEach((snap)=>{
-				console.log(snap.data())
+				
+				// if snap exists
 				if(snap){
+					//alert user
 					alert(snap.data().userName + " already exists please try another user name");
+					//set bool
 					match = true;
+
+					//enable buttons
 					_enable();
 				}
 			})
 		}).then(()=>{
-			console.log(match);
+			
+			//if no match
 			if(!match){
 
-				//else save username to redux for use in initial account setup
-				
-				//store.dispatch({type:constants.SAVE_USERNAME, userName:this.state.regUsername})
-				console.log("about to create user");
+				//create user in firebase
 				this._createUser();
 				
 			}
@@ -134,24 +158,23 @@ class SignUpFormBase extends Component{
 	}
 
 	_createUser(){
-		
-		console.log("trying to created user with email");
-		
+	
+		// use firebase.js to create user with email and password in firebase
 		this.props.firebase.doCreateUserWithEmailAndPassword(this.state.regEmail,this.state.regPassword1).then((authUser)=>{
 			
-			console.log("have created user with email");
-			
-			
+			//get user id from returned authUser			
 			let userUID = authUser.user.uid;
-			LocalStorage.saveState("user",userUID);
-			//store.dispatch({type:constants.SAVE_USER, userName:userUID})
-			
 
-			this._createUserInFirebase(userUID);
+			//save user id to localstorage
+			LocalStorage.saveState("user",userUID);
+			
+			//create user in firestore
+			this._createUserInFirestore(userUID);
 
 
 			
 		}).catch((error)=>{
+			//assign errors to state to display
 			this.setState({
 				error:error
 			})
@@ -159,33 +182,45 @@ class SignUpFormBase extends Component{
 		
 	}
 
-	_createUserInFirebase(userUID){
-		console.log("trying to create user in firestore");
+	_createUserInFirestore(userUID){
 		
-
+		//create ref to user in users section in firestore
 		let ref = this.firestore.collection("Users").doc(userUID);
 		
+		//create user object
 		let obj = {
 			userName:this.state.regUsername,
 			userEmail: this.state.regEmail,
 			
 		}
+
+		//set objcet in firestore
 		ref.set(obj).then(()=>{
 
 			//create reference to username in usernames section for esy people search functionality  
 			let ref2 = this.firestore.collection("Usernames").doc(this.state.regUsername);
 			
-			let obj2 = {uid:userUID};
+			//create user object
+			let obj2 = {
+				uid:userUID
+			};
+
+			//set object
 			ref2.set(obj2).then(()=>{
+				
 				//clear state and form
 				this.setState({
 					...INITIAL_STATE
 				})
 				
+				//create ref to user in  People section
 				let ref3 = this.firestore.collection("People").doc(userUID);
 				let now = Date.now();
 
+				//set user in Poeple section
 				ref3.set({userName:this.state.regUsername, uid:userUID, profileCreated:now}).then(()=>{
+					
+					//redirect to home
 					this.props.history.push('/Home');
 				});
 
@@ -201,10 +236,11 @@ class SignUpFormBase extends Component{
 		//store error messages in array
 		const errorMsgs = [];
 
+		//check for vlaid email format
 		let isValidEmail = this._isValidEmail(email);
 		 	
 		
-
+		//validate each input field
 		if (!isValidEmail) {
 		   errorMsgs.push("Please provide a valid email address");
 		   $('#regEmail').addClass('formError');
@@ -226,10 +262,13 @@ class SignUpFormBase extends Component{
 			errorMsgs.push("Please agree to our terms and conditions");
 		   	$('#terms').addClass('formError');
 		}
+
+		//return error array
   		return errorMsgs;
 	}
 
 	_isValidEmail(email){
+		//validate email
 		if( /(.+)@(.+){2,}\.(.+){2,}/.test(email) ){
 			return true
 		}else{
@@ -247,8 +286,6 @@ class SignUpFormBase extends Component{
 			        <section className="content-wrapper">
 			        	<div className="row">
 			            
-			            	
-			                
 			               
 			                <div className="col-sm-12">
 			                	<div className="box registration-form greyedContent">
