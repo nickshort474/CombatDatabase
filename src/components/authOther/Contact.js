@@ -9,6 +9,7 @@ class Contact extends Component{
 	constructor(){
 		super();
 
+		//gather page visited from state
 		this.prevPageVisited = store.getState().page
 		
 		//if user is signed in get their uid to submit with form

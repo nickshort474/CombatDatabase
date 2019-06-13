@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 
-
 import ProcessEpochDisplay from '../../utils/ProcessEpochDisplay';
 import defaultLogo from '../../assets/images/default.jpg';
 

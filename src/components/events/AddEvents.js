@@ -179,12 +179,18 @@ class AddEvents extends Component{
 			//test for matching event names
 			this._testForName(()=>{
 				
+				//if name doesnt exist callback continues
 
+				//set ref to events section
 				let ref = this.firestore.collection("Events").doc();
+
+				//get ref to doc
 				let docRef = ref.id;
 				
+				//set date
 				let now = Date.now();
 
+				//create date object
 				let eventObj = {
 					eventName:this.state.eventName,
 					eventLocation:this.state.eventLocation, 
@@ -201,35 +207,46 @@ class AddEvents extends Component{
 					creationDate:now
 				}
 
+				//if event has image
 				if(this.hasImage){
+
+					//add image to storageusing document reference
 					this._addEventImage(docRef,(url)=>{
 						
+						//get returned image url from upload and add to event object
 						eventObj["eventLogo"] = url;
 						
+						//add object to firestore
 						ref.set(eventObj).then(()=>{
 							
+							//enable buttons
 							_enable();
 
+							//clear loading circle
 							this.setState({
 				    			loading:false
 				    		});	
 
-
+							//redirect back to events page
 							this.props.history.push('/Events');
 						})
 					})
 				}else{
-					
+					//if no image add false ref to event object
 					eventObj["eventLogo"] = false;
 					
+					//add object to firestore
 					ref.set(eventObj).then(()=>{
 						
+						//enable buttons
 						_enable();
 
+						//clear loading circle
 						this.setState({
 			    			loading:false
 			    		});	
 
+						//redirect to events page
 						this.props.history.push('/Events');
 					})
 				}
@@ -246,6 +263,7 @@ class AddEvents extends Component{
 		//store error messages in array
 		const errorMsgs = [];
 
+		//validate input data
 		if (this.state.eventName.length < 1) {
 		   errorMsgs.push("Please provide an event name");
 		   $('#eventName').addClass('formError');
@@ -263,22 +281,30 @@ class AddEvents extends Component{
 		   errorMsgs.push("Please provide a description for your event");
 		   $('#eventDescription').addClass('formError');
 		}
+
+		//return array
   		return errorMsgs;
 	}
 
 	_testForName(callback){
+		//check whether event name already exists
 
-		
+		//set name match var
 		let nameMatch = false;
 
-		//check whether event name already exists
+		//set ref to events section
 		let nameCheckRef = this.firestore.collection("Events");
+
+		//set query with newly chosen event name
 		let query = nameCheckRef.where("eventName", "==", this.state.eventName);
 		
+		//get query
 		query.get().then((snapshot)=>{
 			
+			//loop through snapshot
 			snapshot.forEach((snap)=>{
 				
+				//if data in snapshot then name exists
 				if(snap.data().eventName){
 					nameMatch = true;
 				}else{
@@ -286,16 +312,21 @@ class AddEvents extends Component{
 				}
 			})
 
+			//if name match is true name exists 
 			if(nameMatch === true){
+
+				//stop laoding circle
 				this.setState({
 			    	loading:false
 			    });	
 
+				//enable buttons
 				_enable();
-
+				//inform user
 				alert("Event name already exists please try another");
 				
 			}else{
+				//name doesnt exist, callback to continue
 				callback();
 			}
 
@@ -307,17 +338,16 @@ class AddEvents extends Component{
 
 	_addEventImage(key, funcToCallBack){
 		
+		//set up storage ref
 		let storageRef = firebase.storage().ref();
-		/*let files = document.getElementById("browse").files;
-		let file;*/
-
 		
-
 		// get image from redux
 		let file = store.getState().eventImg;
 
-		
+		//set up file name based on doc id fro firestore passed in
 		let eventImageFileLocation = `eventLogos/${key}.jpg`;
+
+		//set upload task
 		let uploadTask = storageRef.child(eventImageFileLocation).put(file);
 		
 		// Register three observers:
@@ -349,10 +379,8 @@ class AddEvents extends Component{
 		    console.log(error);
 		}, () => {
 		    // Handle successful uploads on complete
-		    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-		  
-		  	uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-			    console.log('File available at', downloadURL);
+		    uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+			    //pass download url back
 			    funcToCallBack(downloadURL);
 			 });
 
@@ -368,6 +396,7 @@ class AddEvents extends Component{
 
 		let loadingCircle;
 
+		//set loading circle
 		if(this.state.loading){
 			loadingCircle = <ReactLoading  id="loadingCircle" type="spin" color="#00ff00" height={25} width={25} />
 		}else{

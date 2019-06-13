@@ -12,18 +12,19 @@ export default class Home extends Component{
 
 	constructor(){
 		super();
+
+		//save reference to page in store
 		store.dispatch({type:constants.SAVE_PAGE, page:"Home"});
 		
-		
+		//get user from localstorage o see if signed in
 		this.userUID = LocalStorage.loadState("user");
 		
 	}
 
 	componentWillMount(){
+		//scroll to top
 		window.scrollTo(0, 0);
-		
 	}
-
 	
 
 	
@@ -31,6 +32,7 @@ export default class Home extends Component{
 
 		let uploadButton;
 
+		//if useruid exists user is signed in so show button for uploading of images for use in home page
 		if(this.userUID){
 			uploadButton = <div><p className="text-10">Upload your image for a chance to see it on the combatdb homepage...<Link to="/HomeImageUpload"> click here</Link></p></div>
 		}

@@ -9,52 +9,62 @@ import store from '../../redux/store';
 import constants from '../../redux/constants';
 import LocalStorage from '../../utils/LocalStorage';
 
-
-
 import defaultLogo from '../../assets/images/default.jpg'
 
 export default class SingleEventPage extends Component{
 	
 
 	componentWillMount(){
+
+		//scroll to top
 		window.scrollTo(0, 0);
 
-		// save current page ref to redux
+		// save current page ref to store for sign in redirect
 		let pageString = `/SingleEvent/${this.props.match.params.EventKey}`
 		store.dispatch({type:constants.SAVE_PAGE, page:pageString});
 	
+		//get previous page from store for back button
 		let storeState = store.getState();
 		let previousPage = storeState.prevPage;
 
-		
+		//get user from localstorage
 		this.user = LocalStorage.loadState("user");
-		this._getEventInfo();
-
+		
+		//set initial state
 		this.setState({
-			
 			owner:false,
 			previousPage:previousPage,
 		})
 
-	
+		//gather event info
+		this._getEventInfo();
 		
 	}
 
 	_getEventInfo(){
 
+		//set base firestore reference
 		let firestore = firebase.firestore();
-		let ref = firestore.collection("Events").doc(this.props.match.params.EventKey);
-		let owner;
 
+		//set ref to individual event location
+		let ref = firestore.collection("Events").doc(this.props.match.params.EventKey);
+		
+		//set empty var / array
+		let owner;
+		let items = [];
+		//get individual event data
 		ref.get().then((snapshot)=>{
 			
-			let items = [];
+
+			//populate array with event names
 			items["name"] = snapshot.data().eventName;
-						
+				
+			//test whether this event is owned by viewing user to show edit buttons			
 			if(snapshot.data().creator === this.user){
 	    		owner = true;	
 	    	}
 			
+			//save event data to state
 			this.setState({
 				eventName:snapshot.data().eventName,
 				eventDescription:snapshot.data().eventDescription,
@@ -68,11 +78,10 @@ export default class SingleEventPage extends Component{
 				items:items,
 				owner:owner
 			},function(){
+
+				//update map
 				this.child._updateMap(snapshot.data().lng, snapshot.data().lat, "SingleEventPage","10",items);
 			})
-			console.log(this.state.eventTime)
-			
-			
 		})
 	}
 
@@ -82,7 +91,7 @@ export default class SingleEventPage extends Component{
 		
 		let EditEvent, EditImage;
 			
-		
+		//if owner is true show edit buttons
 		if(this.state.owner === true){
 			EditEvent = <Link to={`/EditEvent/${this.props.match.params.EventKey}`}>Edit event information</Link>
 			EditImage = <div><Link to={`/EditEventLogo/${this.props.match.params.EventKey}`}><p>Edit event image</p></Link></div>

@@ -20,6 +20,7 @@ export default class EditEvent extends Component{
 	constructor(){
 		super()
 
+		//set initial state
 		this.state = {
 			eventName:" ",
 			eventLocation:" ",
@@ -32,10 +33,10 @@ export default class EditEvent extends Component{
 
 
 	componentWillMount() {
+		//scroll to top
 		window.scrollTo(0, 0);
 
-		// get previous page from redux for back button
-		//let storeState = store.getState();
+		//save current page to store
 		let pageString = `EditEvent/${this.props.match.params.EventKey}`
 		store.dispatch({type:constants.SAVE_PAGE, page:pageString});
 
@@ -43,6 +44,7 @@ export default class EditEvent extends Component{
 		//create ref to firestore
 		this.firestore = firebase.firestore();
 		
+
 		this.textAreaStyle = {
 			width:"100%",
 			height:"100%"
@@ -54,6 +56,8 @@ export default class EditEvent extends Component{
 	}
 
 	componentDidMount(){
+
+		//get ref to date time component
 		this.eventDateTimeDiv = document.getElementById("dateTimeContainer");
 	}
 
@@ -88,6 +92,7 @@ export default class EditEvent extends Component{
 
 	_handleInput(e){
 		
+		//handle input data
 		this.setState({
 			[e.target.id]:e.target.value
 		})
@@ -97,18 +102,22 @@ export default class EditEvent extends Component{
 
 	_onSuggestSelect(suggest) {
 		
+		//on suggest from GeoSuggest component
 		if(suggest){
 			
+			//save suggest data to state
 	    	this.setState({
 	    		lat:suggest.location.lat,
 	    		lng:suggest.location.lng,
 	    		eventLocation:suggest.gmaps.formatted_address
 	    			
 	    	})
-
+	    	//remove form error indicator on suggestion
 	    	$('#geoSuggest').removeClass('formError');
 	    }else{
+	    	//if no valid suggestion add error indicator
 			$('#geoSuggest').addClass('formError');
+			//clear location data from state
 			this.setState({
 				eventLocation:""
 			})
@@ -119,20 +128,23 @@ export default class EditEvent extends Component{
 		
 	_handleDateTimeChange(dateObject){
 		
+		//handle data from DateTime component
 		if(typeof dateObject === 'object'){
 			
-			
+			//get unix time from date time object			
 			let unix = moment().date(dateObject.date()).valueOf();
-							
+			
+			//save data to state				
 			this.setState({
 				eventTime:unix,
 				eventTimeFormat:true
 			})
 			
-			
+			//remove error indicator on correct dateobject retrun			
 			this.eventDateTimeDiv.setAttribute("style", "border:none")
 		}else{
 			
+			//if non dateObject returned clear state
 			this.setState({
 				eventTime:1,
 				eventTimeFormat:false
@@ -143,6 +155,8 @@ export default class EditEvent extends Component{
 	}
 
 	_handleEventType(e){
+
+		//handle input of event type to show input text box if selection is other
 		if(e.target.value === "Other"){
 			this.reasonChoice = <div><input type="text" placeholder="Enter event type" /></div>
 			this.setState({update:true});
@@ -155,23 +169,35 @@ export default class EditEvent extends Component{
 
 	_onSubmit(e){
 
+		//disable buttons
 		_disable();
-				
+			
+		//run vlaidation of input		
 		let errorMsgs = this._validate(this.state.eventName,this.state.eventLocation,this.state.eventTime,this.state.eventDescription);
 		
+		//if errors in array handle
 		if(errorMsgs.length > 0){
+
+			//create message comp
 			let msgComp = errorMsgs.map((msg,index)=>{
 				return <div className="text-center" key={index}><p>{msg}</p></div>
 			})
 			let formattedComp = <div className="box">{msgComp}</div>
+
+			//add message comp to state for display
 			this.setState({
 				errors:formattedComp
 			})
+
+			//enable buttons
 			_enable();
 		}else{
-			console.log("can be submitted");
+			
+			//no errors so submit data
+			//set ref to event section in firstore
 			let ref = this.firestore.collection("Events").doc(this.props.match.params.EventKey);
 		
+			//create event object
 			let obj = {
 				eventName:this.state.eventName,
 				eventLocation:this.state.eventLocation,
@@ -183,6 +209,8 @@ export default class EditEvent extends Component{
 				lng:this.state.lng
 				
 			}
+
+			//update event in firestore
 			ref.update(obj).then(()=>{
 				this.props.history.push('/Events');
 			})
@@ -196,6 +224,7 @@ export default class EditEvent extends Component{
 		//store error messages in array
 		const errorMsgs = [];
 
+		//validate each field
 		if (name.length < 1) {
 		   errorMsgs.push("Please provide an event name");
 		   $('#eventName').addClass('formError');
@@ -213,6 +242,7 @@ export default class EditEvent extends Component{
 		   errorMsgs.push("Please provide a description for your event");
 		   $('#eventDescription').addClass('formError');
 		}
+		//return array
   		return errorMsgs;
 	}
 
@@ -250,11 +280,6 @@ export default class EditEvent extends Component{
 						         		radius="20"
 						         		id="geoSuggest"
 						         	/>
-
-			                       
-			                        
-
-
 
 		                        </div>
 

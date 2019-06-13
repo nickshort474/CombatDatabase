@@ -10,6 +10,7 @@ class ReportContent extends Component{
 	constructor(){
 		super();
 
+		//gather page visited from store
 		this.prevPageVisited = store.getState().page
 		
 		

@@ -14,40 +14,45 @@ export default class EventsPage extends Component{
 	constructor(){
 		super();
 		
-		//save event page to store ready for rapge reloads
+		//save page to sore for redirect after sign in
 		store.dispatch({type:constants.SAVE_PAGE, page:"/Events"});
 
 		//save event page as previous page for routing back to after either search or newly listed.
 		store.dispatch({type:constants.SAVE_PREV_PAGE, prevPage:"/Events"});
 
-
+		//set initial state
 		this.state = {
 			items:[]
 		}
-		this.showLimit = 10;
+
 		
 	}
 	
 
 	componentWillMount() {
-		
+		//scroll to top
 		window.scrollTo(0, 0);
-		this.items = [];
-		this.counter = 0;
 
+		//set empty array 
+		this.items = [];
+	
+		//set base firestore ref
 		this.firestore = firebase.firestore();
 
-		let ref = this.firestore.collection("Events").orderBy("creationDate","desc").limit(this.showLimit);
+		//set ref to events section
+		let ref = this.firestore.collection("Events").orderBy("creationDate","desc").limit(10);
 		
+		//get latest 10 events
 		ref.get().then((snapshot)=>{
-			//this.lastVisible = snapshot.docs[snapshot.docs.length - 1];
-
+			
+			//loop through snapshot
 			snapshot.forEach((element)=>{
 				
+				//push items to array
 				this.items.push(element.data());
-				this.counter++;
 			})
 			
+			//if mounted add array to state
 			if(this.mounted){
 				this.setState({
 					items:this.items
@@ -60,24 +65,28 @@ export default class EventsPage extends Component{
 	}
 
 	componentDidMount(){
-		
+		//set mounted
 		this.mounted = true;
 	}
 
 	componentWillUnmount(){
+		//set as false  so no state set after unmounting
 		this.mounted = false;
 	}
 
 	_addEvent(){
+
+		//get user id form localstorage
 		let userUID = LocalStorage.loadState("user");
 		
-		
+		//if user signed in
 		if(userUID){
 			// redirect to AddEvents page
 			this.props.history.push('/AddEvents');
 			
 
 		}else{
+			//alert user to sign in
 			window.alert("please create an account or sign in to add a business to our databases");
 		}
 	}
@@ -86,7 +95,7 @@ export default class EventsPage extends Component{
 	render(){
 
 
-
+		//loop through state for display
 		let events = this.state.items.map((event)=>{
 			
 			return <SingleEventComp name={event.eventName}  logo={event.eventLogo} description={event.eventDescription} date={event.eventTime} location={event.eventLocation} id={event.eventID} key={event.eventID} />

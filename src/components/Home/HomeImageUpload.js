@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import firebase from '@firebase/app';
 
-import store from '../../redux/store';
-import constants from '../../redux/constants';
 import defaultLogo from '../../assets/images/defaultLarge.jpg';
 import {_compressImage} from '../../utils/CompressImage';
 import {_disable, _enable} from '../../utils/DisableGreyOut';
@@ -14,63 +12,79 @@ class HomeImageUpload extends Component{
 	constructor(){
 		super();
 
-		store.dispatch({type:constants.SAVE_PAGE, page:"HomeImageUpload"});
+		//set initial state
 		this.state = {
 			homeImage:""
 		}
+
+		//set base firestore / strioage refs
 		this.storageRef = firebase.storage().ref();
 		this.firestore = firebase.firestore();
+
+		//get user id from localstorage
 		this.userUID = LocalStorage.loadState("user");
-		console.log(this.userUID);
+		
 	}
 
 	componentWillMount(){
+		//scroll to top
 		window.scrollTo(0, 0);
 	}
 
 
 	_handleBrowseClick(e){
-	   
+	    //handle browse click for image upload 
 		let fileinput = document.getElementById(e.target.id);
 	    fileinput.click();
 	}
 
 	_handleMessagePic(e){
 		
-		
-	
-
+		//setup reader
 		let reader = new FileReader();
 		
-		 reader.onload = (e) => {
+		//set onload event
+		reader.onload = (e) => {
 			
+			//send image to compression
 			_compressImage(e.target.result, 600, (result)=>{
 				
-				//add full size picture to storage
-				//this._addImageToStorage(result,imageDisplayKey);
+				//get result of compression
 				this.result = result;
-				//display thumbnail result on screen
+
+				//convert result to objectURL to display thumbnail on screen
 				var urlCreator = window.URL || window.webkitURL;
 				let objUrl = urlCreator.createObjectURL(result);
 
+				//set to state
 				this.setState({
 					homeImage:objUrl
 				})
 			})
 			
 		}
-
+		//read image data
 		reader.readAsDataURL(e.target.files[0]);
 	}
 
 	_onSubmit(){
+
+		//disbale buttons
 		_disable()
+
+		//if image has been uploaded
 		if(this.result){
 
+			//set ref to HomeIMage in firestore
 			let ref = this.firestore.collection("HomeImages").doc();
+
+			//get document id
 			let id = ref.id;
 
+			//set image file name in storage
 			let messageImageFileLocation = `homepageImages/${id}.jpg`;
+
+			//set upload task
 			let uploadTask = this.storageRef.child(messageImageFileLocation).put(this.result);
 			// Register three observers:
 			// 1. 'state_changed' observer, called any time the state changes
@@ -102,17 +116,21 @@ class HomeImageUpload extends Component{
 			    // eslint-disable-next-line
 			}, () => {
 			    // Handle successful uploads on complete
-			    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
 			    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL)=>{
-					
+					//create object with downloadURL of stored image and user id
 			    	let obj = {
 			    		downloadURL:downloadURL,
 			    		user:this.userUID
 
 			    	}
+
+			    	//add object to firestore
 					ref.set(obj).then(()=>{
+
 						alert("Thank you for you submission")
+						//enable buttons
 						_enable();
+						//redirect home
 						this.props.history.push("/Home")
 					})
 			    

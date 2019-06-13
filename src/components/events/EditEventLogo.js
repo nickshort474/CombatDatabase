@@ -15,19 +15,26 @@ export default class EditEventLogo extends Component{
 
 	constructor(){
 		super();
+		
+		//set initial state
 		this.state = {
 			caption0:"",
 			urlReturned:false
 		}
 
-		
-		
 	}
 
 	componentWillMount(){
+		//scroll to top
+		window.scrollTo(0,0);
+
+		//set base firestore ref
 		this.firestore = firebase.firestore()
+
+		//set ref to event section in firestore
 		let ref = this.firestore.collection("Events").doc(this.props.match.params.EventKey);
 
+		//get current event logo from firestore
 		ref.get().then((snapshot)=>{
 		
 			this.setState({
@@ -36,12 +43,7 @@ export default class EditEventLogo extends Component{
 			})
 			
 		})
-	
-		
-
 	}
-
-	
 	
 
 	_handleImageSubmit(e){
@@ -49,14 +51,16 @@ export default class EditEventLogo extends Component{
 		//disable
 		_disable();
 
-		//set references
+		//set storage reference
 		let storageRef = firebase.storage().ref();
 		
-		//set variables
+		//get event image from store (set in GetImage component)
 		let img  = store.getState().eventImg;
-		console.log(img);	
-			
+		
+		//set file name and location	
 		let messageImageFileLocation = `eventLogos/${this.props.match.params.EventKey}.jpg`;
+
+		//set upload task
 		let uploadTask = storageRef.child(messageImageFileLocation).put(img);
 		// Register three observers:
 		// 1. 'state_changed' observer, called any time the state changes
@@ -88,9 +92,8 @@ export default class EditEventLogo extends Component{
 		    // eslint-disable-next-line
 		}, () => {
 		    // Handle successful uploads on complete
-		    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
 		    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL)=>{
-				console.log(downloadURL);
+				//send download url to function to handle adding ref to firestore
 				this._uploadRefToFirestore(downloadURL);		
 		    });
 		})
@@ -100,20 +103,20 @@ export default class EditEventLogo extends Component{
 
 	_uploadRefToFirestore(downloadURL){
 		
-				
-		//create ref for  image
+		//create ref to event location
 		let ref = this.firestore.collection("Events").doc(this.props.match.params.EventKey);
 
 			
-		// create data from downloadURL
+		//create object with downloadURL
 		let obj = {
 			eventLogo:downloadURL
 		}
 
-		// commit batch write
+		// update firestore with new image ref
 		ref.update(obj).then(()=>{
+			//redirect back to single event page
 			this.props.history.push(`/SingleEvent/${this.props.match.params.EventKey}`)
-			console.log("commited");
+			
 		});
 		
 		
@@ -124,6 +127,7 @@ export default class EditEventLogo extends Component{
 		
 		let imagePicker;
 
+		//once image has been returned from firestore show imagePicker
 		if(this.state.urlReturned){
 			imagePicker = <GetImage prompt="Please choose new event image" src={this.state.eventLogo} comp="EditEventLogo"/>
 		}

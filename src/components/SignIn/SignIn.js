@@ -43,6 +43,7 @@ class SignInFormBase extends Component{
     		cursor: "pointer"
     	}
     	let storeState = store.getState();
+    	
     	if(storeState.page !== ""){
     		this.prevPage = storeState.page;
     	}else{
