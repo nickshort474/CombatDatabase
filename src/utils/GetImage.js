@@ -12,12 +12,14 @@ export default class GetImage extends Component{
 	
 	componentWillMount(){
 		
+		//test for passed source
 		if(this.props.src){
 			this.src = this.props.src;
 		}else{
 			this.src = defaultLogo
 		}
 
+		//save prompt and source to state
 		this.setState({
 			prompt:this.props.prompt,
 			src:this.src
@@ -26,16 +28,21 @@ export default class GetImage extends Component{
 	}
 
 	_handleBrowseClick(){
-	   
+	   //handle browse click (hides browse button allows styling of upload image button)
 	    var fileinput = $("#browse");
 	    fileinput.click();
 	}
 
 	_previewImage(e){
 		
+		//for each component set up reader
+		//create onload event which will
+		//compress image using outside comp
+		//save result to store
+		//display image
+		//then read image data
+
 		if(this.props.comp === "AddEvents"){
-			
-					
 			
 			let reader = new FileReader();
 		

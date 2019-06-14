@@ -4,8 +4,6 @@ import {Link} from 'react-router-dom';
 
 import MyBlogComp from './MyBlogComp';
 
-/*import SideBarAdvert from '../../Components/SideBarAdvert';*/
-
 import store from '../../redux/store';
 import constants from '../../redux/constants';
 import LocalStorage from '../../utils/LocalStorage';

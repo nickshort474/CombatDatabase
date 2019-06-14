@@ -3,7 +3,6 @@ import {Link} from 'react-router-dom';
 import { firebase } from '@firebase/app';
 
 import Review from './ReviewComp';
-/*import PhotoDisplay from '../../utils/PhotoDisplay';*/
 import Map from '../../utils/Map';
 
 import store from '../../redux/store';
@@ -214,15 +213,6 @@ export default class SingleBusinessPage extends Component{
 							
 							
 
-							{/* -- VERSION 2 --
-
-							<PhotoDisplay data={this.props.match.params.BusinessKey} page="SingleBusinessPage" />
-							
-							
-
-							<div className="text-center">
-								{AddImages}
-							</div>*/}
 
 
 						</div>

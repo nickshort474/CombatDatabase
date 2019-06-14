@@ -3,9 +3,6 @@ import React, {Component} from 'react';
 
 export default class TextArea extends Component{
 	
-	
-
-
 	render(){
 
 		const style = {
@@ -15,7 +12,7 @@ export default class TextArea extends Component{
 		return(
 
 			<div>
-				<textarea  style={style} rows={this.props.rows} id={this.props.id}  ref="textInput"></textarea> <br />
+				<textarea style={style} rows={this.props.rows} id={this.props.id}  ref="textInput"></textarea> <br />
 	        </div>
 
 		)

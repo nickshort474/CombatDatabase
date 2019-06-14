@@ -9,6 +9,8 @@ export default class Map extends Component {
 
   constructor(){
       super();
+     
+      //set initial state
       this.state = { 
           zoom:9,
           data:"",
@@ -19,10 +21,6 @@ export default class Map extends Component {
 
   }
  
-
-  static propTypes() {
-  	  //initialCenter: PropTypes.objectOf(React.PropTypes.number).isRequired
-  }
 
 	render() {
     return( 
@@ -35,17 +33,9 @@ export default class Map extends Component {
 
   componentDidMount() {
 
+      //connect to component
       this.props.onRef(this);
 
-
-      // create the map, marker and infoWindow after the component has
-      // been rendered because we need to manipulate the DOM for Google =(
-   
-   
-      //this.infoWindow = this.createInfoWindow()
-  
-      // have to define google maps event listeners here too
-      // because we can't add listeners on the map until its created
     
   }
 
@@ -61,7 +51,7 @@ export default class Map extends Component {
 
   _updateMap(lng,lat,page,radius,items){
       let zoom;
-     
+      //set map zoom  level based on provided radius
       switch(radius){
           case "10":
               zoom = 9
@@ -79,8 +69,10 @@ export default class Map extends Component {
               zoom = 1
       }
 
+      //collect items data to display
       this.items = items;
 
+      //save passed data to state
       this.setState({
           centerLat:lat,
           centerLng:lng,
@@ -89,10 +81,13 @@ export default class Map extends Component {
           zoom:zoom
       },()=>{
           
-          
+          //create map
           this.map = this._createMap();
+
+          //create marker
           this.marker = this._createMarker();
-                   
+          
+          //handle zoom change event         
           google.maps.event.addListener(this.map, 'zoom_changed', ()=> this.handleZoomChange())
       })
 
@@ -101,17 +96,19 @@ export default class Map extends Component {
 
   _createMap() {
       
+      //create map options
       let mapOptions = {
           zoom: this.state.zoom,
           center: this._mapCenter(),
           streetViewControl:false,
           
         }
+        //retrun enw google map
         return new google.maps.Map(this.refs.mapCanvas, mapOptions)
   }
 
   _mapCenter() {
-    
+      //set map center
       return new google.maps.LatLng(
           this.state.centerLat,
           this.state.centerLng
@@ -122,21 +119,25 @@ export default class Map extends Component {
 
   _createMarker() {
 
-      // if coming from findbusiness do as is 
+      // if coming from findbusiness
       if(this.state.page === "FindBusiness"){
           
+          //loop throug data
           for(let obj of this.items){
              
+              //create display data
               let businessLink = "<a class='compTextStyle' href='#/SingleBusiness/" + obj.key +"'>Visit business page</a>"
               let contentString = "<div class='InfoWindow'><h2>" + obj.businessName + "</h2><br /><p>" + businessLink + "</p></div>"
               
+              //create infowindow
               let infowindow = new google.maps.InfoWindow({
                   content:  contentString
               })
 
-              
+              //set coords for map marker
               let coords = new google.maps.LatLng(obj.lat,obj.lng)
               
+              //create marker
               this.marker = new google.maps.Marker({
                   position:coords,
                   map:this.map,
@@ -144,36 +145,42 @@ export default class Map extends Component {
 
 
               })
-              this.marker.setMap(this.map);
 
+              //add marker to map with click listener
+              this.marker.setMap(this.map);
               this.marker.addListener('click',()=>{
               
+                  //open infowindow centered onCLick
                   infowindow.setPosition(coords)
                   infowindow.open(this.map);
 
               })
            
           }
+      //if ocming from SingeBusinessPage
       }else if(this.state.page === "SingleBusinessPage"){
-          //else gather data from passed parameters?
-           
           
+           
+          //create infowindow
           let infowindow = new google.maps.InfoWindow({
               content: this.props.data.businessName
           })
 
-         
+          //set coords for map marker
           let coords = new google.maps.LatLng(this.props.data.lat, this.props.data.lng)
           
+          //create marker
           this.marker = new google.maps.Marker({
               position:coords,
               map:this.map,
               visible: true
           })
-          this.marker.setMap(this.map);
 
+          //add marker to map with click listener
+          this.marker.setMap(this.map);
           this.marker.addListener('click',()=>{
               
+              //open infowindow centered onCLick
               infowindow.setPosition(coords)
               infowindow.open(this.map);
           })
@@ -193,18 +200,21 @@ export default class Map extends Component {
                   content:  contentString
               })
 
-              
+              //set coords for map marker
               let coords = new google.maps.LatLng(obj.lat, obj.lng)
               
+              //create marker
               this.marker = new google.maps.Marker({
                   position:coords,
                   map:this.map,
                   visible: true
               })
-              this.marker.setMap(this.map);
 
+              //add marker to map with click listener
+              this.marker.setMap(this.map);
               this.marker.addListener('click',()=>{
               
+                  //open infowindow centered onCLick
                   infowindow.setPosition(coords)
                   infowindow.open(this.map);
 
@@ -221,18 +231,21 @@ export default class Map extends Component {
               content: contentString
           })
 
-     
+          //set coords for map marker
           let coords = new google.maps.LatLng(this.state.centerLat, this.state.centerLng)
       
+          //create marker
           this.marker = new google.maps.Marker({
               position:coords,
               map:this.map,
               visible: true
           })
-          this.marker.setMap(this.map);
 
+          //add marker to map with click listener
+          this.marker.setMap(this.map);
           this.marker.addListener('click',()=>{
               
+              //open infowindow centered onCLick
               infowindow.setPosition(coords)
               infowindow.open(this.map);
           })
@@ -252,18 +265,21 @@ export default class Map extends Component {
                   content: contentString
               })
 
-              
+              //set coords for map marker
               let coords = new google.maps.LatLng(obj.lat, obj.lng)
               
+              //create marker
               this.marker = new google.maps.Marker({
                   position:coords,
                   map:this.map,
                   visible: true
               })
-              this.marker.setMap(this.map);
 
+              //add marker to map with click listener
+              this.marker.setMap(this.map);
               this.marker.addListener('click',()=>{
               
+                  //open infowindow centered onCLick
                   infowindow.setPosition(coords)
                   infowindow.open(this.map);
 
@@ -276,7 +292,7 @@ export default class Map extends Component {
 
   
   handleZoomChange() {
-
+      //set zoom level
       this.setState({
           zoom: this.map.getZoom()
       })

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {firebase} from '@firebase/app';
-/*import SideBarAdvert from '../../Components/SideBarAdvert';*/
 
 import BlogPostComp from './BlogPostComp';
 

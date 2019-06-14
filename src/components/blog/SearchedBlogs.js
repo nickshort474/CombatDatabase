@@ -3,7 +3,6 @@ import {firebase} from '@firebase/app';
 import {Link} from 'react-router-dom';
 import SearchedBlogComp from './SearchedBlogComp';
 
-/*import SideBarAdvert from '../../Components/SideBarAdvert';*/
 import store from '../../redux/store';
 import constants from '../../redux/constants';
 

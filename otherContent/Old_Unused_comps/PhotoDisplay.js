@@ -9,6 +9,7 @@ export default class PhotoDisplay extends Component{
 	constructor(){
 		super();
 
+		//set initial state
 		this.state = {
 			folderName:"",
 			lightboxIsOpen:false,
@@ -16,10 +17,12 @@ export default class PhotoDisplay extends Component{
 			gallery:false
 		}
 		
+		//set img style
 		this.imgStyle = {
 			width:"35%"
 		}
 
+		//set base firestore ref
 		this.firestore = firebase.firestore();
 		
 	}
@@ -43,10 +46,6 @@ export default class PhotoDisplay extends Component{
 					alt:"business images"
 				})
 			});
-		}else if (this.props.page === "SinglePersonPage"){
-
-			console.log("SinglePersonPage");
-
 		}else if(this.props.page === "SingleEventPage"){
 
 			let items = []
@@ -133,8 +132,6 @@ export default class PhotoDisplay extends Component{
 			})
 
 			
-			//const LIGHTBOX_IMAGE_SET = [{srcSet:this.state.items}];
-
 			return(
 			
 				<div className="gallery">
